@@ -410,12 +410,14 @@ body.menu-open {
 .hero__portrait-wrapper {
   width: 100%;
   max-width: 260px;
+  aspect-ratio: 1 / 1;
   position: relative;
 }
 
 .hero__portrait {
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
   outline: 3px solid var(--gold);
