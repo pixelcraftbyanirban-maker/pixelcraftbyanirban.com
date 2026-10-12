@@ -31,6 +31,19 @@
 <body>
 
   <!-- ============================================
+       PAGE LOADER
+       ============================================ -->
+  <div class="page-loader" id="page-loader" aria-hidden="true">
+    <div class="page-loader__content">
+      <span class="page-loader__name">Anirban Kumar Sarkar</span>
+      <span class="page-loader__role">Product Designer</span>
+      <div class="page-loader__bar">
+        <div class="page-loader__bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
        NAVBAR
        ============================================ -->
   <header class="navbar" id="navbar">
@@ -42,6 +55,34 @@
           <li><a href="#tools" class="nav-link">Tools</a></li>
           <li><a href="#work" class="nav-link">Work</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li class="nav-cv-dropdown" id="nav-cv-dropdown">
+            <button type="button" class="nav-cv-toggle" id="nav-cv-toggle" aria-haspopup="menu" aria-expanded="false">
+              <span>Resume</span>
+              <svg class="nav-cv-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <ul class="nav-cv-menu" id="nav-cv-menu" role="menu" aria-label="Download Resume">
+              <li role="none">
+                <a href="assets/cv/Anirban-Kumar-Sarkar-Product-Design-CV.pdf" download="Anirban-Kumar-Sarkar-Product-Design-CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv-item" role="menuitem">
+                  <div class="nav-cv-item-text">
+                    <span class="nav-cv-item-title">Product Design CV</span>
+                    <span class="nav-cv-item-desc">Visual design, branding &amp; strategy</span>
+                  </div>
+                  <span class="nav-cv-item-badge">PDF</span>
+                </a>
+              </li>
+              <li role="none">
+                <a href="assets/cv/Anirban-Kumar-Sarkar-UI-UX-CV.pdf" download="Anirban-Kumar-Sarkar-UI-UX-CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv-item" role="menuitem">
+                  <div class="nav-cv-item-text">
+                    <span class="nav-cv-item-title">UI/UX &amp; Frontend CV</span>
+                    <span class="nav-cv-item-desc">UX research, systems &amp; front-end</span>
+                  </div>
+                  <span class="nav-cv-item-badge">PDF</span>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li><a href="#contact" class="nav-link nav-link--cta">Hire Me</a></li>
         </ul>
       </nav>
@@ -59,7 +100,20 @@
         <li><a href="#tools" class="mobile-menu__link">Tools</a></li>
         <li><a href="#work" class="mobile-menu__link">Work</a></li>
         <li><a href="#contact" class="mobile-menu__link">Contact</a></li>
-        <li><a href="#contact" class="mobile-menu__link">Hire Me</a></li>
+        <li class="mobile-menu__divider" aria-hidden="true"></li>
+        <li class="mobile-menu__section-title">Download Resume</li>
+        <li>
+          <a href="assets/cv/Anirban-Kumar-Sarkar-Product-Design-CV.pdf" download="Anirban-Kumar-Sarkar-Product-Design-CV.pdf" target="_blank" rel="noopener noreferrer" class="mobile-menu__sublink">
+            Product Design CV (PDF)
+          </a>
+        </li>
+        <li>
+          <a href="assets/cv/Anirban-Kumar-Sarkar-UI-UX-CV.pdf" download="Anirban-Kumar-Sarkar-UI-UX-CV.pdf" target="_blank" rel="noopener noreferrer" class="mobile-menu__sublink">
+            UI/UX &amp; Frontend CV (PDF)
+          </a>
+        </li>
+        <li class="mobile-menu__divider" aria-hidden="true"></li>
+        <li><a href="#contact" class="mobile-menu__link mobile-menu__link--cta">Hire Me</a></li>
       </ul>
     </nav>
   </div>
@@ -75,7 +129,18 @@
           <h1>Crafting digital experiences that balance user needs with <span class="highlight--terracotta">business growth.</span></h1>
           <p class="hero__subtitle">Hi, I'm Anirban Kumar Sarkar, a Product Designer who turns complex problems into intuitive, high-impact interfaces. I bridge the gap between human behaviour and product strategy.</p>
           <div class="hero__buttons">
-            <a href="#work" class="btn btn-primary">View Case Studies</a>
+            <div class="hero-dropdown" id="hero-dropdown">
+              <button type="button" class="btn btn-primary hero-dropdown__toggle" id="hero-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                <span>View Case Studies</span>
+                <svg class="hero-dropdown__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <ul class="hero-dropdown__menu" id="hero-dropdown-menu" role="listbox" aria-label="Select case study category">
+                <li class="hero-dropdown__item" role="option" tabindex="-1" data-category="product-design">Product Design</li>
+                <li class="hero-dropdown__item" role="option" tabindex="-1" data-category="ui-ux-design">UI / UX Design</li>
+              </ul>
+            </div>
             <a href="#contact" class="btn btn-secondary">Let's Connect</a>
           </div>
         </div>
@@ -120,10 +185,18 @@
         <p class="section-label">SELECTED WORK</p>
         <h2>Things I've designed and built</h2>
 
-        <div class="tab-list" role="tablist" aria-label="Filter projects by category">
-          <button class="tab tab--active" role="tab" aria-selected="true" tabindex="0" data-category="product-design">Product Design</button>
-          <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-category="ui-ux-design">UI/UX Design</button>
-          <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-category="web-development">Web Development</button>
+        <div class="filter-dropdown" id="filter-dropdown">
+          <button class="filter-dropdown__toggle" id="filter-toggle" aria-haspopup="listbox" aria-expanded="false">
+            <span class="filter-dropdown__label" id="filter-label">Product Design</span>
+            <svg class="filter-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <ul class="filter-dropdown__menu" id="filter-menu" role="listbox" aria-label="Filter projects by category">
+            <li class="filter-dropdown__item filter-dropdown__item--active" role="option" aria-selected="true" data-category="product-design">Product Design</li>
+            <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="ui-ux-design">UI/UX Design</li>
+            <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="web-development">Web Development</li>
+          </ul>
         </div>
 
         <div class="projects__grid" id="projects-grid" role="tabpanel"></div>
@@ -187,8 +260,7 @@
 
         <!-- Right Column — Form -->
         <div class="contact__form-wrapper">
-          <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
-            <!-- TODO: Replace YOUR_FORM_ID with your actual Formspree endpoint -->
+          <form class="contact-form" id="contact-form" action="https://formspree.io/f/xvkzbqwn" method="POST" novalidate>
             <div class="form-group">
               <input type="text" id="name" name="name" class="form-input" required autocomplete="name" placeholder=" " aria-describedby="name-error">
               <label for="name" class="form-label">Name *</label>

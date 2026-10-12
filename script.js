@@ -3,6 +3,36 @@
  * Vanilla JavaScript, no dependencies.
  */
 
+/* ============================================
+   0. PAGE LOADER
+   ============================================ */
+(function () {
+  const loader = document.getElementById('page-loader');
+  if (!loader) return;
+
+  const MIN_DISPLAY = 1200; // ms — matches the bar animation duration
+  const startTime = performance.now();
+
+  const hideLoader = () => {
+    const elapsed = performance.now() - startTime;
+    const remaining = Math.max(0, MIN_DISPLAY - elapsed);
+
+    setTimeout(() => {
+      loader.classList.add('page-loader--hidden');
+      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+    }, remaining);
+  };
+
+  // Reduced motion: skip animation entirely
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    loader.remove();
+  } else {
+    window.addEventListener('load', hideLoader);
+    // Safety fallback — never block the page longer than 4s
+    setTimeout(hideLoader, 4000);
+  }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ============================================
@@ -69,12 +99,77 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================ */
 
   /* ============================================
+     1b. NAVBAR CV DROPDOWN
+     ============================================ */
+  const navCvDropdown = document.getElementById('nav-cv-dropdown');
+  const navCvToggle = document.getElementById('nav-cv-toggle');
+  const navCvMenu = document.getElementById('nav-cv-menu');
+  const navCvItems = navCvMenu ? navCvMenu.querySelectorAll('.nav-cv-item') : [];
+
+  if (navCvToggle && navCvMenu) {
+    const openCvMenu = () => {
+      navCvMenu.classList.add('nav-cv-menu--open');
+      navCvToggle.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeCvMenu = () => {
+      navCvMenu.classList.remove('nav-cv-menu--open');
+      navCvToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const isCvOpen = () => navCvToggle.getAttribute('aria-expanded') === 'true';
+
+    navCvToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isCvOpen() ? closeCvMenu() : openCvMenu();
+    });
+
+    navCvItems.forEach(item => {
+      item.addEventListener('click', () => {
+        closeCvMenu();
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (isCvOpen() && !navCvDropdown.contains(e.target)) {
+        closeCvMenu();
+      }
+    });
+
+    navCvToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openCvMenu();
+        if (navCvItems.length > 0) navCvItems[0].focus();
+      }
+    });
+
+    navCvMenu.addEventListener('keydown', (e) => {
+      const items = [...navCvItems];
+      const idx = items.indexOf(document.activeElement);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = (idx + 1) % items.length;
+        items[next].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = (idx - 1 + items.length) % items.length;
+        items[prev].focus();
+      } else if (e.key === 'Escape') {
+        closeCvMenu();
+        navCvToggle.focus();
+      }
+    });
+  }
+
+  /* ============================================
      4. MOBILE MENU
      ============================================ */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileLinks = mobileMenu
-    ? mobileMenu.querySelectorAll('.mobile-menu__link')
+    ? mobileMenu.querySelectorAll('.mobile-menu__link, .mobile-menu__sublink')
     : [];
 
   const openMenu = () => {
@@ -150,17 +245,17 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================ */
   const toolsData = {
     expertise: [
-      'Photoshop', 'Illustrator', 'Figma', 'Framer',
-      'Webflow', 'HTML', 'CSS', 'JS'
+      'Figma', 'Framer', 'Webflow', 'HTML', 'CSS', 'JavaScript',
+      'Tailwind CSS', 'Bootstrap', 'Sass', 'Photoshop', 'Illustrator', 'InDesign'
     ],
     software: [
-      'After Effects', 'Blender', 'SaaS', 'Bootstrap'
+      'After Effects', 'Blender'
     ],
     ai: [
-      'Claude Code', 'Cursor', 'Codex', 'Lovable',
-      'Antigravity', 'Google AI Studio', 'Stitch',
-      'Whimsical', 'Miro', 'Spline', 'Kling',
-      'Midjourney', 'Leonardo', 'Notion', 'NotebookLM', 'Hotjar'
+      'Lovable', 'Cursor', 'Antigravity', 'Claude Code', 'Codex',
+      'ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'Notion AI',
+      'Spline AI', 'Three.js', 'Stitch', 'Midjourney', 'Kling',
+      'Leonardo', 'Firefly', 'Figma Weave', 'Nano Banana', 'Relume'
     ]
   };
 
@@ -177,53 +272,53 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChips('ai', 'chips-ai');
 
   /* ============================================
-     6. PROJECTS DATA
+     6. PROJECTS DATA (from CV)
      ============================================ */
   const projects = [
     // ---- Product Design ----
     {
-      id: 'triveda-brand',
+      id: 'triveda-product',
       category: 'product-design',
       title: 'Triveda',
-      description: 'End-to-end product design for an Ayurvedic wellness brand — market survey, competitive analysis, logo, typography, colour palette, full branding, and campaign design.',
-      tools: ['Photoshop', 'Illustrator', 'Leonardo', 'Nano Banana Pro', 'Firefly', 'Gemini', 'Notion'],
+      description: 'Wellness brand identity and visual system.',
+      tools: ['Photoshop', 'Illustrator', 'InDesign', 'Figma', 'Visual Storytelling'],
       thumbnail: 'assets/projects/triveda-brand.jpg',
       link: '#'
     },
     {
-      id: 'ecovolt-brand',
-      category: 'product-design',
-      title: 'EcoVolt',
-      description: 'Full product design for a sustainable energy company — from market research and competitive analysis through logo, typography, colour system, branding, and campaign rollout.',
-      tools: ['Photoshop', 'Illustrator', 'Leonardo', 'Nano Banana Pro', 'Firefly', 'Gemini', 'Notion'],
-      thumbnail: 'assets/projects/ecovolt-brand.jpg',
-      link: '#'
-    },
-    {
-      id: 'mittika-brand',
+      id: 'mittika-product',
       category: 'product-design',
       title: 'Mittika',
-      description: 'Complete product design for an artisanal brand — market survey, competitive analysis, logo, packaging, typography, colour palette, full branding, and marketing campaigns.',
-      tools: ['Photoshop', 'Illustrator', 'Leonardo', 'Nano Banana Pro', 'Firefly', 'Gemini', 'Notion'],
+      description: 'Traditional Indian fabric reimagined as modern outfits.',
+      tools: ['Photoshop', 'Illustrator', 'Art Direction', 'Moodboarding', 'Branding'],
       thumbnail: 'assets/projects/mittika-brand.jpg',
       link: '#'
     },
     {
-      id: 'hospitality-brand',
+      id: 'wave-product',
       category: 'product-design',
-      title: 'Hospitality Chain',
-      description: 'Premium hospitality product design — market survey, competitive analysis, logo suite, signage, typography, colour palette, full branding, and campaign strategy.',
-      tools: ['Photoshop', 'Illustrator', 'Leonardo', 'Nano Banana Pro', 'Firefly', 'Gemini', 'Notion'],
-      thumbnail: 'assets/projects/hospitality-brand.jpg',
+      title: 'Wave',
+      description: 'Brand identity for a live concert management company.',
+      tools: ['Illustrator', 'Photoshop', 'InDesign', 'Visual Identity', 'After Effects'],
+      thumbnail: 'assets/projects/eventmgmt-brand.jpg',
       link: '#'
     },
     {
-      id: 'eventmgmt-brand',
+      id: 'ecovolt-product',
       category: 'product-design',
-      title: 'Event Management Chain',
-      description: 'End-to-end product design for an event management company — market research, competitive analysis, logo, typography, colour palette, full branding, and campaign collateral.',
-      tools: ['Photoshop', 'Illustrator', 'Leonardo', 'Nano Banana Pro', 'Firefly', 'Gemini', 'Notion'],
-      thumbnail: 'assets/projects/eventmgmt-brand.jpg',
+      title: 'EcoVolt',
+      description: 'Brand identity project for a sustainable energy company.',
+      tools: ['Figma', 'Illustrator', 'Photoshop', 'Brand Identity', 'Concept Development'],
+      thumbnail: 'assets/projects/ecovolt-brand.jpg',
+      link: '#'
+    },
+    {
+      id: 'forgeos-product',
+      category: 'product-design',
+      title: 'ForgeOS',
+      description: 'Brand identity for a SaaS automation company building an agile MES.',
+      tools: ['Figma', 'Illustrator', 'Brand Strategy', 'Visual Systems', 'Notion'],
+      thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
 
@@ -232,92 +327,102 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'nuvera-ux',
       category: 'ui-ux-design',
       title: 'Nuvera',
-      description: 'Wellness app — research in Gemini, idea exploration in Stitch and Claude, and final interface design crafted in Figma.',
-      tools: ['Gemini', 'Stitch', 'Claude', 'Figma', 'Notion'],
+      description: 'Supplement and testing ecosystem app: UX flows and interface design.',
+      tools: ['Figma', 'UX Research', 'Gemini', 'Stitch', 'Claude'],
       thumbnail: 'assets/projects/nuvera.jpg',
-      link: '#'
-    },
-    {
-      id: 'eventmgmt-ux',
-      category: 'ui-ux-design',
-      title: 'Event Management Chain',
-      description: 'Event management platform — user research in Gemini, ideation in Stitch and Claude, booking flows and vendor dashboards designed in Figma.',
-      tools: ['Gemini', 'Stitch', 'Claude', 'Figma', 'Notion'],
-      thumbnail: 'assets/projects/eventmgmt-ux.jpg',
-      link: '#'
-    },
-    {
-      id: 'saas-landing-ux',
-      category: 'ui-ux-design',
-      title: 'SaaS Landing Page',
-      description: 'High-converting SaaS landing page — research in Gemini, concept exploration in Stitch and Claude, final design and prototyping in Figma.',
-      tools: ['Gemini', 'Stitch', 'Claude', 'Figma', 'Notion'],
-      thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
     {
       id: 'aerobharat-ux',
       category: 'ui-ux-design',
       title: 'AeroBharat',
-      description: 'Immersive drone rental experience — research in Gemini, ideation in Stitch and Claude, built in Framer with custom Blender 3D modelling.',
-      tools: ['Gemini', 'Stitch', 'Claude', 'Framer', 'Blender', 'Notion'],
+      description: 'Drone company landing page with a scroll-animated 3D interactive drone model, built in Framer.',
+      tools: ['Framer', 'Blender', 'Three.js', 'Spline AI'],
       thumbnail: 'assets/projects/aerobharat-ux.jpg',
+      link: '#'
+    },
+    {
+      id: 'forgeos-ux',
+      category: 'ui-ux-design',
+      title: 'ForgeOS',
+      description: 'App and Dashboard for a SaaS MES automation company: UI design and front-end build.',
+      tools: ['Figma', 'UI Design', 'Design Systems', 'Bootstrap'],
+      thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
     {
       id: 'mittika-ux',
       category: 'ui-ux-design',
       title: 'Mittika',
-      description: 'E-commerce UI/UX for the artisanal brand — research in Gemini, idea exploration in Stitch and Claude, product pages and checkout flow designed in Figma.',
-      tools: ['Gemini', 'Stitch', 'Claude', 'Figma', 'Notion'],
-      thumbnail: 'assets/projects/mittika-ux.jpg',
+      description: 'Mobile app and website for an Indian fabric-wear brand, website built in Webflow.',
+      tools: ['Figma', 'Webflow', 'Mobile App', 'Wireframing'],
+      thumbnail: 'assets/projects/mittika-brand.jpg',
+      link: '#'
+    },
+    {
+      id: 'bookmyshow-ux',
+      category: 'ui-ux-design',
+      title: 'BookMyShow',
+      description: 'UX research and redesign concept for the ticketing app.',
+      tools: ['Figma', 'UX Research', 'User Flows', 'Redesign'],
+      thumbnail: 'assets/projects/eventmgmt-ux.jpg',
+      link: '#'
+    },
+    {
+      id: 'ecovolt-ux',
+      category: 'ui-ux-design',
+      title: 'EcoVolt',
+      description: 'Solar energy company app and landing page, landing page built in Framer.',
+      tools: ['Framer', 'Figma', 'Mobile App', 'UI/UX'],
+      thumbnail: 'assets/projects/ecovolt-brand.jpg',
       link: '#'
     },
 
     // ---- Web Development ----
+    // (Same projects as Product Design)
     {
       id: 'triveda-web',
       category: 'web-development',
       title: 'Triveda',
-      description: 'Landing page for the Ayurvedic wellness brand — built from scratch with clean, semantic markup.',
-      tools: ['HTML', 'CSS', 'JS', 'SaaS', 'Bootstrap'],
+      description: 'Wellness brand digital presence & landing page with clean, semantic markup.',
+      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Sass'],
       thumbnail: 'assets/projects/triveda-web.jpg',
-      link: '#'
-    },
-    {
-      id: 'ecovolt-web',
-      category: 'web-development',
-      title: 'EcoVolt',
-      description: 'Responsive landing page for the sustainable energy brand — performance-optimised with smooth animations.',
-      tools: ['HTML', 'CSS', 'JS', 'SaaS', 'Bootstrap'],
-      thumbnail: 'assets/projects/ecovolt-web.jpg',
       link: '#'
     },
     {
       id: 'mittika-web',
       category: 'web-development',
       title: 'Mittika',
-      description: 'Artisanal brand landing page — hand-crafted frontend showcasing products with an earthy, warm aesthetic.',
-      tools: ['HTML', 'CSS', 'JS', 'SaaS', 'Bootstrap'],
+      description: 'Indian fabric-wear brand website built in Webflow with modern, responsive styling.',
+      tools: ['Webflow', 'HTML', 'CSS', 'Responsive Design'],
       thumbnail: 'assets/projects/mittika-web.jpg',
       link: '#'
     },
     {
-      id: 'hospitality-web',
+      id: 'wave-web',
       category: 'web-development',
-      title: 'Hospitality Chain',
-      description: 'Premium hospitality landing page — elegant layout with booking integration and immersive imagery.',
-      tools: ['HTML', 'CSS', 'JS', 'SaaS', 'Bootstrap'],
-      thumbnail: 'assets/projects/hospitality-web.jpg',
+      title: 'Wave',
+      description: 'Live concert management company digital platform & event landing experience.',
+      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Sass'],
+      thumbnail: 'assets/projects/eventmgmt-web.jpg',
       link: '#'
     },
     {
-      id: 'eventmgmt-web',
+      id: 'ecovolt-web',
       category: 'web-development',
-      title: 'Event Management Chain',
-      description: 'Event management landing page — dynamic sections, testimonials carousel, and contact form integration.',
-      tools: ['HTML', 'CSS', 'JS', 'SaaS', 'Bootstrap'],
-      thumbnail: 'assets/projects/eventmgmt-web.jpg',
+      title: 'EcoVolt',
+      description: 'Solar energy company landing page built in Framer with interactive components.',
+      tools: ['Framer', 'HTML', 'CSS', 'JavaScript', 'Responsive Web'],
+      thumbnail: 'assets/projects/ecovolt-web.jpg',
+      link: '#'
+    },
+    {
+      id: 'forgeos-web',
+      category: 'web-development',
+      title: 'ForgeOS',
+      description: 'App and Dashboard for a SaaS MES automation company: front-end build.',
+      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Tailwind CSS'],
+      thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     }
   ];
@@ -332,7 +437,6 @@ document.addEventListener('DOMContentLoaded', () => {
      7. PROJECT RENDERING + TAB FILTERING
      ============================================ */
   const projectsGrid = document.getElementById('projects-grid');
-  const tabs = document.querySelectorAll('.tab[role="tab"]');
 
   const buildCardHTML = (p) => {
     const toolTags = p.tools
@@ -340,18 +444,21 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('');
 
     return `
-      <a href="${p.link}" class="project-card project-card--visible" data-category="${p.category}">
-        <div class="project-card__thumb">
-          <img src="${p.thumbnail}" alt="${p.title} — project thumbnail" loading="lazy" decoding="async">
+      <div class="project-card project-card--visible" data-category="${p.category}">
+        <div class="project-card__inner">
+          <div class="project-card__front">
+            <img src="${p.thumbnail}" alt="${p.title} — project thumbnail" loading="lazy" decoding="async">
+            <span class="project-card__front-title">${p.title}</span>
+          </div>
+          <div class="project-card__back">
+            <span class="project-card__category">${categoryLabels[p.category]}</span>
+            <h3 class="project-card__title">${p.title}</h3>
+            <p class="project-card__desc">${p.description}</p>
+            <div class="project-card__tools">${toolTags}</div>
+            <a href="${p.link}" class="project-card__link">View case study <span class="arrow">→</span></a>
+          </div>
         </div>
-        <div class="project-card__body">
-          <span class="project-card__category">${categoryLabels[p.category]}</span>
-          <h3 class="project-card__title">${p.title}</h3>
-          <p class="project-card__desc">${p.description}</p>
-          <div class="project-card__tools">${toolTags}</div>
-          <span class="project-card__link">View case study <span class="arrow">→</span></span>
-        </div>
-      </a>`;
+      </div>`;
   };
 
   const renderProjects = (category) => {
@@ -389,47 +496,225 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Tab interaction
-  if (tabs.length > 0) {
-    let activeIdx = 0;
+  // Touch-to-flip support (mobile has no hover)
+  if (projectsGrid) {
+    projectsGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('.project-card');
+      if (!card) return;
 
-    // Initial render — first tab is active by default
-    const initialCategory = tabs[0].getAttribute('data-category');
+      // If clicking a link inside a flipped card, let it navigate
+      if (e.target.closest('.project-card__link')) return;
+
+      // Un-flip any other flipped card
+      const currentlyFlipped = projectsGrid.querySelector('.project-card--flipped');
+      if (currentlyFlipped && currentlyFlipped !== card) {
+        currentlyFlipped.classList.remove('project-card--flipped');
+      }
+
+      // Toggle this card
+      card.classList.toggle('project-card--flipped');
+    });
+
+    // Un-flip on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.project-card')) {
+        const flipped = projectsGrid.querySelector('.project-card--flipped');
+        if (flipped) flipped.classList.remove('project-card--flipped');
+      }
+    });
+  }
+
+  const filterDropdown = document.getElementById('filter-dropdown');
+  const filterToggle = document.getElementById('filter-toggle');
+  const filterMenu = document.getElementById('filter-menu');
+  const filterLabel = document.getElementById('filter-label');
+  const filterItems = filterMenu
+    ? filterMenu.querySelectorAll('.filter-dropdown__item')
+    : [];
+
+  // Helper to apply category to filter dropdown and re-render projects
+  let applyCategory = (category) => {
+    renderProjects(category);
+  };
+
+  if (filterToggle && filterMenu && filterItems.length > 0) {
+    // Initial render — first item is active by default
+    const initialCategory = filterItems[0].getAttribute('data-category');
     renderProjects(initialCategory);
 
-    const activateTab = (index) => {
-      tabs.forEach((t, i) => {
-        const isActive = i === index;
-        t.classList.toggle('tab--active', isActive);
-        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        t.setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      activeIdx = index;
-      tabs[index].focus();
-      renderProjects(tabs[index].getAttribute('data-category'));
+    const openDropdown = () => {
+      filterMenu.classList.add('filter-dropdown__menu--open');
+      filterToggle.setAttribute('aria-expanded', 'true');
     };
 
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => activateTab(i));
+    const closeDropdown = () => {
+      filterMenu.classList.remove('filter-dropdown__menu--open');
+      filterToggle.setAttribute('aria-expanded', 'false');
+    };
 
-      // Keyboard navigation (WAI-ARIA tabs pattern)
-      tab.addEventListener('keydown', (e) => {
-        let next = activeIdx;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          next = (activeIdx + 1) % tabs.length;
-          e.preventDefault();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          next = (activeIdx - 1 + tabs.length) % tabs.length;
-          e.preventDefault();
-        } else if (e.key === 'Home') {
-          next = 0;
-          e.preventDefault();
-        } else if (e.key === 'End') {
-          next = tabs.length - 1;
-          e.preventDefault();
-        }
-        if (next !== activeIdx) activateTab(next);
+    const isOpen = () => filterToggle.getAttribute('aria-expanded') === 'true';
+
+    // Apply category selection and synchronize UI
+    applyCategory = (category) => {
+      const targetItem = [...filterItems].find(i => i.getAttribute('data-category') === category);
+      if (!targetItem) return;
+
+      filterItems.forEach(i => {
+        i.classList.remove('filter-dropdown__item--active');
+        i.setAttribute('aria-selected', 'false');
       });
+      targetItem.classList.add('filter-dropdown__item--active');
+      targetItem.setAttribute('aria-selected', 'true');
+      filterLabel.textContent = targetItem.textContent;
+      renderProjects(category);
+    };
+
+    // Toggle on click
+    filterToggle.addEventListener('click', () => {
+      isOpen() ? closeDropdown() : openDropdown();
+    });
+
+    filterItems.forEach(item => {
+      item.addEventListener('click', () => {
+        applyCategory(item.getAttribute('data-category'));
+        closeDropdown();
+        filterToggle.focus();
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !filterDropdown.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+
+    // Keyboard navigation
+    filterToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDropdown();
+        filterItems[0].focus();
+      }
+    });
+
+    filterMenu.addEventListener('keydown', (e) => {
+      const items = [...filterItems];
+      const idx = items.indexOf(document.activeElement);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = (idx + 1) % items.length;
+        items[next].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = (idx - 1 + items.length) % items.length;
+        items[prev].focus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (idx >= 0) {
+          applyCategory(items[idx].getAttribute('data-category'));
+          closeDropdown();
+          filterToggle.focus();
+        }
+      } else if (e.key === 'Escape') {
+        closeDropdown();
+        filterToggle.focus();
+      }
+    });
+
+    // Make items focusable
+    filterItems.forEach(item => item.setAttribute('tabindex', '-1'));
+  }
+
+  /* ============================================
+     7b. HERO "VIEW CASE STUDIES" DROPDOWN
+     ============================================ */
+  const heroDropdown = document.getElementById('hero-dropdown');
+  const heroToggle = document.getElementById('hero-dropdown-toggle');
+  const heroMenu = document.getElementById('hero-dropdown-menu');
+  const heroItems = heroMenu
+    ? heroMenu.querySelectorAll('.hero-dropdown__item')
+    : [];
+
+  if (heroToggle && heroMenu && heroItems.length > 0) {
+    const openHeroDropdown = () => {
+      heroMenu.classList.add('hero-dropdown__menu--open');
+      heroToggle.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeHeroDropdown = () => {
+      heroMenu.classList.remove('hero-dropdown__menu--open');
+      heroToggle.setAttribute('aria-expanded', 'false');
+    };
+
+    const isHeroOpen = () => heroToggle.getAttribute('aria-expanded') === 'true';
+
+    heroToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isHeroOpen() ? closeHeroDropdown() : openHeroDropdown();
+    });
+
+    heroItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const cat = item.getAttribute('data-category');
+        if (cat) {
+          applyCategory(cat);
+          const workSection = document.getElementById('work');
+          if (workSection) {
+            workSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        closeHeroDropdown();
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (isHeroOpen() && !heroDropdown.contains(e.target)) {
+        closeHeroDropdown();
+      }
+    });
+
+    // Keyboard navigation
+    heroToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openHeroDropdown();
+        heroItems[0].focus();
+      }
+    });
+
+    heroMenu.addEventListener('keydown', (e) => {
+      const items = [...heroItems];
+      const idx = items.indexOf(document.activeElement);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = (idx + 1) % items.length;
+        items[next].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = (idx - 1 + items.length) % items.length;
+        items[prev].focus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (idx >= 0) {
+          const cat = items[idx].getAttribute('data-category');
+          if (cat) {
+            applyCategory(cat);
+            const workSection = document.getElementById('work');
+            if (workSection) {
+              workSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+          closeHeroDropdown();
+          heroToggle.focus();
+        }
+      } else if (e.key === 'Escape') {
+        closeHeroDropdown();
+        heroToggle.focus();
+      }
     });
   }
 
@@ -521,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .catch(() => alert('Network error. Please try again.'));
       } else {
-        // TODO: Replace YOUR_FORM_ID in index.html with a real Formspree endpoint
+        // Formspree not configured — show success for local testing only
         contactForm.style.display = 'none';
         if (formSuccess) {
           formSuccess.removeAttribute('hidden');
