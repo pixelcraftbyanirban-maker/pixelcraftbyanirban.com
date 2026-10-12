@@ -19,13 +19,17 @@
 
     setTimeout(() => {
       loader.classList.add('page-loader--hidden');
-      loader.addEventListener('transitionend', () => loader.remove(), { once: true });
+      loader.addEventListener('transitionend', () => {
+        loader.remove();
+        window.dispatchEvent(new CustomEvent('page-ready'));
+      }, { once: true });
     }, remaining);
   };
 
   // Reduced motion: skip animation entirely
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     loader.remove();
+    window.dispatchEvent(new CustomEvent('page-ready'));
   } else {
     window.addEventListener('load', hideLoader);
     // Safety fallback — never block the page longer than 4s
@@ -263,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(containerId);
     if (!el || !toolsData[key]) return;
     el.innerHTML = toolsData[key]
-      .map(name => `<span class="chip chip--${key}">${name}</span>`)
+      .map((name, i) => `<span class="chip chip--${key}" style="transition-delay: ${(i * 28) + 120}ms">${name}</span>`)
       .join('');
   };
 
@@ -438,13 +442,13 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================ */
   const projectsGrid = document.getElementById('projects-grid');
 
-  const buildCardHTML = (p) => {
+  const buildCardHTML = (p, idx = 0) => {
     const toolTags = p.tools
       .map(t => `<span class="project-card__tool-tag">${t}</span>`)
       .join('');
 
     return `
-      <div class="project-card project-card--visible" data-category="${p.category}">
+      <div class="project-card project-card--visible" data-category="${p.category}" style="transition-delay: ${idx * 65}ms">
         <div class="project-card__inner">
           <div class="project-card__front">
             <img src="${p.thumbnail}" alt="${p.title} — project thumbnail" loading="lazy" decoding="async">
@@ -465,11 +469,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!projectsGrid) return;
 
     const filtered = projects.filter(p => p.category === category);
-    const html = filtered.map(buildCardHTML).join('');
+    const html = filtered.map((p, idx) => buildCardHTML(p, idx)).join('');
 
     // Skip animation if user prefers reduced motion
     if (prefersReducedMotion) {
       projectsGrid.innerHTML = html;
+      projectsGrid.querySelectorAll('.project-card').forEach(c => c.classList.add('project-card--revealed'));
       return;
     }
 
@@ -477,20 +482,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentCards = projectsGrid.querySelectorAll('.project-card');
     if (currentCards.length > 0) {
       currentCards.forEach(card => {
-        card.classList.remove('project-card--visible');
+        card.classList.remove('project-card--visible', 'project-card--revealed');
         card.classList.add('project-card--hidden');
       });
 
       setTimeout(() => {
         projectsGrid.innerHTML = html;
-        // Force reflow then add visible class
+        // Force reflow then add visible and revealed class with stagger
         const newCards = projectsGrid.querySelectorAll('.project-card');
-        newCards.forEach(card => {
-          card.classList.remove('project-card--visible');
+        newCards.forEach((card, idx) => {
+          card.style.transitionDelay = `${idx * 65}ms`;
           void card.offsetWidth; // reflow
-          card.classList.add('project-card--visible');
+          card.classList.add('project-card--visible', 'project-card--revealed');
         });
-      }, 260);
+      }, 240);
     } else {
       projectsGrid.innerHTML = html;
     }
@@ -543,11 +548,13 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProjects(initialCategory);
 
     const openDropdown = () => {
+      if (filterDropdown) filterDropdown.classList.add('filter-dropdown--open');
       filterMenu.classList.add('filter-dropdown__menu--open');
       filterToggle.setAttribute('aria-expanded', 'true');
     };
 
     const closeDropdown = () => {
+      if (filterDropdown) filterDropdown.classList.remove('filter-dropdown--open');
       filterMenu.classList.remove('filter-dropdown__menu--open');
       filterToggle.setAttribute('aria-expanded', 'false');
     };
@@ -831,29 +838,151 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================================
-     9. SCROLL REVEAL (IntersectionObserver)
+     9. SCROLL-TRIGGERED ANIMATION SYSTEM
      ============================================ */
-  const reveals = document.querySelectorAll('.reveal');
+
+  // Stagger contact info items & socials
+  document.querySelectorAll('.contact__details .contact__item').forEach((item, i) => {
+    item.style.transitionDelay = `${(i * 75) + 120}ms`;
+  });
+  document.querySelectorAll('.contact__socials .social-link').forEach((link, i) => {
+    link.style.transitionDelay = `${(i * 60) + 240}ms`;
+  });
+
+  // Hero entrance animation choreography
+  const triggerHeroEntrance = () => {
+    const heroReveals = document.querySelectorAll('#home [data-reveal]');
+    heroReveals.forEach(el => {
+      el.classList.add('is-revealed');
+    });
+  };
+
+  if (prefersReducedMotion || !document.getElementById('page-loader')) {
+    triggerHeroEntrance();
+  } else {
+    window.addEventListener('page-ready', triggerHeroEntrance, { once: true });
+    // Safety fallback
+    setTimeout(triggerHeroEntrance, 1600);
+  }
+
+  // Scroll reading progress bar
+  const progressBar = document.getElementById('scroll-progress-bar');
+  const updateScrollProgress = () => {
+    if (!progressBar) return;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const progress = Math.min(Math.max(window.scrollY / docHeight, 0), 1);
+    progressBar.style.transform = `scaleX(${progress})`;
+  };
+
+  // Hero interactive elements & Back-to-Top button
+  const portraitWrapper = document.querySelector('.hero__portrait-wrapper');
+  const scrollHint = document.getElementById('hero-scroll-hint');
+  const scrollTopBtn = document.getElementById('scroll-top-btn');
+
+  if (scrollHint) {
+    const scrollHintLink = scrollHint.querySelector('a');
+    if (scrollHintLink) {
+      scrollHintLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const toolsSection = document.getElementById('tools');
+        if (toolsSection) {
+          toolsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  }
+
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Optimized rAF-throttled scroll listener
+  let isTicking = false;
+  const onScroll = () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+
+        // 1. Reading progress
+        updateScrollProgress();
+
+        // 2. Parallax on hero portrait (only while hero in view)
+        if (!prefersReducedMotion && portraitWrapper && scrolled < window.innerHeight) {
+          portraitWrapper.style.transform = `translate3d(0, ${scrolled * 0.08}px, 0)`;
+        }
+
+        // 3. Scroll hint fade
+        if (scrollHint) {
+          scrollHint.classList.toggle('hero__scroll-hint--hidden', scrolled > 60);
+        }
+
+        // 4. Back-to-top button visibility
+        if (scrollTopBtn) {
+          scrollTopBtn.classList.toggle('scroll-top-btn--visible', scrolled > 400);
+        }
+
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  };
+
+  updateScrollProgress();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // IntersectionObserver for elements appearing on scroll
+  const revealElements = document.querySelectorAll(
+    '[data-reveal]:not(#home [data-reveal]), .reveal:not(#home), #projects-grid'
+  );
 
   if (prefersReducedMotion) {
-    // Immediately show everything — no animation
-    reveals.forEach(el => el.classList.add('reveal--visible'));
-  } else if (reveals.length > 0 && 'IntersectionObserver' in window) {
+    document.querySelectorAll('[data-reveal], .reveal').forEach(el => {
+      el.classList.add('is-revealed', 'reveal--visible');
+    });
+    if (projectsGrid) {
+      projectsGrid.querySelectorAll('.project-card').forEach(c => {
+        c.classList.add('project-card--revealed');
+      });
+    }
+  } else if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('reveal--visible');
-            observer.unobserve(entry.target); // once only
+            entry.target.classList.add('is-revealed', 'reveal--visible');
+
+            // If projects grid scrolled into view, cascade cards
+            if (entry.target.id === 'projects-grid') {
+              entry.target.querySelectorAll('.project-card').forEach((card, idx) => {
+                card.style.transitionDelay = `${idx * 65}ms`;
+                card.classList.add('project-card--revealed');
+              });
+            }
+
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      }
     );
-    reveals.forEach(el => revealObserver.observe(el));
+
+    revealElements.forEach(el => revealObserver.observe(el));
   } else {
-    // Fallback
-    reveals.forEach(el => el.classList.add('reveal--visible'));
+    // Fallback for older browsers
+    document.querySelectorAll('[data-reveal], .reveal').forEach(el => {
+      el.classList.add('is-revealed', 'reveal--visible');
+    });
+    if (projectsGrid) {
+      projectsGrid.querySelectorAll('.project-card').forEach(c => {
+        c.classList.add('project-card--revealed');
+      });
+    }
   }
 
 }); // end DOMContentLoaded
