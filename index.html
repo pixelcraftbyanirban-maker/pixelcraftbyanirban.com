@@ -198,21 +198,55 @@
         <p class="section-label" data-reveal="fade-up">SELECTED WORK</p>
         <h2 data-reveal="fade-up" data-reveal-delay="100">Things I've designed and built</h2>
 
-        <div class="filter-dropdown" id="filter-dropdown">
-          <button class="filter-dropdown__toggle" id="filter-toggle" aria-haspopup="listbox" aria-expanded="false">
-            <span class="filter-dropdown__label" id="filter-label">Product Design</span>
-            <svg class="filter-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <ul class="filter-dropdown__menu" id="filter-menu" role="listbox" aria-label="Filter projects by category">
-            <li class="filter-dropdown__item filter-dropdown__item--active" role="option" aria-selected="true" data-category="product-design">Product Design</li>
-            <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="ui-ux-design">UI/UX Design</li>
-            <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="web-development">Web Development</li>
-          </ul>
+        <div class="projects__controls">
+          <div class="filter-dropdown" id="filter-dropdown">
+            <button class="filter-dropdown__toggle" id="filter-toggle" aria-haspopup="listbox" aria-expanded="false">
+              <span class="filter-dropdown__label" id="filter-label">Product Design</span>
+              <svg class="filter-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <ul class="filter-dropdown__menu" id="filter-menu" role="listbox" aria-label="Filter projects by category">
+              <li class="filter-dropdown__item filter-dropdown__item--active" role="option" aria-selected="true" data-category="product-design">Product Design</li>
+              <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="ui-ux-design">UI/UX Design</li>
+              <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="web-development">Web Development</li>
+            </ul>
+          </div>
+
+          <div class="view-toggle" id="view-toggle" role="group" aria-label="Project card layout mode">
+            <button type="button" class="view-toggle__btn view-toggle__btn--active" id="btn-view-deck" aria-pressed="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="7" width="16" height="14" rx="2" ry="2"></rect>
+                <path d="M6 3h12a2 2 0 0 1 2 2v12"></path>
+              </svg>
+              <span>Deck</span>
+            </button>
+            <button type="button" class="view-toggle__btn" id="btn-view-grid" aria-pressed="false">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>Grid</span>
+            </button>
+          </div>
         </div>
 
-        <div class="projects__grid" id="projects-grid" role="tabpanel"></div>
+        <div class="projects__stage" id="projects-stage">
+          <div class="projects-deck-hint" id="projects-deck-hint" aria-hidden="true">
+            <span class="projects-deck-hint__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M21 3l-7 7"></path>
+                <path d="M3 21l7-7"></path>
+              </svg>
+              Hover deck to deal cards
+            </span>
+          </div>
+          <div class="projects__grid is-stacked" id="projects-grid" role="tabpanel"></div>
+        </div>
       </div>
     </section>
 

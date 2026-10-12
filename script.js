@@ -495,15 +495,127 @@ document.addEventListener('DOMContentLoaded', () => {
           void card.offsetWidth; // reflow
           card.classList.add('project-card--visible', 'project-card--revealed');
         });
+        if (isDeckMode) {
+          stackDeck();
+        } else {
+          expandDeck();
+        }
       }, 240);
     } else {
       projectsGrid.innerHTML = html;
+      const newCards = projectsGrid.querySelectorAll('.project-card');
+      newCards.forEach((card, idx) => {
+        card.style.transitionDelay = `${idx * 65}ms`;
+        card.classList.add('project-card--visible', 'project-card--revealed');
+      });
+      setTimeout(() => {
+        if (isDeckMode) {
+          stackDeck();
+        } else {
+          expandDeck();
+        }
+      }, 60);
     }
   };
 
-  // Touch-to-flip support (mobile has no hover)
+  /* ============================================
+     7b. STACKED DECK INTERACTION & VIEW TOGGLE
+     ============================================ */
+  const btnViewDeck = document.getElementById('btn-view-deck');
+  const btnViewGrid = document.getElementById('btn-view-grid');
+  const projectsStage = document.getElementById('projects-stage');
+  let isDeckMode = !prefersReducedMotion; // default to stacked deck until hovered
+
+  const updateDeckStackCoordinates = () => {
+    if (!projectsGrid || prefersReducedMotion) return;
+    const cards = projectsGrid.querySelectorAll('.project-card');
+    if (cards.length === 0) return;
+
+    // Center of grid container
+    const gridW = projectsGrid.clientWidth;
+    const gridH = projectsGrid.clientHeight;
+    const centerX = gridW / 2;
+    const centerY = gridH / 2;
+
+    const rotations = [-4.5, 3.8, -2.6, 4.2, -3.2, 2.5, -4.0, 3.0, -1.8];
+
+    cards.forEach((card, index) => {
+      // Find the card's center relative to projectsGrid
+      const cardCenterX = card.offsetLeft + card.offsetWidth / 2;
+      const cardCenterY = card.offsetTop + card.offsetHeight / 2;
+
+      const dx = centerX - cardCenterX;
+      const dy = centerY - cardCenterY;
+      const rot = rotations[index % rotations.length];
+      const zIndex = cards.length - index;
+
+      card.style.setProperty('--stack-x', `${dx.toFixed(1)}px`);
+      card.style.setProperty('--stack-y', `${dy.toFixed(1)}px`);
+      card.style.setProperty('--stack-rot', `${rot}deg`);
+      card.style.setProperty('--stack-z', `${zIndex + 2}`);
+      card.style.setProperty('--deal-delay', `${index * 50}ms`);
+    });
+  };
+
+  const expandDeck = () => {
+    if (!projectsGrid) return;
+    isDeckMode = false;
+    projectsGrid.classList.remove('is-stacked');
+    if (projectsStage) projectsStage.classList.remove('is-stacked');
+    if (btnViewGrid && btnViewDeck) {
+      btnViewGrid.classList.add('view-toggle__btn--active');
+      btnViewGrid.setAttribute('aria-pressed', 'true');
+      btnViewDeck.classList.remove('view-toggle__btn--active');
+      btnViewDeck.setAttribute('aria-pressed', 'false');
+    }
+  };
+
+  const stackDeck = () => {
+    if (!projectsGrid || prefersReducedMotion) return;
+    isDeckMode = true;
+    updateDeckStackCoordinates();
+    projectsGrid.classList.add('is-stacked');
+    if (projectsStage) projectsStage.classList.add('is-stacked');
+    if (btnViewGrid && btnViewDeck) {
+      btnViewDeck.classList.add('view-toggle__btn--active');
+      btnViewDeck.setAttribute('aria-pressed', 'true');
+      btnViewGrid.classList.remove('view-toggle__btn--active');
+      btnViewGrid.setAttribute('aria-pressed', 'false');
+    }
+  };
+
+  // Hover directly over the stacked deck cards or hint badge to deal cards into grid
   if (projectsGrid) {
+    projectsGrid.addEventListener('mouseover', (e) => {
+      if (projectsGrid.classList.contains('is-stacked')) {
+        const card = e.target.closest('.project-card');
+        if (card) {
+          expandDeck();
+        }
+      }
+    });
+
+    const deckHint = document.getElementById('projects-deck-hint');
+    if (deckHint) {
+      deckHint.addEventListener('mouseenter', () => {
+        if (projectsGrid.classList.contains('is-stacked')) {
+          expandDeck();
+        }
+      });
+      deckHint.addEventListener('click', () => {
+        if (projectsGrid.classList.contains('is-stacked')) {
+          expandDeck();
+        }
+      });
+    }
+
+    // Touch-to-flip support & tap to expand deck
     projectsGrid.addEventListener('click', (e) => {
+      if (projectsGrid.classList.contains('is-stacked')) {
+        expandDeck();
+        return;
+      }
+
       const card = e.target.closest('.project-card');
       if (!card) return;
 
@@ -528,6 +640,41 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  if (btnViewDeck) {
+    btnViewDeck.addEventListener('click', () => {
+      stackDeck();
+    });
+  }
+
+  if (btnViewGrid) {
+    btnViewGrid.addEventListener('click', () => {
+      expandDeck();
+    });
+  }
+
+  // Recalculate coordinates on window resize if in deck mode
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (projectsGrid && projectsGrid.classList.contains('is-stacked')) {
+        updateDeckStackCoordinates();
+      }
+    }, 120);
+  }, { passive: true });
+
+  // Ensure coordinates are calculated accurately once loader finishes / page is fully loaded
+  window.addEventListener('page-ready', () => {
+    if (projectsGrid && projectsGrid.classList.contains('is-stacked')) {
+      updateDeckStackCoordinates();
+    }
+  });
+  window.addEventListener('load', () => {
+    if (projectsGrid && projectsGrid.classList.contains('is-stacked')) {
+      updateDeckStackCoordinates();
+    }
+  });
 
   const filterDropdown = document.getElementById('filter-dropdown');
   const filterToggle = document.getElementById('filter-toggle');
