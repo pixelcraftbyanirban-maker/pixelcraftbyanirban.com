@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. SCROLL SPY (IntersectionObserver)
      ============================================ */
   const navLinks = document.querySelectorAll('#nav-list .nav-link');
-  const sectionIds = ['home', 'tools', 'process', 'work', 'contact'];
+  const sectionIds = ['home', 'work', 'playground', 'process', 'tools', 'dev', 'contact'];
   const spySections = sectionIds
     .map(id => document.getElementById(id))
     .filter(Boolean);
@@ -248,18 +248,21 @@ document.addEventListener('DOMContentLoaded', () => {
      5. TOOL CHIPS — render from data
      ============================================ */
   const toolsData = {
-    expertise: [
-      'Figma', 'Framer', 'Webflow', 'HTML', 'CSS', 'JavaScript',
-      'Tailwind CSS', 'Bootstrap', 'Sass', 'Photoshop', 'Illustrator', 'InDesign'
+    product: [
+      'Figma', 'UX Research', 'User Flows', 'Wireframing',
+      'Design Systems', 'Interactive Prototyping', 'Usability Testing', 'Information Architecture'
     ],
-    software: [
-      'After Effects', 'Blender'
+    brand: [
+      'Visual Identity', 'Typography Systems', 'Editorial Layout', 'Packaging Design',
+      'Brand Strategy', 'Logo Systems', 'Advertising Creatives', 'Art Direction'
+    ],
+    dev: [
+      'HTML5', 'CSS3', 'JavaScript', 'Tailwind CSS', 'Responsive Design',
+      'DOM Manipulation', 'Bootstrap', 'Sass', 'Browser DevTools'
     ],
     ai: [
-      'Lovable', 'Cursor', 'Antigravity', 'Claude Code', 'Codex',
-      'ChatGPT', 'Claude', 'Gemini', 'Perplexity', 'Notion AI',
-      'Spline AI', 'Three.js', 'Stitch', 'Midjourney', 'Kling',
-      'Leonardo', 'Firefly', 'Figma Weave', 'Nano Banana', 'Relume'
+      'After Effects', 'Blender', 'Three.js', 'Spline 3D', 'Cursor',
+      'Claude Code', 'Antigravity', 'Midjourney', 'Firefly', 'ChatGPT'
     ]
   };
 
@@ -271,8 +274,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('');
   };
 
-  renderChips('expertise', 'chips-expertise');
-  renderChips('software', 'chips-software');
+  renderChips('product', 'chips-product');
+  renderChips('brand', 'chips-brand');
+  renderChips('dev', 'chips-dev');
   renderChips('ai', 'chips-ai');
 
   /* ============================================
@@ -516,165 +520,379 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================================
-     6. PROJECTS DATA (from CV)
+     6. PROJECTS DATA (Strictly per user specified list)
      ============================================ */
   const projects = [
-    // ---- Product Design ----
+    // ============================================
+    // SECTION 1: BRANDING (5 Projects)
+    // a. Triveda
+    // b. Mittika
+    // c. Wave
+    // d. ForgeOS
+    // e. Ecovolt
+    // ============================================
     {
-      id: 'triveda-product',
-      category: 'product-design',
+      id: 'triveda-brand',
+      category: 'brand-identity',
       title: 'Triveda',
-      description: 'Wellness brand identity and visual system.',
-      tools: ['Photoshop', 'Illustrator', 'InDesign', 'Figma', 'Visual Storytelling'],
+      discipline: 'Brand Strategy & Visual Identity',
+      client: 'Triveda Wellness',
+      role: 'Lead Brand Identity Designer',
+      tagline: 'Holistic Ayurvedic wellness brand: visual strategy, sacred geometry wordmark, typography system, and packaging suites.',
+      description: 'Comprehensive brand identity: visual strategy, logo system, typography, packaging, and brand guidelines.',
+      challenge: 'Standing out in a saturated health and wellness market crowded with generic green leaf motifs and uninspired medical branding.',
+      solution: 'Built an elevated visual identity anchored in sacred geometry, timeless serif typography, warm botanical greens, and copper foil accents.',
+      deliverables: [
+        'Complete brand strategy & positioning document',
+        'Primary, secondary, and sub-mark logo lockups',
+        'Bespoke typography hierarchy & color swatches',
+        '80-page brand guidelines & packaging system'
+      ],
+      tools: ['Illustrator', 'InDesign', 'Photoshop', 'Brand Strategy', 'Logo Design'],
       thumbnail: 'assets/projects/triveda-brand.jpg',
       link: '#'
     },
     {
-      id: 'mittika-product',
-      category: 'product-design',
+      id: 'mittika-brand',
+      category: 'brand-identity',
       title: 'Mittika',
-      description: 'Traditional Indian fabric reimagined as modern outfits.',
-      tools: ['Photoshop', 'Illustrator', 'Art Direction', 'Moodboarding', 'Branding'],
+      discipline: 'Visual Identity & Cultural Branding',
+      client: 'Mittika Handlooms',
+      role: 'Brand Identity Designer',
+      tagline: 'Artisanal Indian fabric brand: earthen palette, loom-inspired symbol, packaging, and artisan-story stationery system.',
+      description: 'Full branding for an Indian artisanal fabric wear brand: logo design, terracotta palette, and physical packaging suite.',
+      challenge: 'Balancing centuries-old Indian handloom weaving heritage with clean contemporary international retail standards.',
+      solution: 'Designed an elegant geometric logo inspired by warp-and-weft loom shuttles, paired with terracotta, indigo, and unbleached cotton color tokens.',
+      deliverables: [
+        'Shuttle-inspired primary logo & artisan seal',
+        'Terracotta, indigo, and ivory color system',
+        'Seed-paper clothing tags & recycled bags',
+        'Comprehensive brand guidelines manual'
+      ],
+      tools: ['Illustrator', 'Figma', 'InDesign', 'Visual Identity', 'Typography'],
       thumbnail: 'assets/projects/mittika-brand.jpg',
       link: '#'
     },
     {
-      id: 'wave-product',
-      category: 'product-design',
+      id: 'wave-brand',
+      category: 'brand-identity',
       title: 'Wave',
-      description: 'Brand identity for a live concert management company.',
-      tools: ['Illustrator', 'Photoshop', 'InDesign', 'Visual Identity', 'After Effects'],
+      discipline: 'Event Branding & Kinetic Identity',
+      client: 'Wave Live Entertainment',
+      role: 'Brand Designer & Art Director',
+      tagline: 'Live music & cultural festival brand: dynamic audio-reactive wordmark, neon palette, festival stage credentials, and signage.',
+      description: 'Brand identity system for a 3-day music and arts festival: typography, visual motifs, and large-format environmental signage.',
+      challenge: 'Creating a unified visual system that scales effortlessly from tiny digital wristband QR codes to 40-foot main stage LED displays.',
+      solution: 'Devised a kinetic, wave-modulated typography system that expands and contracts based on acoustic frequency inputs.',
+      deliverables: [
+        'Kinetic responsive logo system & wordmark',
+        'Stage signage, wristbands, and festival passes',
+        'Animated motion graphics for stage backdrops',
+        'Digital promotional & artist announcement kits'
+      ],
+      tools: ['Illustrator', 'After Effects', 'Photoshop', 'Environmental Branding', 'Motion Design'],
       thumbnail: 'assets/projects/eventmgmt-brand.jpg',
       link: '#'
     },
     {
-      id: 'ecovolt-product',
-      category: 'product-design',
-      title: 'EcoVolt',
-      description: 'Brand identity project for a sustainable energy company.',
-      tools: ['Figma', 'Illustrator', 'Photoshop', 'Brand Identity', 'Concept Development'],
-      thumbnail: 'assets/projects/ecovolt-brand.jpg',
-      link: '#'
-    },
-    {
-      id: 'forgeos-product',
-      category: 'product-design',
+      id: 'forgeos-brand',
+      category: 'brand-identity',
       title: 'ForgeOS',
-      description: 'Brand identity for a SaaS automation company building an agile MES.',
-      tools: ['Figma', 'Illustrator', 'Brand Strategy', 'Visual Systems', 'Notion'],
+      discipline: 'Industrial Tech Brand Identity',
+      client: 'ForgeOS Automation Labs',
+      role: 'Brand Designer',
+      tagline: 'Industrial IoT & MES automation brand: technical logotype, component iconography, and engineering collateral system.',
+      description: 'Enterprise brand identity for a manufacturing execution software startup: logo, icon system, and design language.',
+      challenge: 'Communicating rugged reliability and sub-millisecond precision to conservative enterprise manufacturing leaders.',
+      solution: 'Created an anvil-inspired geometric hex-monogram, engineered high-legibility monospace and sans-serif pairings, and built an industrial UI token palette.',
+      deliverables: [
+        'Hex-monogram primary logo & software icon',
+        'Monospace technical typography system',
+        'Hardware badge & server rack decal standards',
+        'Sales enablement deck & technical whitepapers'
+      ],
+      tools: ['Illustrator', 'Figma', 'Brand Guidelines', 'Technical Branding', 'Typography'],
       thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
+    {
+      id: 'ecovolt-brand',
+      category: 'brand-identity',
+      title: 'EcoVolt',
+      discipline: 'CleanTech Brand & Visual Systems',
+      client: 'EcoVolt Clean Energy',
+      role: 'Brand Identity Designer',
+      tagline: 'Smart solar & clean energy brand: geometric sunburst logomark, corporate typography, vehicle fleet wraps, and signage.',
+      description: 'Clean energy technology branding: logo system, brand architecture, corporate stationery, and digital presence.',
+      challenge: 'Positioning a solar technology provider as an approachable consumer lifestyle brand rather than an industrial utility contractor.',
+      solution: 'Formulated a bright, optimism-focused identity pairing deep obsidian navy with electric solar amber and refined neo-grotesque typography.',
+      deliverables: [
+        'Geometric sunburst logo & responsive variants',
+        'Corporate stationery, business cards & letterheads',
+        'Vehicle fleet wrap livery & field technician uniforms',
+        'Digital brand guidelines & social templates'
+      ],
+      tools: ['Illustrator', 'InDesign', 'Photoshop', 'Brand Architecture', 'Fleet Livery'],
+      thumbnail: 'assets/projects/ecovolt-brand.jpg',
+      link: '#'
+    },
 
-    // ---- UI/UX Design ----
+    // ============================================
+    // SECTION 2: UX RESEARCH & UI DESIGN (6 Projects)
+    // a. Mittika -> App & Landing Page
+    // b. Nuvera -> App & Landing Page
+    // c. Ecovolt -> App & Landing Page
+    // d. Triveda -> App & Landing Page
+    // e. Aerobharat -> 3D + Planner
+    // f. ForgeOS -> Landing page Webflow
+    // ============================================
+    {
+      id: 'mittika-ux',
+      category: 'product-design',
+      title: 'Mittika',
+      discipline: 'UX Research & UI Design (App & Landing Page)',
+      client: 'Mittika Handlooms',
+      role: 'Product & UI Designer',
+      tagline: 'Artisanal e-commerce mobile app and responsive landing page: craft origin discovery, weaver stories, and sizing recommendations.',
+      description: 'End-to-end UX research and interface design for Mittika mobile app and responsive brand landing page.',
+      challenge: 'High cart abandonment on mobile due to uncertain fabric drape visualization and standard size chart confusion.',
+      solution: 'Conducted user interviews, designed an "Artisan Origin" responsive landing page, interactive fabric drape video zoom, and a personalized 3-question sizing flow.',
+      deliverables: [
+        'User research synthesis & persona journey maps',
+        'Mobile e-commerce iOS/Android app UI (40+ screens)',
+        'High-converting responsive landing page in Figma',
+        'Figma design system with reusable components'
+      ],
+      tools: ['Figma', 'UX Research', 'User Flows', 'Mobile UI', 'Prototyping'],
+      thumbnail: 'assets/projects/mittika-ux.jpg',
+      link: '#'
+    },
     {
       id: 'nuvera-ux',
-      category: 'ui-ux-design',
+      category: 'product-design',
       title: 'Nuvera',
-      description: 'Supplement and testing ecosystem app: UX flows and interface design.',
-      tools: ['Figma', 'UX Research', 'Gemini', 'Stitch', 'Claude'],
+      discipline: 'UX Research & UI Design (App & Landing Page)',
+      client: 'Nuvera Health Science',
+      role: 'Lead Product & UI Designer',
+      tagline: 'Digital health biomarker tracking app and clinical landing page: personalized supplement regimens and test-kit onboarding.',
+      description: 'Clinical UX research, patient mental modeling, and interface design for Nuvera mobile app and high-converting marketing landing page.',
+      challenge: 'Users felt overwhelmed by complex lab test biomarker values and frequently discontinued personalized supplement routines after 30 days.',
+      solution: 'Mapped user mental models through 14 interviews, designed a simplified "Biological Vitality Score", streamlined test-kit onboarding, and built an automated adherence reminder flow.',
+      deliverables: [
+        '14 user interviews & clinical mental model mapping',
+        'Personalized biomarker tracking app prototype',
+        'Scientific clinical validation landing page',
+        'Figma design system with 40+ WCAG AA components'
+      ],
+      tools: ['Figma', 'UX Research', 'User Flows', 'Design Systems', 'Interactive Prototyping'],
       thumbnail: 'assets/projects/nuvera.jpg',
       link: '#'
     },
     {
+      id: 'ecovolt-ux',
+      category: 'product-design',
+      title: 'EcoVolt',
+      discipline: 'UX Research & UI Design (App & Landing Page)',
+      client: 'EcoVolt Energy Systems',
+      role: 'Lead UI/UX Designer',
+      tagline: 'Residential solar telemetry app and conversion landing page: live generation flows, battery forecasting, and grid feed analytics.',
+      description: 'UX research, telemetry information architecture, and UI design for EcoVolt solar monitoring mobile app and homeowner landing page.',
+      challenge: 'Homeowners found electrical engineering units (kWh, peak voltage, inverter phase) confusing and could not tell if their solar panels were operating optimally.',
+      solution: 'Synthesized telemetry into intuitive financial savings metrics, designed an interactive sun-to-home power graphic, and created a high-converting landing page.',
+      deliverables: [
+        'User surveys & telemetry mental model research',
+        'Residential solar telemetry mobile app UI',
+        'High-conversion solar homeowner landing page',
+        'Interactive energy savings simulator prototype'
+      ],
+      tools: ['Figma', 'Data Visualization', 'Information Architecture', 'Prototyping', 'User Testing'],
+      thumbnail: 'assets/projects/ecovolt-web.jpg',
+      link: '#'
+    },
+    {
+      id: 'triveda-ux',
+      category: 'product-design',
+      title: 'Triveda',
+      discipline: 'UX Research & UI Design (App & Landing Page)',
+      client: 'Triveda Wellness',
+      role: 'UX Researcher & UI Designer',
+      tagline: 'Ayurvedic wellness mobile app and storytelling landing page: interactive Dosha quiz, botanical apothecary, and subscription flow.',
+      description: 'UX research, lifestyle assessment quiz design, and UI screens for Triveda wellness mobile app and editorial landing page.',
+      challenge: 'New customers were unfamiliar with Ayurvedic principles and felt lost when trying to select the right herbal formulation for their body type.',
+      solution: 'Conducted contextual inquiry interviews, designed a guided 60-second Dosha lifestyle questionnaire, and paired it with a serene editorial storytelling landing page.',
+      deliverables: [
+        'Contextual user interviews & Dosha diagnostic flow',
+        'Mobile wellness mobile app prototype (iOS/Android)',
+        'Editorial botanical storytelling landing page',
+        'Component design tokens & microinteraction specs'
+      ],
+      tools: ['Figma', 'UX Research', 'Wireframing', 'UI Design', 'Design Systems'],
+      thumbnail: 'assets/projects/triveda-web.jpg',
+      link: '#'
+    },
+    {
       id: 'aerobharat-ux',
-      category: 'ui-ux-design',
+      category: 'product-design',
       title: 'AeroBharat',
-      description: 'Drone company landing page with a scroll-animated 3D interactive drone model, built in Framer.',
-      tools: ['Framer', 'Blender', 'Three.js', 'Spline AI'],
+      discipline: 'Product Design & 3D Mission Planner',
+      client: 'AeroBharat Robotics',
+      role: 'Product & Interaction Designer',
+      tagline: 'Industrial drone mission planner and flight path app with interactive 3D waypoint spatial orchestration.',
+      description: 'Drone mission control web application and tablet flight planner with interactive 3D spatial survey route simulation.',
+      challenge: 'Drone operators faced steep cognitive load when mapping 3D waypoint survey routes over irregular agricultural terrain.',
+      solution: 'Conceived a spatial waypoint configuration interface with altitude slider controls, real-time battery consumption simulations, and emergency geofence boundaries.',
+      deliverables: [
+        'Industrial drone mission planner web app UI',
+        'Interactive 3D spatial flight path simulator',
+        'Rugged tablet flight controller interface',
+        'Figma interaction component library & design system'
+      ],
+      tools: ['Figma', 'Interaction Design', '3D Spatial UX', 'User Flows', 'Prototyping'],
       thumbnail: 'assets/projects/aerobharat-ux.jpg',
       link: '#'
     },
     {
       id: 'forgeos-ux',
-      category: 'ui-ux-design',
+      category: 'product-design',
       title: 'ForgeOS',
-      description: 'App and Dashboard for a SaaS MES automation company: UI design and front-end build.',
-      tools: ['Figma', 'UI Design', 'Design Systems', 'Bootstrap'],
+      discipline: 'UI/UX Design & Webflow Landing Page',
+      client: 'ForgeOS MES Automation',
+      role: 'Senior UI Designer & Webflow Developer',
+      tagline: 'Enterprise manufacturing SaaS landing page: interactive telemetry preview, Webflow component architecture, and conversion funnel.',
+      description: 'UI design, design system tokens, and Webflow landing page for an industrial manufacturing execution software platform.',
+      challenge: 'Explaining real-time sub-millisecond CNC telemetry and MES software capabilities to plant managers in an engaging, interactive format.',
+      solution: 'Designed a sleek, high-contrast dark theme landing page with live interactive plant line widget previews, custom Webflow interactions, and ROI calculator.',
+      deliverables: [
+        'Enterprise SaaS landing page architecture',
+        'Interactive plant telemetry widget previews',
+        'Webflow component system & responsive CMS structure',
+        'Handoff design specs & conversion optimization'
+      ],
+      tools: ['Figma', 'Webflow', 'UI Design', 'Information Architecture', 'Interaction Design'],
       thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
-    {
-      id: 'mittika-ux',
-      category: 'ui-ux-design',
-      title: 'Mittika',
-      description: 'Mobile app and website for an Indian fabric-wear brand, website built in Webflow.',
-      tools: ['Figma', 'Webflow', 'Mobile App', 'Wireframing'],
-      thumbnail: 'assets/projects/mittika-brand.jpg',
-      link: '#'
-    },
-    {
-      id: 'bookmyshow-ux',
-      category: 'ui-ux-design',
-      title: 'BookMyShow',
-      description: 'UX research and redesign concept for the ticketing app.',
-      tools: ['Figma', 'UX Research', 'User Flows', 'Redesign'],
-      thumbnail: 'assets/projects/eventmgmt-ux.jpg',
-      link: '#'
-    },
-    {
-      id: 'ecovolt-ux',
-      category: 'ui-ux-design',
-      title: 'EcoVolt',
-      description: 'Solar energy company app and landing page, landing page built in Framer.',
-      tools: ['Framer', 'Figma', 'Mobile App', 'UI/UX'],
-      thumbnail: 'assets/projects/ecovolt-brand.jpg',
-      link: '#'
-    },
 
-    // ---- Web Development ----
-    // (Same projects as Product Design)
+    // ============================================
+    // SECTION 3: WEB DEV WITH VIBE CODING (5 Projects)
+    // "all same from branding"
+    // a. Triveda
+    // b. Mittika
+    // c. Wave
+    // d. ForgeOS
+    // e. Ecovolt
+    // ============================================
     {
       id: 'triveda-web',
-      category: 'web-development',
+      category: 'web-dev',
       title: 'Triveda',
-      description: 'Wellness brand digital presence & landing page with clean, semantic markup.',
-      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Sass'],
+      discipline: 'Responsive Web & E-Commerce',
+      client: 'Triveda Wellness',
+      role: 'Frontend Developer & Designer',
+      tagline: 'High-performance botanical e-commerce site with interactive ingredient apothecary and responsive cart.',
+      description: 'Interactive botanical e-commerce frontend built with semantic HTML5, modern CSS layouts, and vanilla JS.',
+      challenge: 'Creating a fast-loading, serene e-commerce storefront with complex ingredient filtering without bloated framework overhead.',
+      solution: 'Developed semantic, zero-dependency HTML5/CSS3 components with a custom vanilla JavaScript filter engine, lazy-loaded media, and WCAG AA compliance.',
+      deliverables: [
+        'Fully responsive storefront & product catalog',
+        'Interactive herbal apothecary ingredient filter',
+        'Accessible drawer cart with state management',
+        '100/100 Lighthouse performance optimization'
+      ],
+      tools: ['HTML5', 'CSS3 Layouts', 'Vanilla JS', 'WCAG AA', 'Responsive Design'],
       thumbnail: 'assets/projects/triveda-web.jpg',
       link: '#'
     },
     {
       id: 'mittika-web',
-      category: 'web-development',
+      category: 'web-dev',
       title: 'Mittika',
-      description: 'Indian fabric-wear brand website built in Webflow with modern, responsive styling.',
-      tools: ['Webflow', 'HTML', 'CSS', 'Responsive Design'],
+      discipline: 'Frontend Development & Tailwind CSS',
+      client: 'Mittika Handlooms',
+      role: 'Frontend Developer',
+      tagline: 'Artisanal fabric-wear web store featuring interactive textile filter, dynamic cart, and responsive lookbook.',
+      description: 'Component-driven web store prototype with fluid responsive layouts, microinteractions, and optimized image loading.',
+      challenge: 'Implementing high-density editorial image layouts with instant search and filter response times on mobile networks.',
+      solution: 'Used Tailwind CSS utility tokens for lean CSS output, progressive JPEG loading, and asynchronous client-side filtering.',
+      deliverables: [
+        'Tailwind CSS design token implementation',
+        'Interactive fabric swatch selector & cart',
+        'Responsive editorial lookbook grid',
+        'Cross-browser tested mobile navigation'
+      ],
+      tools: ['Tailwind CSS', 'JavaScript', 'HTML5', 'Mobile Optimization', 'Component Architecture'],
       thumbnail: 'assets/projects/mittika-web.jpg',
       link: '#'
     },
     {
       id: 'wave-web',
-      category: 'web-development',
+      category: 'web-dev',
       title: 'Wave',
-      description: 'Live concert management company digital platform & event landing experience.',
-      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Sass'],
+      discipline: 'Interactive Web & Event Prototype',
+      client: 'Wave Live Entertainment',
+      role: 'Frontend Developer',
+      tagline: 'Music festival microsite: dynamic lineup schedule, artist audio preview cards, and ticket checkout UI.',
+      description: 'High-energy event microsite with interactive day/stage schedule switcher and ticket tier selector.',
+      challenge: 'Rendering dense festival timetables with multiple overlapping stages while maintaining effortless single-thumb mobile usability.',
+      solution: 'Architected a horizontally scrolling timetable with sticky time markers, instant artist preview drawers, and zero layout shift.',
+      deliverables: [
+        'Interactive stage & timetable filter engine',
+        'Audio clip preview player with custom controls',
+        'Multi-tier ticket checkout modal flow',
+        'Performance-tuned CSS animations'
+      ],
+      tools: ['HTML5', 'CSS3 Grid/Flexbox', 'Vanilla JavaScript', 'Event UI', 'DOM Manipulation'],
       thumbnail: 'assets/projects/eventmgmt-web.jpg',
       link: '#'
     },
     {
-      id: 'ecovolt-web',
-      category: 'web-development',
-      title: 'EcoVolt',
-      description: 'Solar energy company landing page built in Framer with interactive components.',
-      tools: ['Framer', 'HTML', 'CSS', 'JavaScript', 'Responsive Web'],
-      thumbnail: 'assets/projects/ecovolt-web.jpg',
+      id: 'forgeos-web',
+      category: 'web-dev',
+      title: 'ForgeOS',
+      discipline: 'Webflow & Frontend Development',
+      client: 'ForgeOS Automation Labs',
+      role: 'Frontend Developer & Vibe Coder',
+      tagline: 'Interactive Webflow marketing site: live telemetry simulation, dark mode UI tokens, and AI-paired custom code interactions.',
+      description: 'High-performance enterprise landing page with interactive machine state simulators built with Webflow and custom JavaScript.',
+      challenge: 'Embedding responsive, animated plant machine telemetry previews inside a Webflow production site with sub-second load times.',
+      solution: 'Developed custom lightweight JavaScript widgets paired with Webflow CMS collections, optimized CSS variables, and clean responsive grid layouts.',
+      deliverables: [
+        'Production Webflow site structure & custom code embeds',
+        'Interactive plant machine telemetry demo widget',
+        'Responsive CSS token system & dark theme variables',
+        'SEO-optimized semantic DOM structure'
+      ],
+      tools: ['Webflow', 'JavaScript', 'CSS3', 'Vibe Coding', 'Interactive UI'],
+      thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
     {
-      id: 'forgeos-web',
-      category: 'web-development',
-      title: 'ForgeOS',
-      description: 'App and Dashboard for a SaaS MES automation company: front-end build.',
-      tools: ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Tailwind CSS'],
-      thumbnail: 'assets/projects/saas-landing-ux.jpg',
+      id: 'ecovolt-web',
+      category: 'web-dev',
+      title: 'EcoVolt',
+      discipline: 'Web Development & Solar Calculator',
+      client: 'EcoVolt Clean Energy',
+      role: 'Frontend Developer & Designer',
+      tagline: 'Interactive solar savings calculator: dynamic bill estimation, battery capacity simulation, and lead generation.',
+      description: 'Solar energy web application featuring a client-side ROI calculator, interactive sliders, and animated telemetry diagrams.',
+      challenge: 'Allowing homeowners to calculate complex tiered electricity tariffs and solar payback periods in real time without page refreshes.',
+      solution: 'Wrote a responsive JavaScript financial calculation engine that updates projected 20-year savings graphs dynamically as users slide their monthly electricity bill.',
+      deliverables: [
+        'Interactive solar ROI & payback slider tool',
+        'Real-time SVG energy generation chart',
+        'Validated solar installation consultation form',
+        'Responsive clean energy marketing pages'
+      ],
+      tools: ['JavaScript', 'CSS3 Variables', 'HTML5', 'Form Validation', 'SVG Data Charts'],
+      thumbnail: 'assets/projects/ecovolt-web.jpg',
       link: '#'
     }
   ];
 
   const categoryLabels = {
-    'product-design': 'Product Design',
-    'ui-ux-design': 'UI/UX Design',
-    'web-development': 'Web Development'
+    'brand-identity': 'Section 1: Branding',
+    'product-design': 'Section 2: UX Research & UI Design',
+    'web-dev': 'Section 3: Web Dev with Vibe Coding'
   };
 
   /* ============================================
@@ -688,18 +906,18 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('');
 
     return `
-      <div class="project-card project-card--visible" data-category="${p.category}" style="transition-delay: ${idx * 65}ms">
+      <div class="project-card project-card--visible" data-category="${p.category}" data-id="${p.id}" style="transition-delay: ${idx * 65}ms">
         <div class="project-card__inner">
           <div class="project-card__front">
             <img src="${p.thumbnail}" alt="${p.title} — project thumbnail" loading="lazy" decoding="async">
             <span class="project-card__front-title">${p.title}</span>
           </div>
           <div class="project-card__back">
-            <span class="project-card__category">${categoryLabels[p.category]}</span>
+            <span class="project-card__category">${categoryLabels[p.category] || p.category}</span>
             <h3 class="project-card__title">${p.title}</h3>
             <p class="project-card__desc">${p.description}</p>
             <div class="project-card__tools">${toolTags}</div>
-            <a href="${p.link}" class="project-card__link">View case study <span class="arrow">→</span></a>
+            <a href="#case-${p.id}" class="project-card__link" data-id="${p.id}" aria-label="View case study for ${p.title}">View case study <span class="arrow">&rarr;</span></a>
           </div>
         </div>
       </div>`;
@@ -757,6 +975,157 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 60);
     }
   };
+
+  /* ============================================
+     7c. CASE STUDY DETAIL MODAL
+     ============================================ */
+  const caseModal = document.getElementById('case-modal');
+  const caseModalOverlay = document.getElementById('case-modal-overlay');
+  const caseModalClose = document.getElementById('case-modal-close');
+  const caseModalBody = document.getElementById('case-modal-body');
+  let lastFocusedElement = null;
+
+  const openCaseModal = (projectId) => {
+    if (!caseModal || !caseModalBody) return;
+    const p = projects.find(item => item.id === projectId);
+    if (!p) return;
+
+    lastFocusedElement = document.activeElement;
+
+    const deliverablesList = (p.deliverables && p.deliverables.length > 0)
+      ? p.deliverables.map(d => `<li class="case-modal__deliverable-item">${d}</li>`).join('')
+      : `<li class="case-modal__deliverable-item">Strategy &amp; Visual Design System</li>`;
+
+    const toolChips = p.tools
+      .map(t => `<span class="case-modal__tool-chip">${t}</span>`)
+      .join('');
+
+    const categoryName = categoryLabels[p.category] || 'Design Practice';
+
+    caseModalBody.innerHTML = `
+      <header class="case-modal__header">
+        <div class="case-modal__meta">
+          <span class="case-modal__badge">${p.client || categoryName}</span>
+          <span class="case-modal__discipline">${p.discipline || categoryName}</span>
+        </div>
+        <h2 class="case-modal__title" id="modal-project-title">${p.title}</h2>
+        <p class="case-modal__tagline">${p.tagline || p.description}</p>
+      </header>
+
+      <img class="case-modal__hero-img" src="${p.thumbnail}" alt="${p.title} showcase" loading="eager">
+
+      <div class="case-modal__grid">
+        <div class="case-modal__main">
+          <div class="case-modal__section">
+            <h3 class="case-modal__h3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              The Challenge &amp; Context
+            </h3>
+            <p class="case-modal__p">${p.challenge || p.description}</p>
+          </div>
+          <div class="case-modal__section">
+            <h3 class="case-modal__h3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              The Strategic Solution &amp; Craft
+            </h3>
+            <p class="case-modal__p">${p.solution || p.description}</p>
+          </div>
+        </div>
+
+        <aside class="case-modal__sidebar">
+          <div class="case-modal__meta-group">
+            <span class="case-modal__meta-label">Role</span>
+            <span class="case-modal__meta-value">${p.role || 'Multidisciplinary Designer'}</span>
+          </div>
+          <div class="case-modal__meta-group">
+            <span class="case-modal__meta-label">Primary Discipline</span>
+            <span class="case-modal__meta-value">${categoryName}</span>
+          </div>
+          <div class="case-modal__meta-group">
+            <span class="case-modal__meta-label">Key Deliverables</span>
+            <ul class="case-modal__deliverables">
+              ${deliverablesList}
+            </ul>
+          </div>
+          <div class="case-modal__meta-group">
+            <span class="case-modal__meta-label">Tools &amp; Capabilities</span>
+            <div class="case-modal__tools-chips">
+              ${toolChips}
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="case-modal__footer">
+        <a href="#contact" class="btn btn--primary" id="modal-contact-btn">Discuss a Similar Project &rarr;</a>
+      </div>
+    `;
+
+    caseModal.classList.add('case-modal--open');
+    caseModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+
+    // Wire contact CTA inside modal
+    const modalContactBtn = document.getElementById('modal-contact-btn');
+    if (modalContactBtn) {
+      modalContactBtn.addEventListener('click', () => {
+        closeCaseModal();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          setTimeout(() => {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+          }, 150);
+        }
+      });
+    }
+
+    setTimeout(() => {
+      if (caseModalClose) caseModalClose.focus();
+    }, 100);
+  };
+
+  const closeCaseModal = () => {
+    if (!caseModal) return;
+    caseModal.classList.remove('case-modal--open');
+    caseModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
+  };
+
+  if (caseModalClose) {
+    caseModalClose.addEventListener('click', closeCaseModal);
+  }
+
+  if (caseModalOverlay) {
+    caseModalOverlay.addEventListener('click', closeCaseModal);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!caseModal || !caseModal.classList.contains('case-modal--open')) return;
+
+    if (e.key === 'Escape') {
+      closeCaseModal();
+      return;
+    }
+
+    // Accessible focus trapping inside modal
+    if (e.key === 'Tab') {
+      const focusable = caseModal.querySelectorAll('button, a, input, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
 
   /* ============================================
      7b. STACKED DECK INTERACTION & VIEW TOGGLE
@@ -859,8 +1228,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = e.target.closest('.project-card');
       if (!card) return;
 
-      // If clicking a link inside a flipped card, let it navigate
-      if (e.target.closest('.project-card__link')) return;
+      // If clicking a case study link, open the comprehensive case study modal
+      const caseLink = e.target.closest('.project-card__link');
+      if (caseLink) {
+        e.preventDefault();
+        const id = caseLink.getAttribute('data-id');
+        if (id) openCaseModal(id);
+        return;
+      }
 
       // Un-flip any other flipped card
       const currentlyFlipped = projectsGrid.querySelector('.project-card--flipped');
@@ -1272,9 +1647,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scrollHintLink) {
       scrollHintLink.addEventListener('click', (e) => {
         e.preventDefault();
-        const toolsSection = document.getElementById('tools');
-        if (toolsSection) {
-          toolsSection.scrollIntoView({ behavior: 'smooth' });
+        const workSection = document.getElementById('work');
+        if (workSection) {
+          workSection.scrollIntoView({ behavior: 'smooth' });
         }
       });
     }
@@ -1371,5 +1746,374 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+
+  /* ============================================
+     8b. VISUAL PLAYGROUND & LIGHTBOX ENGINE
+     ============================================ */
+  const playgroundItems = [
+    // --- GRAPHIC DESIGN (7 items) ---
+    {
+      id: 'pg-1',
+      category: 'graphic',
+      title: 'Bioavailability Editorial Spread',
+      aspect: 'landscape',
+      image: 'assets/projects/How to Choose High-Quality Nutritional Supplements.jpg',
+      desc: 'Editorial typography, structured grid composition, and analytical visual layout for clinical health publications.',
+      tags: ['Editorial Design', 'Typography', 'Grid System'],
+      year: '2025'
+    },
+    {
+      id: 'pg-2',
+      category: 'graphic',
+      title: 'Studio Creative Direction & Identity Poster',
+      aspect: 'landscape',
+      image: 'assets/projects/banner.png',
+      desc: 'Typography hierarchy showcase, brand art direction, and high-contrast dual-tone layout compositions.',
+      tags: ['Poster Design', 'Art Direction', 'Typography'],
+      year: '2025'
+    },
+    {
+      id: 'pg-3',
+      category: 'graphic',
+      title: 'Triveda Botanical Packaging Dieline',
+      aspect: 'square',
+      image: 'assets/projects/triveda-brand.jpg',
+      desc: 'Organic Ayurvedic luxury packaging study: gold foil stamping, custom botanical iconography, and tactile paper finishes.',
+      tags: ['Packaging Design', 'Print Collateral', 'Iconography'],
+      year: '2024'
+    },
+    {
+      id: 'pg-4',
+      category: 'graphic',
+      title: 'Mittika Heritage Lookbook Spread',
+      aspect: 'portrait',
+      image: 'assets/projects/mittika-brand.jpg',
+      desc: 'Editorial brochure exploring artisanal handloom weaving techniques, earthy terracotta palettes, and serif typographic rhythm.',
+      tags: ['Editorial Design', 'Lookbook', 'Color Theory'],
+      year: '2024'
+    },
+    {
+      id: 'pg-5',
+      category: 'graphic',
+      title: 'Wave Live Electronic Music Poster',
+      aspect: 'square',
+      image: 'assets/projects/eventmgmt-brand.jpg',
+      desc: 'Dynamic soundwave visual identity, kinetic typography, neon gradients, and festival outdoor advertising campaign.',
+      tags: ['Poster Design', 'Advertising Creatives', 'Visual Identity'],
+      year: '2024'
+    },
+    {
+      id: 'pg-6',
+      category: 'graphic',
+      title: 'EcoVolt Isometric Solar Architecture',
+      aspect: 'landscape',
+      image: 'assets/projects/ecovolt-brand.jpg',
+      desc: 'Information design and isometric technical illustration explaining microgrid energy flow and solar battery storage.',
+      tags: ['Information Design', 'Infographics', 'Isometric Art'],
+      year: '2025'
+    },
+    {
+      id: 'pg-7',
+      category: 'graphic',
+      title: 'Triveda Herbarium Print System',
+      aspect: 'landscape',
+      image: 'assets/projects/triveda-web.jpg',
+      desc: 'Botanical ingredient reference cards with botanical line art, macro photography treatments, and paper dielines.',
+      tags: ['Stationery', 'Print Design', 'Brand Collateral'],
+      year: '2024'
+    },
+
+    // --- UI DESIGN EXPLORATIONS (8 items) ---
+    {
+      id: 'pg-8',
+      category: 'ui',
+      title: 'Nuvera Vitality Telemetry Dashboard',
+      aspect: 'portrait',
+      image: 'assets/projects/nuvera.jpg',
+      desc: 'Health tech interface concept: circular biological vitality index, clinical biomarker cards, and personalized dosage schedule.',
+      tags: ['UI Exploration', 'HealthTech', 'Data Visualization'],
+      year: '2025'
+    },
+    {
+      id: 'pg-9',
+      category: 'ui',
+      title: 'ForgeOS Ergonomic Dark MES Console',
+      aspect: 'landscape',
+      image: 'assets/projects/saas-landing-ux.jpg',
+      desc: 'Industrial telemetry UI concept designed for plant floor monitors with high-contrast alert hierarchies and machine telemetry.',
+      tags: ['SaaS Concept', 'Dark Mode UI', 'Dashboard'],
+      year: '2024'
+    },
+    {
+      id: 'pg-10',
+      category: 'ui',
+      title: 'AeroBharat 3D Spatial Mission Flight Deck',
+      aspect: 'landscape',
+      image: 'assets/projects/aerobharat-ux.jpg',
+      desc: 'Spatial drone route planning interface with altitude contour charts, real-time geofence warnings, and waypoint orchestrators.',
+      tags: ['3D Spatial UX', 'Interaction Design', 'Drone UI'],
+      year: '2025'
+    },
+    {
+      id: 'pg-11',
+      category: 'ui',
+      title: 'Mittika Fabric Drape & Texture Detail UX',
+      aspect: 'square',
+      image: 'assets/projects/mittika-ux.jpg',
+      desc: 'Artisanal e-commerce interaction study: high-fidelity weave zoom, artisan provenance tags, and ethical fair-trade metrics.',
+      tags: ['Mobile UX', 'E-Commerce', 'Interaction Design'],
+      year: '2024'
+    },
+    {
+      id: 'pg-12',
+      category: 'ui',
+      title: 'Arena Interactive Seating Reservation UI',
+      aspect: 'square',
+      image: 'assets/projects/eventmgmt-ux.jpg',
+      desc: 'Concert venue seat selection flow with live acoustic angle simulation, tiered price toggles, and instant cart reservation.',
+      tags: ['UX Exploration', 'Interactive Map', 'Checkout Flow'],
+      year: '2024'
+    },
+    {
+      id: 'pg-13',
+      category: 'ui',
+      title: 'EcoVolt Hybrid Inverter Solar Flow',
+      aspect: 'landscape',
+      image: 'assets/projects/ecovolt-web.jpg',
+      desc: 'Live solar energy monitor interface showing real-time kilowatt generation, battery charge telemetry, and grid export rates.',
+      tags: ['Dashboard UI', 'CleanTech', 'Energy Analytics'],
+      year: '2025'
+    },
+    {
+      id: 'pg-14',
+      category: 'ui',
+      title: 'Wave Live Stage Lineup & Dynamic Schedule',
+      aspect: 'landscape',
+      image: 'assets/projects/eventmgmt-web.jpg',
+      desc: 'Festival schedule mobile view with conflict avoidance alerts, artist discovery clips, and dynamic timetable switcher.',
+      tags: ['Mobile UI', 'Event App', 'Design Systems'],
+      year: '2024'
+    },
+    {
+      id: 'pg-15',
+      category: 'ui',
+      title: 'Mittika Digital Lookbook & Catalog Grid',
+      aspect: 'landscape',
+      image: 'assets/projects/mittika-web.jpg',
+      desc: 'Fluid responsive lookbook interface featuring editorial masonry layout, artisanal story modals, and microinteractions.',
+      tags: ['Responsive UI', 'Editorial Web', 'Microinteractions'],
+      year: '2024'
+    }
+  ];
+
+  const playgroundGrid = document.getElementById('playground-grid');
+  const playgroundTabs = document.querySelectorAll('.playground__tab');
+  let currentPlaygroundFilter = 'all';
+  let activePlaygroundItems = [...playgroundItems];
+
+  const buildPlaygroundCardHTML = (item, index) => {
+    const badgeText = item.category === 'graphic' ? 'Graphic Design' : 'UI Exploration';
+    return `
+      <article class="playground-card playground-card--${item.aspect}" data-category="${item.category}" data-id="${item.id}" data-index="${index}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View ${item.title}">
+        <div class="playground-card__inner">
+          <div class="playground-card__image-wrap">
+            <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" class="playground-card__img">
+            <div class="playground-card__overlay">
+              <span class="playground-card__zoom-badge" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+              </span>
+              <div class="playground-card__info">
+                <span class="playground-card__badge">${badgeText}</span>
+                <h3 class="playground-card__title">${item.title}</h3>
+                <p class="playground-card__desc">${item.desc}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  };
+
+  const renderPlayground = (filter = 'all') => {
+    if (!playgroundGrid) return;
+    currentPlaygroundFilter = filter;
+    activePlaygroundItems = (filter === 'all')
+      ? playgroundItems
+      : playgroundItems.filter(item => item.category === filter);
+
+    playgroundGrid.innerHTML = activePlaygroundItems
+      .map((item, idx) => buildPlaygroundCardHTML(item, idx))
+      .join('');
+  };
+
+  // Tab listeners
+  playgroundTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      playgroundTabs.forEach(t => {
+        t.classList.remove('playground__tab--active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('playground__tab--active');
+      tab.setAttribute('aria-selected', 'true');
+      const filter = tab.getAttribute('data-filter') || 'all';
+      renderPlayground(filter);
+    });
+  });
+
+  // Render initial playground items
+  renderPlayground('all');
+
+  /* ============================================
+     LIGHTBOX MODAL IMPLEMENTATION
+     ============================================ */
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxOverlay = document.getElementById('lightbox-overlay');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxBadge = document.getElementById('lightbox-badge');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+
+  let currentLightboxIndex = 0;
+  let lastFocusedPlaygroundCard = null;
+
+  const updateLightboxContent = (index) => {
+    if (!activePlaygroundItems || activePlaygroundItems.length === 0) return;
+    const item = activePlaygroundItems[index];
+    if (!item) return;
+
+    currentLightboxIndex = index;
+    if (lightboxImage) {
+      lightboxImage.src = item.image;
+      lightboxImage.alt = item.title;
+    }
+    if (lightboxBadge) {
+      lightboxBadge.textContent = item.category === 'graphic' ? 'Graphic Design' : 'UI Design Exploration';
+    }
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${index + 1} / ${activePlaygroundItems.length}`;
+    }
+    if (lightboxTitle) {
+      lightboxTitle.textContent = item.title;
+    }
+    if (lightboxDesc) {
+      lightboxDesc.textContent = item.desc;
+    }
+  };
+
+  const openLightbox = (index) => {
+    if (!lightboxModal) return;
+    lastFocusedPlaygroundCard = document.activeElement;
+    updateLightboxContent(index);
+
+    lightboxModal.classList.add('lightbox-modal--open');
+    lightboxModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+
+    setTimeout(() => {
+      if (lightboxClose) lightboxClose.focus();
+    }, 100);
+  };
+
+  const closeLightbox = () => {
+    if (!lightboxModal) return;
+    lightboxModal.classList.remove('lightbox-modal--open');
+    lightboxModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+
+    if (lastFocusedPlaygroundCard && typeof lastFocusedPlaygroundCard.focus === 'function') {
+      lastFocusedPlaygroundCard.focus();
+    }
+  };
+
+  const navigateLightbox = (direction) => {
+    if (!activePlaygroundItems || activePlaygroundItems.length === 0) return;
+    let nextIndex = currentLightboxIndex + direction;
+    if (nextIndex < 0) nextIndex = activePlaygroundItems.length - 1;
+    if (nextIndex >= activePlaygroundItems.length) nextIndex = 0;
+    updateLightboxContent(nextIndex);
+  };
+
+  // Card click & keyboard open
+  if (playgroundGrid) {
+    playgroundGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('.playground-card');
+      if (!card) return;
+      const index = parseInt(card.getAttribute('data-index'), 10);
+      if (!isNaN(index)) {
+        openLightbox(index);
+      }
+    });
+
+    playgroundGrid.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const card = e.target.closest('.playground-card');
+        if (card) {
+          e.preventDefault();
+          const index = parseInt(card.getAttribute('data-index'), 10);
+          if (!isNaN(index)) {
+            openLightbox(index);
+          }
+        }
+      }
+    });
+  }
+
+  // Lightbox controls
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', closeLightbox);
+  }
+  if (lightboxOverlay) {
+    lightboxOverlay.addEventListener('click', closeLightbox);
+  }
+  if (lightboxPrev) {
+    lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
+  }
+  if (lightboxNext) {
+    lightboxNext.addEventListener('click', () => navigateLightbox(1));
+  }
+
+  // Keyboard navigation for Lightbox
+  document.addEventListener('keydown', (e) => {
+    if (!lightboxModal || !lightboxModal.classList.contains('lightbox-modal--open')) return;
+
+    if (e.key === 'Escape') {
+      closeLightbox();
+      return;
+    }
+    if (e.key === 'ArrowLeft') {
+      navigateLightbox(-1);
+      return;
+    }
+    if (e.key === 'ArrowRight') {
+      navigateLightbox(1);
+      return;
+    }
+
+    // Accessible focus trap
+    if (e.key === 'Tab') {
+      const focusable = lightboxModal.querySelectorAll('button, a, input, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
 
 }); // end DOMContentLoaded
