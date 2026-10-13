@@ -481,7 +481,7 @@
     <!-- ============================================
          SECTION — SELECTED WORK
          ============================================ -->
-    <section id="work" class="projects">
+    <section id="work" class="projects is-deck-mode">
       <div class="container projects__inner">
         <p class="section-label" data-reveal="fade-up">SELECTED WORK</p>
         <h2 data-reveal="fade-up" data-reveal-delay="100">Featured design &amp; branding projects</h2>
@@ -522,7 +522,7 @@
           </div>
         </div>
 
-        <div class="projects__stage" id="projects-stage">
+        <div class="projects__stage is-stacked" id="projects-stage">
           <div class="projects-deck-hint" id="projects-deck-hint" aria-hidden="true">
             <span class="projects-deck-hint__badge">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -531,7 +531,8 @@
                 <path d="M21 3l-7 7"></path>
                 <path d="M3 21l7-7"></path>
               </svg>
-              Hover deck to deal cards
+              <span class="projects-deck-hint__text-desktop">Hover deck to deal cards</span>
+              <span class="projects-deck-hint__text-mobile">Tap deck to deal cards</span>
             </span>
           </div>
           <div class="projects__grid is-stacked" id="projects-grid" role="tabpanel"></div>

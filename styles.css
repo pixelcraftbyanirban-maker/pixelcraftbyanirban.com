@@ -1355,29 +1355,36 @@ body.menu-open {
 .dev-section__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--sp-32);
+  gap: 18px;
+  perspective: 1200px;
 }
 
 @media (min-width: 768px) {
   .dev-section__grid {
     grid-template-columns: repeat(2, 1fr);
+    max-width: 880px;
+    margin-inline: auto;
   }
 }
 
-/* Development capability cards */
+/* Development capability cards — 40% more compact with interactive 3D tilt & glare */
 .dev-card {
   background: #ffffff;
   border: 1.5px solid rgba(21, 40, 74, 0.09);
-  border-radius: 10px;
-  padding: var(--sp-32) var(--sp-24);
+  border-radius: 12px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-16);
+  gap: 10px;
   position: relative;
   overflow: hidden;
-  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1),
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+  transition: transform 140ms ease-out,
+              box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1),
               border-color 250ms ease;
+  will-change: transform, box-shadow;
+  cursor: default;
 }
 
 .dev-card::before {
@@ -1390,16 +1397,40 @@ body.menu-open {
   background: var(--card-accent, var(--terracotta));
   opacity: 0.85;
   transition: height 250ms ease, opacity 250ms ease;
+  z-index: 10;
+}
+
+/* 3D dynamic sheen / glare overlay */
+.dev-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 250ms ease;
+  mix-blend-mode: overlay;
+  z-index: 8;
+  border-radius: inherit;
 }
 
 .dev-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(21, 40, 74, 0.11), 0 3px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 36px -8px rgba(21, 40, 74, 0.16),
+              0 6px 14px -4px rgba(0, 0, 0, 0.05);
   border-color: var(--card-accent, var(--terracotta));
 }
 
+.dev-card:hover::after {
+  opacity: 1;
+}
+
 .dev-card:hover::before {
-  height: 3.5px;
+  height: 3px;
   opacity: 1;
 }
 
@@ -1408,10 +1439,11 @@ body.menu-open {
 .dev-card:nth-child(3) { --card-accent: var(--gold); }
 .dev-card:nth-child(4) { --card-accent: var(--navy-900); }
 
+/* 3D Parallax layers inside card */
 .dev-card__icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: var(--cream-50);
   border: 1.5px solid rgba(21, 40, 74, 0.08);
   display: flex;
@@ -1420,47 +1452,56 @@ body.menu-open {
   color: var(--card-accent, var(--navy-900));
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
+  transform: translateZ(24px);
+}
+
+.dev-card__icon-wrap svg {
+  width: 16px;
+  height: 16px;
 }
 
 .dev-card:hover .dev-card__icon-wrap {
   background: var(--card-accent, var(--terracotta));
   color: #ffffff;
   border-color: var(--card-accent, var(--terracotta));
-  transform: scale(1.06) rotate(3deg);
+  transform: translateZ(30px) scale(1.08) rotate(4deg);
 }
 
 .dev-card__title {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 0.98rem;
   font-weight: 600;
   color: var(--ink);
-  line-height: 1.3;
+  line-height: 1.25;
+  transform: translateZ(16px);
 }
 
 .dev-card__desc {
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.81rem;
+  line-height: 1.48;
   color: var(--ink-muted);
+  transform: translateZ(12px);
 }
 
 .dev-card__skills {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   margin-top: auto;
-  padding-top: var(--sp-12);
+  padding-top: 8px;
   border-top: 1px solid rgba(21, 40, 74, 0.07);
+  transform: translateZ(14px);
 }
 
 .dev-card__skill {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   font-weight: 500;
   color: var(--ink-muted);
   background: var(--cream-50);
   border: 1px solid rgba(21, 40, 74, 0.08);
-  padding: 3px 9px;
+  padding: 2px 7px;
   border-radius: var(--radius-pill);
   transition: background-color 200ms ease, color 200ms ease;
 }
@@ -1470,20 +1511,22 @@ body.menu-open {
   color: var(--navy-900);
 }
 
-/* Code snippet inside dev card */
+/* Code snippet inside dev card — 40% compact */
 .dev-card__code {
   background: var(--navy-900);
   border-radius: var(--radius-card);
-  padding: var(--sp-12) var(--sp-16);
+  padding: 8px 11px;
   overflow-x: auto;
-  margin-top: var(--sp-8);
+  margin-top: 2px;
+  transform: translateZ(20px);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .dev-card__code pre {
   margin: 0;
   font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-  font-size: 0.72rem;
-  line-height: 1.55;
+  font-size: 0.63rem;
+  line-height: 1.4;
   color: var(--cream-50);
   white-space: pre;
 }
@@ -1512,35 +1555,36 @@ body.menu-open {
   color: #c3e88d;
 }
 
-/* Workflow steps (for the AI workflow card) */
+/* Workflow steps (for the AI workflow card) — 40% compact */
 .dev-card__workflow {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: var(--sp-8);
+  gap: 4px;
+  margin-top: 2px;
+  transform: translateZ(20px);
 }
 
 .dev-card__step {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.71rem;
   color: var(--ink-muted);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .dev-card__step-num {
-  width: 22px;
-  height: 22px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background: var(--cream-50);
-  border: 1.5px solid rgba(21, 40, 74, 0.12);
+  border: 1.2px solid rgba(21, 40, 74, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-weight: 700;
   color: var(--card-accent, var(--teal));
   flex-shrink: 0;
@@ -1685,6 +1729,22 @@ body.menu-open {
 .projects {
   background-color: var(--cream-50);
   border-top: 1px solid rgba(21, 40, 74, 0.08);
+  transition: padding-top 400ms cubic-bezier(0.16, 1, 0.3, 1),
+              padding-bottom 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* In Deck Mode: decrease blank place upside and downside */
+.projects.is-deck-mode,
+.projects:has(.projects__grid.is-stacked) {
+  padding-block: var(--sp-64);
+}
+
+@media (min-width: 1024px) {
+  .projects.is-deck-mode,
+  .projects:has(.projects__grid.is-stacked) {
+    padding-top: var(--sp-72);
+    padding-bottom: var(--sp-56);
+  }
 }
 
 .projects__intro {
@@ -1707,6 +1767,13 @@ body.menu-open {
   margin-bottom: var(--sp-48);
   position: relative;
   z-index: 50;
+  transition: margin-bottom 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* In Deck Mode: decrease blank place between controls and cards */
+.projects.is-deck-mode .projects__controls,
+.projects:has(.projects__grid.is-stacked) .projects__controls {
+  margin-bottom: var(--sp-20);
 }
 
 .projects__controls .filter-dropdown {
@@ -1754,26 +1821,34 @@ body.menu-open {
 .projects__stage {
   position: relative;
   width: 100%;
+  transition: height 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projects__stage.is-stacked {
+  height: var(--deck-stage-h, 360px);
+  overflow: hidden;
 }
 
 /* Floating deck hint badge */
 .projects-deck-hint {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  transform: translate(-50%, calc(-50% - 170px));
+  transform: translate(-50%, -6px);
   z-index: 50;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 300ms ease, transform 300ms ease, visibility 300ms;
+  transition: opacity 280ms ease, transform 280ms ease, visibility 280ms;
 }
 
 .projects__stage:has(.projects__grid.is-stacked) .projects-deck-hint,
 .projects__stage.is-stacked .projects-deck-hint {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, calc(-50% - 170px));
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate(-50%, 0);
 }
 
 .projects-deck-hint__badge {
@@ -1791,6 +1866,26 @@ body.menu-open {
   box-shadow: 0 8px 24px rgba(21, 40, 74, 0.25);
   border: 1px solid rgba(250, 244, 234, 0.15);
   animation: deck-hint-bob 2s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.projects-deck-hint__badge:hover {
+  background-color: var(--terracotta);
+  color: #ffffff;
+}
+
+.projects-deck-hint__text-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .projects-deck-hint__text-desktop {
+    display: none;
+  }
+  .projects-deck-hint__text-mobile {
+    display: inline;
+  }
 }
 
 @keyframes deck-hint-bob {
@@ -1926,6 +2021,7 @@ body.menu-open {
 /* Stacked Deck Mode: piled up in center */
 .projects__grid.is-stacked {
   cursor: pointer;
+  pointer-events: none;
 }
 
 .projects__grid.is-stacked .project-card {
