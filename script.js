@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. SCROLL SPY (IntersectionObserver)
      ============================================ */
   const navLinks = document.querySelectorAll('#nav-list .nav-link');
-  const sectionIds = ['home', 'work', 'playground', 'process', 'tools', 'dev', 'contact'];
+  const sectionIds = ['home', 'process', 'tools', 'work', 'playground', 'dev', 'contact'];
   const spySections = sectionIds
     .map(id => document.getElementById(id))
     .filter(Boolean);
@@ -1647,9 +1647,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scrollHintLink) {
       scrollHintLink.addEventListener('click', (e) => {
         e.preventDefault();
-        const workSection = document.getElementById('work');
-        if (workSection) {
-          workSection.scrollIntoView({ behavior: 'smooth' });
+        const targetId = scrollHintLink.getAttribute('href')?.replace('#', '') || 'process';
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
         }
       });
     }

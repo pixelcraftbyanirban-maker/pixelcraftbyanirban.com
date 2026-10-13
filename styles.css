@@ -942,6 +942,20 @@ body.menu-open {
   padding-bottom: var(--sp-64);
 }
 
+/* Responsive container for Process section */
+.process-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 56px;
+}
+
+@media (max-width: 1024px) {
+  .process-container {
+    padding-inline: 32px;
+  }
+}
+
 .process-section__header-container {
   position: relative;
   z-index: 2;
@@ -1066,7 +1080,7 @@ body.menu-open {
   overflow-y: hidden;
   padding-top: var(--sp-12);
   padding-bottom: var(--sp-32);
-  padding-inline: max(var(--sp-24), calc((100vw - 1200px) / 2 + var(--sp-24)));
+  padding-inline: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
@@ -1087,6 +1101,7 @@ body.menu-open {
   gap: 16px;
   width: max-content;
   align-items: stretch;
+  padding-inline: 16px;
 }
 
 /* Compact Card (30% smaller footprint) */
@@ -1644,6 +1659,9 @@ body.menu-open {
 
 /* Responsive styles */
 @media (max-width: 767px) {
+  .process-container {
+    padding-inline: 20px;
+  }
   .process-card {
     flex: 0 0 210px;
     width: 210px;
@@ -1651,11 +1669,12 @@ body.menu-open {
     padding: 12px;
   }
   .process-carousel-wrapper {
-    padding-inline: var(--sp-16);
+    padding-inline: 0;
     padding-bottom: var(--sp-24);
   }
   .process-carousel-track {
     gap: 12px;
+    padding-inline: 12px;
   }
   .process-section__header {
     margin-bottom: var(--sp-24);
@@ -1665,7 +1684,7 @@ body.menu-open {
 /* ---- PROJECTS SECTION ---- */
 .projects {
   background-color: var(--cream-50);
-  padding-top: var(--sp-24);
+  border-top: 1px solid rgba(21, 40, 74, 0.08);
 }
 
 .projects__intro {
