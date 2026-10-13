@@ -53,6 +53,7 @@
         <ul class="navbar__links" id="nav-list">
           <li><a href="#home" class="nav-link nav-link--active">Home</a></li>
           <li><a href="#tools" class="nav-link">Tools</a></li>
+          <li><a href="#process" class="nav-link">Process</a></li>
           <li><a href="#work" class="nav-link">Work</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
           <li class="nav-cv-dropdown" id="nav-cv-dropdown">
@@ -99,6 +100,7 @@
       <ul class="mobile-menu__links">
         <li><a href="#home" class="mobile-menu__link">Home</a></li>
         <li><a href="#tools" class="mobile-menu__link">Tools</a></li>
+        <li><a href="#process" class="mobile-menu__link">Process</a></li>
         <li><a href="#work" class="mobile-menu__link">Work</a></li>
         <li><a href="#contact" class="mobile-menu__link">Contact</a></li>
         <li class="mobile-menu__divider" aria-hidden="true"></li>
@@ -187,6 +189,293 @@
             <div class="tools__chips" id="chips-ai"></div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION — PROBLEM SOLVING PROCESS
+         ============================================ -->
+    <section id="process" class="process-section">
+      <div class="container process-section__header-container">
+        <div class="process-section__header">
+          <div class="process-section__intro">
+            <p class="section-label" data-reveal="fade-up">PROBLEM SOLVING PROCESS</p>
+            <h2 data-reveal="fade-up" data-reveal-delay="100">Engineered for an AI-driven world</h2>
+            <p class="process-section__subtitle" data-reveal="fade-up" data-reveal-delay="150">
+              How I blend human-centered design thinking, strategic architecture, and modern AI workflows to tackle complex client challenges from discovery to production-ready deployment.
+            </p>
+          </div>
+          <div class="process-section__controls" data-reveal="fade-up" data-reveal-delay="200" aria-label="Process carousel controls">
+            <div class="process-movement-badge" id="process-movement-status">
+              <span class="process-pulse-dot" aria-hidden="true"></span>
+              <span class="process-status-text" id="process-status-text">Moving sidewise</span>
+            </div>
+            <div class="process-nav-btns">
+              <button type="button" class="process-nav-btn" id="process-toggle-btn" aria-label="Pause automatic movement" title="Pause / Resume movement">
+                <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+                <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display: none;">
+                  <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                </svg>
+              </button>
+              <button type="button" class="process-nav-btn" id="process-prev-btn" aria-label="Previous step" title="Previous step">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button type="button" class="process-nav-btn" id="process-next-btn" aria-label="Next step" title="Next step">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outer horizontal viewport for sidewise moving cards -->
+      <div class="process-carousel-wrapper" id="process-carousel-wrapper" tabindex="0" role="region" aria-label="Problem solving steps carousel">
+        <div class="process-carousel-track" id="process-carousel-track">
+          <!-- Card 01: Discover -->
+          <article class="process-card" data-step="1">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">01</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  AI Synthesis
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <path d="M11 8a3 3 0 0 0-3 3"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Discover</h3>
+              <p class="process-card__subtitle">User &amp; Market Intelligence</p>
+              <p class="process-card__desc">
+                Uncovering root user needs and market opportunities through stakeholder interviews, behavioral research, and AI-accelerated data clustering of competitor insights.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">User Interviews</span>
+                <span class="process-pill">AI Clustering</span>
+                <span class="process-pill">Competitor Audit</span>
+                <span class="process-pill">Opportunity Mapping</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 02: Define -->
+          <article class="process-card" data-step="2">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">02</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  Strategic Focus
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="22" y1="12" x2="18" y2="12"></line>
+                  <line x1="6" y1="12" x2="2" y2="12"></line>
+                  <line x1="12" y1="6" x2="12" y2="2"></line>
+                  <line x1="12" y1="22" x2="12" y2="18"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Define</h3>
+              <p class="process-card__subtitle">Strategy &amp; Problem Framing</p>
+              <p class="process-card__desc">
+                Crystallizing actionable problem statements, aligning business KPIs, synthesizing user journeys, and stress-testing edge cases with AI scenario modeling.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">Problem Statements</span>
+                <span class="process-pill">Journey Mapping</span>
+                <span class="process-pill">Persona Synthesis</span>
+                <span class="process-pill">KPI Definition</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 03: Explore -->
+          <article class="process-card" data-step="3">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">03</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                  </svg>
+                  Rapid Ideation
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 18h6"></path>
+                  <path d="M10 22h4"></path>
+                  <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.25 4.7 3 6v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1c1.75-1.3 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Explore</h3>
+              <p class="process-card__subtitle">Ideation &amp; Divergent Concepts</p>
+              <p class="process-card__desc">
+                Diverging into multiple creative directions, structural flow sketching, and using generative AI to produce rapid moodboards, visual concepts, and novel architectures.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">Generative Moodboards</span>
+                <span class="process-pill">Low-Fi Wireframes</span>
+                <span class="process-pill">Divergent Sprints</span>
+                <span class="process-pill">Information Arch</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 04: Design & Mockup -->
+          <article class="process-card" data-step="4">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">04</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                  </svg>
+                  Systematic Design
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Design &amp; Mockup</h3>
+              <p class="process-card__subtitle">High-Fidelity UI &amp; Systems</p>
+              <p class="process-card__desc">
+                Architecting high-fidelity UI screens in Figma, building reusable responsive component libraries, WCAG-compliant color tokens, and robust design systems.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">Figma Systems</span>
+                <span class="process-pill">Responsive Mockups</span>
+                <span class="process-pill">WCAG Tokens</span>
+                <span class="process-pill">Auto-Layout UI</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 05: Prototype & Test -->
+          <article class="process-card" data-step="5">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">05</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  Usability Validation
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Prototype &amp; Test</h3>
+              <p class="process-card__subtitle">Interactive Usability &amp; Motion</p>
+              <p class="process-card__desc">
+                Creating dynamic, realistic prototypes in Framer &amp; Figma, running moderated usability tests, and gathering rapid feedback to eliminate UX friction before engineering.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">Interactive Prototyping</span>
+                <span class="process-pill">Usability Testing</span>
+                <span class="process-pill">Motion Tuning</span>
+                <span class="process-pill">Iteration Loops</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 06: Build & Ship -->
+          <article class="process-card" data-step="6">
+            <div class="process-card__header">
+              <div class="process-card__meta">
+                <span class="process-card__num">06</span>
+                <span class="process-card__badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                  </svg>
+                  AI-Paired Delivery
+                </span>
+              </div>
+              <div class="process-card__icon-wrap">
+                <svg class="process-card__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="process-card__body">
+              <h3 class="process-card__title">Build &amp; Ship</h3>
+              <p class="process-card__subtitle">Production Code &amp; Launch</p>
+              <p class="process-card__desc">
+                Implementing clean semantic frontend code paired with AI development tools (Cursor, Claude Code, Antigravity), comprehensive QA, and deploying fast, responsive client products.
+              </p>
+            </div>
+            <div class="process-card__footer">
+              <div class="process-card__chips">
+                <span class="process-pill">Production Frontend</span>
+                <span class="process-pill">AI Dev Pairing</span>
+                <span class="process-pill">Cross-Browser QA</span>
+                <span class="process-pill">Client Deployment</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Process status & hint -->
+      <div class="container process-status-hint">
+        <span class="process-hint-text">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="8 7 3 12 8 17"></polyline>
+            <polyline points="16 7 21 12 16 17"></polyline>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+          </svg>
+          Cards move sidewise automatically &bull; Hover to pause &bull; Drag or use controls to navigate
+        </span>
       </div>
     </section>
 

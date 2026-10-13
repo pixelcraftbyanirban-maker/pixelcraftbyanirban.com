@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. SCROLL SPY (IntersectionObserver)
      ============================================ */
   const navLinks = document.querySelectorAll('#nav-list .nav-link');
-  const sectionIds = ['home', 'tools', 'work', 'contact'];
+  const sectionIds = ['home', 'tools', 'process', 'work', 'contact'];
   const spySections = sectionIds
     .map(id => document.getElementById(id))
     .filter(Boolean);
@@ -274,6 +274,246 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChips('expertise', 'chips-expertise');
   renderChips('software', 'chips-software');
   renderChips('ai', 'chips-ai');
+
+  /* ============================================
+     5b. PROBLEM SOLVING PROCESS CAROUSEL
+         (Sidewise movement after loading)
+     ============================================ */
+  const processWrapper = document.getElementById('process-carousel-wrapper');
+  const processTrack = document.getElementById('process-carousel-track');
+  const processToggleBtn = document.getElementById('process-toggle-btn');
+  const processPrevBtn = document.getElementById('process-prev-btn');
+  const processNextBtn = document.getElementById('process-next-btn');
+  const processStatusBadge = document.getElementById('process-movement-status');
+  const processStatusText = document.getElementById('process-status-text');
+
+  if (processWrapper && processTrack) {
+    const originalCards = Array.from(processTrack.children);
+    const cardCount = originalCards.length;
+
+    // Clone cards for seamless infinite horizontal scrolling
+    originalCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelectorAll('button, a').forEach(el => el.setAttribute('tabindex', '-1'));
+      processTrack.appendChild(clone);
+    });
+
+    let isMoving = false;
+    let isUserPaused = false;
+    let isHovered = false;
+    let isInteracting = false;
+    let interactionTimeout = null;
+    const scrollSpeed = 0.75; // pixels per animation frame
+    let animFrameId = null;
+
+    // Calculate the distance before wrap-around
+    const getResetDistance = () => {
+      if (processTrack.children.length > cardCount) {
+        const seventhCard = processTrack.children[cardCount];
+        return seventhCard.offsetLeft - originalCards[0].offsetLeft;
+      }
+      return processTrack.scrollWidth / 2;
+    };
+
+    const getCardStepWidth = () => {
+      if (originalCards.length > 1) {
+        return originalCards[1].offsetLeft - originalCards[0].offsetLeft;
+      }
+      return 251;
+    };
+
+    const updateStatusUI = () => {
+      if (!processStatusBadge || !processStatusText) return;
+      if (isUserPaused) {
+        processStatusBadge.classList.add('is-paused');
+        processStatusText.textContent = 'Paused';
+        if (processToggleBtn) {
+          const pauseIcon = processToggleBtn.querySelector('.icon-pause');
+          const playIcon = processToggleBtn.querySelector('.icon-play');
+          if (pauseIcon) pauseIcon.style.display = 'none';
+          if (playIcon) playIcon.style.display = 'block';
+          processToggleBtn.setAttribute('aria-label', 'Resume automatic movement');
+        }
+      } else if (isHovered || isInteracting) {
+        processStatusBadge.classList.add('is-paused');
+        processStatusText.textContent = isInteracting ? 'Scrolling' : 'Hovered';
+        if (processToggleBtn) {
+          const pauseIcon = processToggleBtn.querySelector('.icon-pause');
+          const playIcon = processToggleBtn.querySelector('.icon-play');
+          if (pauseIcon) pauseIcon.style.display = 'block';
+          if (playIcon) playIcon.style.display = 'none';
+          processToggleBtn.setAttribute('aria-label', 'Pause automatic movement');
+        }
+      } else {
+        processStatusBadge.classList.remove('is-paused');
+        processStatusText.textContent = 'Moving sidewise';
+        if (processToggleBtn) {
+          const pauseIcon = processToggleBtn.querySelector('.icon-pause');
+          const playIcon = processToggleBtn.querySelector('.icon-play');
+          if (pauseIcon) pauseIcon.style.display = 'block';
+          if (playIcon) playIcon.style.display = 'none';
+          processToggleBtn.setAttribute('aria-label', 'Pause automatic movement');
+        }
+      }
+    };
+
+    const stepMovement = () => {
+      if (isMoving && !isUserPaused && !isHovered && !isInteracting) {
+        processWrapper.scrollLeft += scrollSpeed;
+        const resetDistance = getResetDistance();
+        if (processWrapper.scrollLeft >= resetDistance) {
+          processWrapper.scrollLeft -= resetDistance;
+        }
+      }
+      animFrameId = requestAnimationFrame(stepMovement);
+    };
+
+    const startSidewiseMovement = () => {
+      if (prefersReducedMotion) {
+        if (processStatusBadge) processStatusBadge.style.display = 'none';
+        return;
+      }
+      processTrack.classList.add('process-cards--loaded');
+      document.querySelector('.process-section')?.classList.add('is-revealed');
+      isMoving = true;
+      updateStatusUI();
+      if (!animFrameId) {
+        animFrameId = requestAnimationFrame(stepMovement);
+      }
+    };
+
+    // Trigger sidewise movement after page loading
+    if (prefersReducedMotion || !document.getElementById('page-loader')) {
+      setTimeout(startSidewiseMovement, 400);
+    } else {
+      window.addEventListener('page-ready', () => {
+        setTimeout(startSidewiseMovement, 200);
+      }, { once: true });
+      // Fallback
+      setTimeout(startSidewiseMovement, 1800);
+    }
+
+    // Hover & focus handling (pause on hover/focus so user can read)
+    processWrapper.addEventListener('mouseenter', () => {
+      isHovered = true;
+      updateStatusUI();
+    });
+
+    processWrapper.addEventListener('mouseleave', () => {
+      isHovered = false;
+      updateStatusUI();
+    });
+
+    processWrapper.addEventListener('focusin', () => {
+      isHovered = true;
+      updateStatusUI();
+    });
+
+    processWrapper.addEventListener('focusout', () => {
+      isHovered = false;
+      updateStatusUI();
+    });
+
+    // Pause / Play toggle button
+    if (processToggleBtn) {
+      processToggleBtn.addEventListener('click', () => {
+        isUserPaused = !isUserPaused;
+        updateStatusUI();
+      });
+    }
+
+    // Manual navigation buttons (Previous & Next step)
+    const handleManualScroll = (direction) => {
+      isInteracting = true;
+      updateStatusUI();
+      clearTimeout(interactionTimeout);
+
+      const step = getCardStepWidth();
+      processWrapper.scrollBy({
+        left: direction * step,
+        behavior: 'smooth'
+      });
+
+      interactionTimeout = setTimeout(() => {
+        isInteracting = false;
+        const resetDistance = getResetDistance();
+        if (processWrapper.scrollLeft >= resetDistance) {
+          processWrapper.scrollLeft -= resetDistance;
+        } else if (processWrapper.scrollLeft < 0) {
+          processWrapper.scrollLeft += resetDistance;
+        }
+        updateStatusUI();
+      }, 1000);
+    };
+
+    if (processPrevBtn) {
+      processPrevBtn.addEventListener('click', () => handleManualScroll(-1));
+    }
+
+    if (processNextBtn) {
+      processNextBtn.addEventListener('click', () => handleManualScroll(1));
+    }
+
+    // Pointer Drag Support (Mouse & Touch)
+    let isDragging = false;
+    let startX = 0;
+    let scrollStart = 0;
+
+    processWrapper.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      isInteracting = true;
+      startX = e.pageX - processWrapper.offsetLeft;
+      scrollStart = processWrapper.scrollLeft;
+      updateStatusUI();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - processWrapper.offsetLeft;
+      const walk = (x - startX) * 1.3;
+      processWrapper.scrollLeft = scrollStart - walk;
+    });
+
+    const endDrag = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        isInteracting = false;
+        const resetDistance = getResetDistance();
+        if (processWrapper.scrollLeft >= resetDistance) {
+          processWrapper.scrollLeft -= resetDistance;
+        } else if (processWrapper.scrollLeft < 0) {
+          processWrapper.scrollLeft += resetDistance;
+        }
+        updateStatusUI();
+      }, 600);
+    };
+
+    window.addEventListener('mouseup', endDrag);
+
+    // Touch events
+    processWrapper.addEventListener('touchstart', () => {
+      isInteracting = true;
+      updateStatusUI();
+    }, { passive: true });
+
+    processWrapper.addEventListener('touchend', () => {
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        isInteracting = false;
+        const resetDistance = getResetDistance();
+        if (processWrapper.scrollLeft >= resetDistance) {
+          processWrapper.scrollLeft -= resetDistance;
+        } else if (processWrapper.scrollLeft < 0) {
+          processWrapper.scrollLeft += resetDistance;
+        }
+        updateStatusUI();
+      }, 800);
+    }, { passive: true });
+  }
 
   /* ============================================
      6. PROJECTS DATA (from CV)
