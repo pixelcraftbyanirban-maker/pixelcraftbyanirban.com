@@ -1857,185 +1857,330 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ============================================
-     8b. VISUAL PLAYGROUND & LIGHTBOX ENGINE
+     8b. VISUAL PLAYGROUND (EDITORIAL ARCHIVE) & LIGHTBOX ENGINE
+     Curated archive of branding, packaging, campaigns, print & UI explorations
+     Strictly categorized per Phase 3 & Phase 6
      ============================================ */
+
+  const PLAYGROUND_CATEGORIES = [
+    { key: 'all', label: 'All Work' },
+    { key: 'branding', label: 'Branding' },
+    { key: 'packaging', label: 'Packaging' },
+    { key: 'campaigns', label: 'Campaigns' },
+    { key: 'print', label: 'Print & Editorial' },
+    { key: 'image-craft', label: 'Image Craft' },
+    { key: 'ui', label: 'UI Experiments' },
+    { key: 'other', label: 'Other Explorations' }
+  ];
+
   const playgroundItems = [
-    // --- GRAPHIC DESIGN (7 items) ---
     {
       id: 'pg-1',
-      category: 'graphic',
+      category: 'print',
+      categoryLabel: 'Print & Editorial',
       title: 'Bioavailability Editorial Spread',
+      discipline: 'Editorial Design · Health Publishing · Grid Systems',
       aspect: 'landscape',
       image: 'assets/projects/How to Choose High-Quality Nutritional Supplements.jpg',
       desc: 'Editorial typography, structured grid composition, and analytical visual layout for clinical health publications.',
+      deliverables: ['Editorial Publication Spread', 'Modular Column Grid', 'Clinical Data Typography', 'Print Spec Sheet'],
       tags: ['Editorial Design', 'Typography', 'Grid System'],
       year: '2025'
     },
     {
       id: 'pg-2',
-      category: 'graphic',
+      category: 'campaigns',
+      categoryLabel: 'Campaigns',
       title: 'Studio Creative Direction & Identity Poster',
-      aspect: 'landscape',
+      discipline: 'Art Direction · Poster Design · Typography',
+      aspect: 'square',
       image: 'assets/projects/banner.png',
       desc: 'Typography hierarchy showcase, brand art direction, and high-contrast dual-tone layout compositions.',
+      deliverables: ['Exhibition Poster', 'Typographic Hierarchy Spec', 'Dual-Tone Palette System', 'Print Proof'],
       tags: ['Poster Design', 'Art Direction', 'Typography'],
       year: '2025'
     },
     {
       id: 'pg-3',
-      category: 'graphic',
+      category: 'packaging',
+      categoryLabel: 'Packaging',
       title: 'Triveda Botanical Packaging Dieline',
-      aspect: 'square',
+      discipline: 'Packaging Design · Dielines · Foil Stamping',
+      aspect: 'landscape',
       image: 'assets/projects/triveda-brand.jpg',
       desc: 'Organic Ayurvedic luxury packaging study: gold foil stamping, custom botanical iconography, and tactile paper finishes.',
+      deliverables: ['Product Box Packaging Dieline', 'Amber Glass Jar Label Spec', 'Gold Foil Stamping Details', 'Botanical Iconography'],
       tags: ['Packaging Design', 'Print Collateral', 'Iconography'],
       year: '2024'
     },
     {
       id: 'pg-4',
-      category: 'graphic',
+      category: 'print',
+      categoryLabel: 'Print & Editorial',
       title: 'Mittika Heritage Lookbook Spread',
+      discipline: 'Editorial · Publication Design · Art Direction',
       aspect: 'portrait',
       image: 'assets/projects/mittika-brand.jpg',
       desc: 'Editorial brochure exploring artisanal handloom weaving techniques, earthy terracotta palettes, and serif typographic rhythm.',
+      deliverables: ['Heritage Handloom Lookbook', 'Editorial Spread Layouts', 'Terracotta Palette Study', 'Artisan Story Cards'],
       tags: ['Editorial Design', 'Lookbook', 'Color Theory'],
       year: '2024'
     },
     {
       id: 'pg-5',
-      category: 'graphic',
+      category: 'campaigns',
+      categoryLabel: 'Campaigns',
       title: 'Wave Live Electronic Music Poster',
+      discipline: 'Campaigns · Festival Poster · Art Direction',
       aspect: 'square',
       image: 'assets/projects/eventmgmt-brand.jpg',
       desc: 'Dynamic soundwave visual identity, kinetic typography, neon gradients, and festival outdoor advertising campaign.',
+      deliverables: ['Outdoor Billboard Creatives', 'Stage Festival Poster Series', 'Kinetic Typography Assets', 'Digital Social Assets'],
       tags: ['Poster Design', 'Advertising Creatives', 'Visual Identity'],
       year: '2024'
     },
     {
       id: 'pg-6',
-      category: 'graphic',
+      category: 'branding',
+      categoryLabel: 'Branding',
       title: 'EcoVolt Isometric Solar Architecture',
-      aspect: 'landscape',
+      discipline: 'Branding · Information Graphics · Technical Illustration',
+      aspect: 'portrait',
       image: 'assets/projects/ecovolt-brand.jpg',
       desc: 'Information design and isometric technical illustration explaining microgrid energy flow and solar battery storage.',
-      tags: ['Information Design', 'Infographics', 'Isometric Art'],
+      deliverables: ['Isometric Architectural Diagram', 'Microgrid Energy Flow Schematic', 'Brand Technical Illustration System'],
+      tags: ['Visual Identity', 'Infographics', 'Isometric Art'],
       year: '2025'
     },
     {
       id: 'pg-7',
-      category: 'graphic',
+      category: 'branding',
+      categoryLabel: 'Branding',
       title: 'Triveda Herbarium Print System',
+      discipline: 'Branding · Stationery · Botanical Art',
       aspect: 'landscape',
       image: 'assets/projects/triveda-web.jpg',
       desc: 'Botanical ingredient reference cards with botanical line art, macro photography treatments, and paper dielines.',
-      tags: ['Stationery', 'Print Design', 'Brand Collateral'],
+      deliverables: ['Botanical Ingredient Cards', 'Herbarium Line Illustrations', 'Stationery & Collateral Suite'],
+      tags: ['Brand Collateral', 'Stationery', 'Visual System'],
       year: '2024'
     },
-
-    // --- UI DESIGN EXPLORATIONS (8 items) ---
     {
       id: 'pg-8',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'Nuvera Vitality Telemetry Dashboard',
+      discipline: 'UI Experiments · HealthTech · Data Visualization',
       aspect: 'portrait',
       image: 'assets/projects/nuvera.jpg',
       desc: 'Health tech interface concept: circular biological vitality index, clinical biomarker cards, and personalized dosage schedule.',
+      deliverables: ['Mobile Health Dashboard UI', 'Circular Biomarker Ring Gauge', 'Daily Dosage Schedule Component'],
       tags: ['UI Exploration', 'HealthTech', 'Data Visualization'],
       year: '2025'
     },
     {
       id: 'pg-9',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'ForgeOS Ergonomic Dark MES Console',
+      discipline: 'UI Experiments · Industrial SaaS · Telemetry UI',
       aspect: 'landscape',
       image: 'assets/projects/saas-landing-ux.jpg',
       desc: 'Industrial telemetry UI concept designed for plant floor monitors with high-contrast alert hierarchies and machine telemetry.',
+      deliverables: ['Industrial MES Telemetry Screen', 'High-Contrast Alert Hierarchy', 'Plant Floor Metric Cards'],
       tags: ['SaaS Concept', 'Dark Mode UI', 'Dashboard'],
       year: '2024'
     },
     {
       id: 'pg-10',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'AeroBharat 3D Spatial Mission Flight Deck',
+      discipline: 'UI Experiments · 3D Spatial UX · Drone Flight Deck',
       aspect: 'landscape',
       image: 'assets/projects/aerobharat-ux.jpg',
       desc: 'Spatial drone route planning interface with altitude contour charts, real-time geofence warnings, and waypoint orchestrators.',
+      deliverables: ['Spatial Drone Flight Deck UI', '3D Altitude Contour Chart', 'Geofence Perimeter Orchestrator'],
       tags: ['3D Spatial UX', 'Interaction Design', 'Drone UI'],
       year: '2025'
     },
     {
       id: 'pg-11',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'Mittika Fabric Drape & Texture Detail UX',
-      aspect: 'square',
+      discipline: 'UI Experiments · E-Commerce · Microinteractions',
+      aspect: 'portrait',
       image: 'assets/projects/mittika-ux.jpg',
       desc: 'Artisanal e-commerce interaction study: high-fidelity weave zoom, artisan provenance tags, and ethical fair-trade metrics.',
+      deliverables: ['Mobile E-Commerce Detail Flow', 'Fabric Drape Micro-Zoom View', 'Artisan Provenance Metatags'],
       tags: ['Mobile UX', 'E-Commerce', 'Interaction Design'],
       year: '2024'
     },
     {
       id: 'pg-12',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'Arena Interactive Seating Reservation UI',
+      discipline: 'UI Experiments · Interactive Map · Booking Flow',
       aspect: 'square',
       image: 'assets/projects/eventmgmt-ux.jpg',
       desc: 'Concert venue seat selection flow with live acoustic angle simulation, tiered price toggles, and instant cart reservation.',
+      deliverables: ['Interactive Seating Map UI', 'Acoustic Sightline Simulator', 'Tiered Ticket Checkout Drawer'],
       tags: ['UX Exploration', 'Interactive Map', 'Checkout Flow'],
       year: '2024'
     },
     {
       id: 'pg-13',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'EcoVolt Hybrid Inverter Solar Flow',
-      aspect: 'landscape',
+      discipline: 'UI Experiments · CleanTech · Energy Telemetry',
+      aspect: 'portrait',
       image: 'assets/projects/ecovolt-web.jpg',
       desc: 'Live solar energy monitor interface showing real-time kilowatt generation, battery charge telemetry, and grid export rates.',
+      deliverables: ['Mobile Solar Flow Interface', 'Real-Time Power Flow Visualizer', 'Battery Telemetry Gauge'],
       tags: ['Dashboard UI', 'CleanTech', 'Energy Analytics'],
       year: '2025'
     },
     {
       id: 'pg-14',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'Wave Live Stage Lineup & Dynamic Schedule',
-      aspect: 'landscape',
+      discipline: 'UI Experiments · Event App · Timetable UI',
+      aspect: 'square',
       image: 'assets/projects/eventmgmt-web.jpg',
       desc: 'Festival schedule mobile view with conflict avoidance alerts, artist discovery clips, and dynamic timetable switcher.',
+      deliverables: ['Dynamic Lineup Timetable UI', 'Stage Selector Switcher', 'Artist Schedule Conflict Alerts'],
       tags: ['Mobile UI', 'Event App', 'Design Systems'],
       year: '2024'
     },
     {
       id: 'pg-15',
       category: 'ui',
+      categoryLabel: 'UI Experiments',
       title: 'Mittika Digital Lookbook & Catalog Grid',
-      aspect: 'landscape',
+      discipline: 'UI Experiments · Editorial Web · Responsive Layout',
+      aspect: 'portrait',
       image: 'assets/projects/mittika-web.jpg',
       desc: 'Fluid responsive lookbook interface featuring editorial masonry layout, artisanal story modals, and microinteractions.',
+      deliverables: ['Responsive Lookbook Web Layout', 'Artisanal Craft Narrative Modal', 'Editorial Filter Switcher'],
       tags: ['Responsive UI', 'Editorial Web', 'Microinteractions'],
       year: '2024'
     }
   ];
 
   const playgroundGrid = document.getElementById('playground-grid');
-  const playgroundTabs = document.querySelectorAll('.playground__tab');
+  const playgroundTabsContainer = document.getElementById('playground-tabs');
   let currentPlaygroundFilter = 'all';
   let activePlaygroundItems = [...playgroundItems];
 
-  const buildPlaygroundCardHTML = (item, index) => {
-    const isDominant = index === 0;
+  // Helper to calculate project counts per category dynamically
+  const getCategoryCount = (key) => {
+    if (key === 'all') return playgroundItems.length;
+    return playgroundItems.filter(item => item.category === key).length;
+  };
+
+  // Build Filter Tabs dynamically ensuring counts reflect actual data
+  // Only displays categories with count > 0 (strictly obeying Phase 6 requirement)
+  const renderPlaygroundTabs = () => {
+    if (!playgroundTabsContainer) return;
+
+    const availableCategories = PLAYGROUND_CATEGORIES.filter(cat => getCategoryCount(cat.key) > 0);
+
+    playgroundTabsContainer.innerHTML = availableCategories.map(cat => {
+      const count = getCategoryCount(cat.key);
+      const isActive = cat.key === currentPlaygroundFilter;
+      return `
+        <button type="button"
+                class="playground__tab ${isActive ? 'playground__tab--active' : ''}"
+                role="tab"
+                id="pg-tab-${cat.key}"
+                aria-controls="playground-grid"
+                aria-selected="${isActive ? 'true' : 'false'}"
+                data-filter="${cat.key}">
+          <span class="playground__tab-label">${cat.label}</span>
+          <span class="playground__tab-count">(${count})</span>
+        </button>
+      `;
+    }).join('');
+
+    // Attach listeners
+    const tabButtons = playgroundTabsContainer.querySelectorAll('.playground__tab');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filterKey = btn.getAttribute('data-filter') || 'all';
+        setPlaygroundFilter(filterKey);
+      });
+
+      // Keyboard arrow navigation
+      btn.addEventListener('keydown', (e) => {
+        const tabsArray = Array.from(tabButtons);
+        const currentIndex = tabsArray.indexOf(btn);
+        let nextIndex = null;
+
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          nextIndex = (currentIndex + 1) % tabsArray.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          nextIndex = (currentIndex - 1 + tabsArray.length) % tabsArray.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          nextIndex = tabsArray.length - 1;
+        }
+
+        if (nextIndex !== null) {
+          tabsArray[nextIndex].focus();
+          const filterKey = tabsArray[nextIndex].getAttribute('data-filter') || 'all';
+          setPlaygroundFilter(filterKey);
+        }
+      });
+    });
+  };
+
+  const setPlaygroundFilter = (filterKey) => {
+    currentPlaygroundFilter = filterKey;
+
+    if (playgroundTabsContainer) {
+      const tabButtons = playgroundTabsContainer.querySelectorAll('.playground__tab');
+      tabButtons.forEach(btn => {
+        const isMatch = btn.getAttribute('data-filter') === filterKey;
+        btn.classList.toggle('playground__tab--active', isMatch);
+        btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+    }
+
+    renderPlayground(filterKey);
+  };
+
+  const buildPlaygroundCardHTML = (item, index, totalInView) => {
+    // In "All Work" view, apply deliberate editorial asymmetry on cards 0, 6, and 13
+    const isDominant = currentPlaygroundFilter === 'all' && (index === 0 || index === 6 || index === 13);
     const num = String(index + 1).padStart(2, '0');
-    const badgeText = item.category === 'graphic' ? 'Graphic Design' : 'UI Design';
     const dominantClass = isDominant ? ' playground-card--dominant' : '';
     const tagsHTML = (item.tags && item.tags.length > 0)
       ? `<div class="playground-card__tags">
-          ${item.tags.slice(0, 2).map(tag => `<span class="playground-card__tag">${tag}</span>`).join('')}
+          ${item.tags.slice(0, 3).map(tag => `<span class="playground-card__tag">${tag}</span>`).join('')}
         </div>`
       : '';
 
     return `
-      <article class="playground-card playground-card--${item.aspect}${dominantClass}" data-category="${item.category}" data-id="${item.id}" data-index="${index}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View ${item.title}">
+      <article class="playground-card playground-card--${item.aspect}${dominantClass}"
+               data-category="${item.category}"
+               data-id="${item.id}"
+               data-index="${index}"
+               tabindex="0"
+               role="button"
+               aria-haspopup="dialog"
+               aria-label="View ${item.title} — ${item.categoryLabel}">
         <div class="playground-card__inner">
           <div class="playground-card__image-wrap">
-            <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" class="playground-card__img">
+            <img src="${item.image}" alt="${item.title} — ${item.categoryLabel}" loading="lazy" decoding="async" class="playground-card__img">
             <div class="playground-card__zoom-indicator" aria-hidden="true">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
@@ -2048,15 +2193,16 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="playground-card__meta-left">
                 <span class="playground-card__num">${num}</span>
                 <span class="playground-card__meta-divider">/</span>
-                <span class="playground-card__cat">${badgeText}</span>
+                <span class="playground-card__cat">${item.categoryLabel.toUpperCase()}</span>
               </div>
               ${item.year ? `<span class="playground-card__year">${item.year}</span>` : ''}
             </div>
             <h3 class="playground-card__title">${item.title}</h3>
+            ${item.discipline ? `<p class="playground-card__discipline">${item.discipline}</p>` : ''}
             ${item.desc ? `<p class="playground-card__desc">${item.desc}</p>` : ''}
             ${tagsHTML}
             <div class="playground-card__view-cta" aria-hidden="true">
-              <span class="playground-card__cta-label">Examine Work</span>
+              <span class="playground-card__cta-label">VIEW PROJECT</span>
               <svg class="playground-card__arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -2076,29 +2222,16 @@ document.addEventListener('DOMContentLoaded', () => {
       : playgroundItems.filter(item => item.category === filter);
 
     playgroundGrid.innerHTML = activePlaygroundItems
-      .map((item, idx) => buildPlaygroundCardHTML(item, idx))
+      .map((item, idx) => buildPlaygroundCardHTML(item, idx, activePlaygroundItems.length))
       .join('');
   };
 
-  // Tab listeners
-  playgroundTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      playgroundTabs.forEach(t => {
-        t.classList.remove('playground__tab--active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('playground__tab--active');
-      tab.setAttribute('aria-selected', 'true');
-      const filter = tab.getAttribute('data-filter') || 'all';
-      renderPlayground(filter);
-    });
-  });
-
-  // Render initial playground items
+  // Initialize tabs and grid
+  renderPlaygroundTabs();
   renderPlayground('all');
 
   /* ============================================
-     LIGHTBOX MODAL IMPLEMENTATION
+     LIGHTBOX MODAL IMPLEMENTATION (PROJECT DETAIL VIEW)
      ============================================ */
   const lightboxModal = document.getElementById('lightbox-modal');
   const lightboxOverlay = document.getElementById('lightbox-overlay');
@@ -2109,7 +2242,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxBadge = document.getElementById('lightbox-badge');
   const lightboxCounter = document.getElementById('lightbox-counter');
   const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxDiscipline = document.getElementById('lightbox-discipline');
   const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxDeliverables = document.getElementById('lightbox-deliverables');
 
   let currentLightboxIndex = 0;
   let lastFocusedPlaygroundCard = null;
@@ -2122,19 +2257,27 @@ document.addEventListener('DOMContentLoaded', () => {
     currentLightboxIndex = index;
     if (lightboxImage) {
       lightboxImage.src = item.image;
-      lightboxImage.alt = item.title;
+      lightboxImage.alt = `${item.title} — ${item.categoryLabel}`;
     }
     if (lightboxBadge) {
-      lightboxBadge.textContent = item.category === 'graphic' ? 'Graphic Design' : 'UI Design Exploration';
+      lightboxBadge.textContent = item.categoryLabel.toUpperCase();
     }
     if (lightboxCounter) {
-      lightboxCounter.textContent = `${index + 1} / ${activePlaygroundItems.length}`;
+      lightboxCounter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(activePlaygroundItems.length).padStart(2, '0')}`;
     }
     if (lightboxTitle) {
       lightboxTitle.textContent = item.title;
     }
+    if (lightboxDiscipline) {
+      lightboxDiscipline.textContent = item.discipline || '';
+    }
     if (lightboxDesc) {
       lightboxDesc.textContent = item.desc;
+    }
+    if (lightboxDeliverables) {
+      lightboxDeliverables.innerHTML = (item.deliverables && item.deliverables.length > 0)
+        ? item.deliverables.map(d => `<span class="lightbox-modal__deliverable-tag">${d}</span>`).join('')
+        : '';
     }
   };
 

@@ -552,21 +552,13 @@
           </div>
           <h2 class="playground__title" data-reveal="fade-up" data-reveal-delay="100">Ideas in their rawest form.</h2>
           <p class="playground__subtitle" data-reveal="fade-up" data-reveal-delay="150">
-            An evolving archive of graphic explorations, visual experiments, and UI design concepts.
+            An evolving archive of visual explorations, brand applications, graphic experiments, and interface concepts developed across different creative disciplines.
           </p>
         </div>
 
-        <!-- Filter tabs for playground -->
-        <div class="playground__tabs" role="tablist" aria-label="Visual playground filters" data-reveal="fade-up" data-reveal-delay="200">
-          <button type="button" class="playground__tab playground__tab--active" role="tab" aria-selected="true" data-filter="all">
-            All Explorations <span class="playground__tab-count">(15)</span>
-          </button>
-          <button type="button" class="playground__tab" role="tab" aria-selected="false" data-filter="graphic">
-            Graphic Design <span class="playground__tab-count">(7)</span>
-          </button>
-          <button type="button" class="playground__tab" role="tab" aria-selected="false" data-filter="ui">
-            UI Design Explorations <span class="playground__tab-count">(8)</span>
-          </button>
+        <!-- Filter tabs for playground (dynamically rendered & counts synchronized by script.js) -->
+        <div class="playground__tabs" id="playground-tabs" role="tablist" aria-label="Visual playground category filters" data-reveal="fade-up" data-reveal-delay="200">
+          <!-- Dynamically populated by script.js -->
         </div>
 
         <!-- Playground Grid -->
@@ -577,8 +569,8 @@
         <!-- Pinterest Creative Archive Integration -->
         <div class="playground__pinterest-banner" data-reveal="fade-up" data-reveal-delay="200">
           <div class="playground__pinterest-content">
-            <span class="playground__pinterest-eyebrow">MORE VISUAL INSPIRATION</span>
-            <p class="playground__pinterest-desc">Explore my Pinterest boards for references, visual research, and creative inspiration.</p>
+            <h3 class="playground__pinterest-heading">A little more visual inspiration.</h3>
+            <p class="playground__pinterest-desc">Explore my Pinterest boards for design references, visual research, and ideas that influence my creative process.</p>
           </div>
           <a href="https://pin.it/3Xb0A4dhW" target="_blank" rel="noopener noreferrer" class="playground__pinterest-btn" aria-label="Explore my Pinterest boards for visual inspiration (opens in a new tab)">
             <span>EXPLORE MY PINTEREST &nearr;</span>
@@ -879,10 +871,10 @@
   <!-- ============================================
        VISUAL PLAYGROUND LIGHTBOX MODAL
        ============================================ -->
-  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lightbox-title">
-    <div class="lightbox-modal__overlay" id="lightbox-overlay"></div>
+  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lightbox-title" aria-describedby="lightbox-desc">
+    <div class="lightbox-modal__overlay" id="lightbox-overlay" tabindex="-1"></div>
     <div class="lightbox-modal__container">
-      <button type="button" class="lightbox-modal__close" id="lightbox-close" aria-label="Close lightbox">
+      <button type="button" class="lightbox-modal__close" id="lightbox-close" aria-label="Close project view">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -907,11 +899,13 @@
         </div>
         <div class="lightbox-modal__caption">
           <div class="lightbox-modal__meta">
-            <span class="lightbox-modal__badge" id="lightbox-badge">Graphic Design</span>
-            <span class="lightbox-modal__counter" id="lightbox-counter">1 / 15</span>
+            <span class="lightbox-modal__badge" id="lightbox-badge"></span>
+            <span class="lightbox-modal__counter" id="lightbox-counter"></span>
           </div>
-          <h3 class="lightbox-modal__title" id="lightbox-title">Artwork Title</h3>
-          <p class="lightbox-modal__desc" id="lightbox-desc">Detailed exploration notes...</p>
+          <h3 class="lightbox-modal__title" id="lightbox-title"></h3>
+          <p class="lightbox-modal__discipline" id="lightbox-discipline"></p>
+          <p class="lightbox-modal__desc" id="lightbox-desc"></p>
+          <div class="lightbox-modal__deliverables" id="lightbox-deliverables"></div>
         </div>
       </div>
     </div>
