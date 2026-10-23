@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const handleNavScroll = () => {
     if (!navbar) return;
-    navbar.classList.toggle('navbar--scrolled', window.scrollY > 80);
+    navbar.classList.toggle('navbar--scrolled', window.scrollY > 20);
   };
 
   handleNavScroll();                        // run on load
