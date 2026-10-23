@@ -2021,26 +2021,46 @@ document.addEventListener('DOMContentLoaded', () => {
   let activePlaygroundItems = [...playgroundItems];
 
   const buildPlaygroundCardHTML = (item, index) => {
-    const badgeText = item.category === 'graphic' ? 'Graphic Design' : 'UI Exploration';
+    const isDominant = index === 0;
+    const num = String(index + 1).padStart(2, '0');
+    const badgeText = item.category === 'graphic' ? 'Graphic Design' : 'UI Design';
+    const dominantClass = isDominant ? ' playground-card--dominant' : '';
+    const tagsHTML = (item.tags && item.tags.length > 0)
+      ? `<div class="playground-card__tags">
+          ${item.tags.slice(0, 2).map(tag => `<span class="playground-card__tag">${tag}</span>`).join('')}
+        </div>`
+      : '';
+
     return `
-      <article class="playground-card playground-card--${item.aspect}" data-category="${item.category}" data-id="${item.id}" data-index="${index}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View ${item.title}">
+      <article class="playground-card playground-card--${item.aspect}${dominantClass}" data-category="${item.category}" data-id="${item.id}" data-index="${index}" tabindex="0" role="button" aria-haspopup="dialog" aria-label="View ${item.title}">
         <div class="playground-card__inner">
           <div class="playground-card__image-wrap">
             <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" class="playground-card__img">
-            <div class="playground-card__overlay">
-              <span class="playground-card__zoom-badge" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  <line x1="11" y1="8" x2="11" y2="14"></line>
-                  <line x1="8" y1="11" x2="14" y2="11"></line>
-                </svg>
-              </span>
-              <div class="playground-card__info">
-                <span class="playground-card__badge">${badgeText}</span>
-                <h3 class="playground-card__title">${item.title}</h3>
-                <p class="playground-card__desc">${item.desc}</p>
+            <div class="playground-card__zoom-indicator" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div class="playground-card__content">
+            <div class="playground-card__meta">
+              <div class="playground-card__meta-left">
+                <span class="playground-card__num">${num}</span>
+                <span class="playground-card__meta-divider">/</span>
+                <span class="playground-card__cat">${badgeText}</span>
               </div>
+              ${item.year ? `<span class="playground-card__year">${item.year}</span>` : ''}
+            </div>
+            <h3 class="playground-card__title">${item.title}</h3>
+            ${item.desc ? `<p class="playground-card__desc">${item.desc}</p>` : ''}
+            ${tagsHTML}
+            <div class="playground-card__view-cta" aria-hidden="true">
+              <span class="playground-card__cta-label">Examine Work</span>
+              <svg class="playground-card__arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
             </div>
           </div>
         </div>
