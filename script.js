@@ -107,11 +107,248 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================================
-     3. SMOOTH SCROLL — handled by CSS
-        (scroll-behavior: smooth + scroll-margin-top)
-        We only need JS to close the mobile menu
-        when a link is clicked.
+     3. LUXURY SMOOTH SCROLL & MOMENTUM ENGINE
+     Buttery inertial mouse wheel physics, damped lerp interpolation,
+     eased anchor navigation, and touch-preserved responsiveness.
      ============================================ */
+  let currentScrollY = window.scrollY;
+  let targetScrollY = window.scrollY;
+  let isScrollAnimating = false;
+  let isProgrammaticScroll = false;
+  let scrollAnimFrameId = null;
+  let programmaticAnimId = null;
+
+  // Check if pointer device is fine (mouse/trackpad) vs coarse touch
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+  // Maximum allowed scroll offset
+  const getMaxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+  // Synchronize internal state with actual window scroll (e.g. scrollbar drag, touch swipe)
+  const syncScrollState = () => {
+    if (!isScrollAnimating && !isProgrammaticScroll) {
+      currentScrollY = window.scrollY;
+      targetScrollY = window.scrollY;
+    }
+  };
+  window.addEventListener('scroll', syncScrollState, { passive: true });
+
+  // Test if an element or its ancestor has vertical scrollable overflow
+  const isScrollableSubtree = (target, deltaY) => {
+    let el = target;
+    while (el && el !== document.body && el !== document.documentElement) {
+      const style = window.getComputedStyle(el);
+      const overflowY = style.overflowY;
+      if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight) {
+        const atTop = el.scrollTop <= 0;
+        const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+        if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) {
+          return true;
+        }
+      }
+      el = el.parentElement;
+    }
+    return false;
+  };
+
+  // Momentum scroll loop for mouse wheel / trackpad
+  const updateMomentumScroll = () => {
+    if (document.body.classList.contains('modal-open')) {
+      isScrollAnimating = false;
+      return;
+    }
+
+    const maxScroll = getMaxScroll();
+    targetScrollY = Math.max(0, Math.min(targetScrollY, maxScroll));
+    const diff = targetScrollY - currentScrollY;
+
+    if (Math.abs(diff) < 0.4) {
+      currentScrollY = targetScrollY;
+      window.scrollTo(0, Math.round(currentScrollY));
+      isScrollAnimating = false;
+      return;
+    }
+
+    // Adaptive damping: snappier for trackpads, luxurious glide for mouse wheels
+    currentScrollY += diff * 0.09;
+    window.scrollTo(0, Math.round(currentScrollY));
+    scrollAnimFrameId = requestAnimationFrame(updateMomentumScroll);
+  };
+
+  // Wheel listener for desktop / fine pointer devices
+  if (!prefersReducedMotion && isFinePointer) {
+    window.addEventListener('wheel', (e) => {
+      // Don't intercept if modal is open or if user is scrolling inside an internal scrollable container
+      if (document.body.classList.contains('modal-open')) return;
+      if (isScrollableSubtree(e.target, e.deltaY)) return;
+
+      // Cancel programmatic scroll if active so user retains full wheel authority
+      if (isProgrammaticScroll) {
+        cancelAnimationFrame(programmaticAnimId);
+        isProgrammaticScroll = false;
+        currentScrollY = window.scrollY;
+        targetScrollY = window.scrollY;
+      }
+
+      e.preventDefault();
+
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 36; // lines to px
+      else if (e.deltaMode === 2) delta *= window.innerHeight; // pages to px
+
+      // Normalize trackpad vs mouse wheel
+      const isTrackpad = Math.abs(delta) < 40 && !Number.isInteger(delta);
+      const multiplier = isTrackpad ? 0.9 : 1.05;
+
+      const maxScroll = getMaxScroll();
+      targetScrollY = Math.max(0, Math.min(targetScrollY + delta * multiplier, maxScroll));
+
+      if (!isScrollAnimating) {
+        isScrollAnimating = true;
+        currentScrollY = window.scrollY;
+        scrollAnimFrameId = requestAnimationFrame(updateMomentumScroll);
+      }
+    }, { passive: false });
+  }
+
+  // Luxury Quartic Ease-Out: prompt start with silky, cushioned deceleration
+  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+  // Programmatic smooth scroll to a target element or pixel position
+  const smoothScrollTo = (target, customDuration) => {
+    let destination = 0;
+    if (typeof target === 'number') {
+      destination = target;
+    } else {
+      const el = typeof target === 'string' ? document.querySelector(target) : target;
+      if (!el) return;
+      const navEl = document.getElementById('navbar');
+      const navHeight = navEl ? navEl.offsetHeight : 70;
+      const rect = el.getBoundingClientRect();
+      destination = rect.top + window.scrollY - navHeight - 10;
+    }
+
+    const maxScroll = getMaxScroll();
+    destination = Math.max(0, Math.min(destination, maxScroll));
+
+    if (prefersReducedMotion) {
+      window.scrollTo(0, Math.round(destination));
+      currentScrollY = destination;
+      targetScrollY = destination;
+      return;
+    }
+
+    // Stop wheel momentum animation
+    if (isScrollAnimating) {
+      cancelAnimationFrame(scrollAnimFrameId);
+      isScrollAnimating = false;
+    }
+    if (isProgrammaticScroll) {
+      cancelAnimationFrame(programmaticAnimId);
+    }
+
+    isProgrammaticScroll = true;
+    const startY = window.scrollY;
+    const distance = destination - startY;
+    const duration = typeof customDuration === 'number'
+      ? customDuration
+      : Math.min(Math.max(Math.abs(distance) * 0.4, 550), 950);
+    const startTime = performance.now();
+
+    const stepProgrammatic = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOutQuart(progress);
+      const nextY = startY + distance * easedProgress;
+
+      window.scrollTo(0, Math.round(nextY));
+      currentScrollY = nextY;
+      targetScrollY = destination;
+
+      if (progress < 1) {
+        programmaticAnimId = requestAnimationFrame(stepProgrammatic);
+      } else {
+        window.scrollTo(0, Math.round(destination));
+        currentScrollY = destination;
+        targetScrollY = destination;
+        isProgrammaticScroll = false;
+      }
+    };
+
+    programmaticAnimId = requestAnimationFrame(stepProgrammatic);
+  };
+
+  // Wire up smooth scrolling on all anchor links pointing to sections
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href || href === '#' || href.startsWith('#case-')) return;
+
+    const targetEl = document.querySelector(href);
+    if (targetEl) {
+      e.preventDefault();
+
+      // Close mobile navigation drawer if open
+      if (typeof closeMenu === 'function') {
+        closeMenu();
+      }
+
+      smoothScrollTo(targetEl);
+
+      // Cleanly update URL without instant jump
+      if (history.pushState) {
+        history.pushState(null, '', href);
+      }
+    }
+  });
+
+  // Keyboard navigation smooth scrolling (PageUp, PageDown, Arrows, Space, Home, End)
+  if (!prefersReducedMotion && isFinePointer) {
+    window.addEventListener('keydown', (e) => {
+      // Ignore if focus is in an input or editable field or if modal is open
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || document.activeElement?.isContentEditable) {
+        return;
+      }
+      if (document.body.classList.contains('modal-open')) return;
+
+      let keyDelta = 0;
+      if (e.key === 'ArrowDown') keyDelta = 80;
+      else if (e.key === 'ArrowUp') keyDelta = -80;
+      else if (e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) keyDelta = window.innerHeight * 0.85;
+      else if (e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) keyDelta = -window.innerHeight * 0.85;
+      else if (e.key === 'Home') {
+        e.preventDefault();
+        smoothScrollTo(0);
+        return;
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        smoothScrollTo(getMaxScroll());
+        return;
+      }
+
+      if (keyDelta !== 0) {
+        e.preventDefault();
+        if (isProgrammaticScroll) {
+          cancelAnimationFrame(programmaticAnimId);
+          isProgrammaticScroll = false;
+          currentScrollY = window.scrollY;
+          targetScrollY = window.scrollY;
+        }
+
+        const maxScroll = getMaxScroll();
+        targetScrollY = Math.max(0, Math.min(targetScrollY + keyDelta, maxScroll));
+
+        if (!isScrollAnimating) {
+          isScrollAnimating = true;
+          currentScrollY = window.scrollY;
+          scrollAnimFrameId = requestAnimationFrame(updateMomentumScroll);
+        }
+      }
+    });
+  }
 
   /* ============================================
      1b. NAVBAR CV DROPDOWN
@@ -1233,7 +1470,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contactSection = document.getElementById('contact');
         if (contactSection) {
           setTimeout(() => {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
+            smoothScrollTo(contactSection);
           }, 150);
         }
       });
@@ -1995,7 +2232,7 @@ document.addEventListener('DOMContentLoaded', () => {
           applyCategory(cat);
           const workSection = document.getElementById('work');
           if (workSection) {
-            workSection.scrollIntoView({ behavior: 'smooth' });
+            smoothScrollTo(workSection);
           }
         }
         closeHeroDropdown();
@@ -2038,7 +2275,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyCategory(cat);
             const workSection = document.getElementById('work');
             if (workSection) {
-              workSection.scrollIntoView({ behavior: 'smooth' });
+              smoothScrollTo(workSection);
             }
           }
           closeHeroDropdown();
@@ -2214,7 +2451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetId = scrollHintLink.getAttribute('href')?.replace('#', '') || 'process';
         const targetSection = document.getElementById(targetId);
         if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
+          smoothScrollTo(targetSection);
         }
       });
     }
@@ -2222,7 +2459,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(0);
     });
   }
 
@@ -2858,7 +3095,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const playgroundSec = document.getElementById('playground');
     if (playgroundSec) {
-      playgroundSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      smoothScrollTo(playgroundSec);
     }
     if (folderSleeve) {
       folderSleeve.focus();

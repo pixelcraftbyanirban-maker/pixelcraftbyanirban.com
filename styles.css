@@ -11,8 +11,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+  scroll-behavior: auto;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -20,7 +20,7 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   position: relative;
 }
@@ -642,7 +642,7 @@ button { cursor: pointer; border: none; background: transparent; }
 
 section {
   padding-block: clamp(36px, 4.5vw, 54px);
-  scroll-margin-top: calc(var(--navbar-h) + 8px);
+  scroll-margin-top: calc(var(--navbar-h) + 12px);
 }
 
 /* --- Section label (uppercase with gold rule) --- */
