@@ -10,12 +10,12 @@
   const loader = document.getElementById('page-loader');
   if (!loader) return;
 
-  const MIN_DISPLAY = 1200; // ms — matches the bar animation duration
+  const MAX_POST_LOAD_DELAY = 450; // ms — never block FCP/LCP > 500ms once assets ready
   const startTime = performance.now();
 
   const hideLoader = () => {
     const elapsed = performance.now() - startTime;
-    const remaining = Math.max(0, MIN_DISPLAY - elapsed);
+    const remaining = Math.max(0, MAX_POST_LOAD_DELAY - elapsed);
 
     setTimeout(() => {
       loader.classList.add('page-loader--hidden');
@@ -23,6 +23,13 @@
         loader.remove();
         window.dispatchEvent(new CustomEvent('page-ready'));
       }, { once: true });
+      // Fallback removal if transitionend doesn't fire
+      setTimeout(() => {
+        if (loader.parentNode) {
+          loader.remove();
+          window.dispatchEvent(new CustomEvent('page-ready'));
+        }
+      }, 350);
     }, remaining);
   };
 
@@ -31,9 +38,13 @@
     loader.remove();
     window.dispatchEvent(new CustomEvent('page-ready'));
   } else {
-    window.addEventListener('load', hideLoader);
-    // Safety fallback — never block the page longer than 4s
-    setTimeout(hideLoader, 4000);
+    if (document.readyState === 'complete') {
+      hideLoader();
+    } else {
+      window.addEventListener('load', hideLoader);
+      // Safety fallback — never block the page longer than 1500ms
+      setTimeout(hideLoader, 1500);
+    }
   }
 })();
 
@@ -63,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. SCROLL SPY (IntersectionObserver)
      ============================================ */
   const navLinks = document.querySelectorAll('#nav-list .nav-link');
-  const sectionIds = ['home', 'process', 'work', 'playground', 'contact'];
+  const sectionIds = ['home', 'work', 'process', 'playground', 'contact'];
   const spySections = sectionIds
     .map(id => document.getElementById(id))
     .filter(Boolean);
@@ -381,9 +392,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderChips = (key, containerId) => {
     const el = document.getElementById(containerId);
     if (!el || !toolsData[key]) return;
-    el.innerHTML = toolsData[key]
-      .map((name, i) => `<span class="chip chip--${key}" style="transition-delay: ${(i * 28) + 120}ms">${name}</span>`)
-      .join('');
+    if (el.children.length === 0) {
+      el.innerHTML = toolsData[key]
+        .map((name, i) => `<span class="chip chip--${key}" style="transition-delay: ${(i * 28) + 120}ms">${name}</span>`)
+        .join('');
+    } else {
+      Array.from(el.children).forEach((child, i) => {
+        child.style.transitionDelay = `${(i * 28) + 120}ms`;
+      });
+    }
   };
 
   renderChips('product', 'chips-product');
@@ -645,6 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     {
       id: 'triveda-brand',
+      featured: true,
       category: 'brand-identity',
       title: 'Triveda',
       discipline: 'Brand Strategy & Visual Identity',
@@ -666,6 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'mittika-brand',
+      featured: true,
       category: 'brand-identity',
       title: 'Mittika',
       discipline: 'Visual Identity & Cultural Branding',
@@ -781,6 +800,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'nuvera-ux',
+      featured: true,
       category: 'product-design',
       title: 'Nuvera',
       discipline: 'UX Research & UI Design (App & Landing Page)',
@@ -844,6 +864,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'aerobharat-ux',
+      featured: true,
       category: 'product-design',
       title: 'AeroBharat',
       discipline: 'Product Design & 3D Mission Planner',
@@ -886,7 +907,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     // ============================================
-    // SECTION 3: WEB DEV WITH VIBE CODING (5 Projects)
+    // SECTION 3: FRONTEND & DESIGN ENGINEERING (5 Projects)
     // "all same from branding"
     // a. Triveda
     // b. Mittika
@@ -896,6 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     {
       id: 'triveda-web',
+      featured: true,
       category: 'web-dev',
       title: 'Triveda',
       discipline: 'Responsive Web & E-Commerce',
@@ -959,11 +981,12 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'forgeos-web',
+      featured: true,
       category: 'web-dev',
       title: 'ForgeOS',
       discipline: 'Webflow & Frontend Development',
       client: 'ForgeOS Automation Labs',
-      role: 'Frontend Developer & Vibe Coder',
+      role: 'Frontend & Design Engineer',
       tagline: 'Interactive Webflow marketing site: live telemetry simulation, dark mode UI tokens, and AI-paired custom code interactions.',
       description: 'High-performance enterprise landing page with interactive machine state simulators built with Webflow and custom JavaScript.',
       challenge: 'Embedding responsive, animated plant machine telemetry previews inside a Webflow production site with sub-second load times.',
@@ -974,7 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Responsive CSS token system & dark theme variables',
         'SEO-optimized semantic DOM structure'
       ],
-      tools: ['Webflow', 'JavaScript', 'CSS3', 'Vibe Coding', 'Interactive UI'],
+      tools: ['Webflow', 'JavaScript', 'CSS3', 'Design Engineering', 'Interactive UI'],
       thumbnail: 'assets/projects/saas-landing-ux.jpg',
       link: '#'
     },
@@ -1002,9 +1025,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const categoryLabels = {
-    'brand-identity': 'Section 1: Branding',
-    'product-design': 'Section 2: UX Research & UI Design',
-    'web-dev': 'Section 3: Web Dev with Vibe Coding'
+    'all': 'All Featured',
+    'product-design': 'Product & UI/UX Design',
+    'brand-identity': 'Brand Identity & Packaging',
+    'web-dev': 'Frontend & Design Engineering'
   };
 
   /* ============================================
@@ -1013,32 +1037,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectsGrid = document.getElementById('projects-grid');
 
   const buildCardHTML = (p, idx = 0) => {
-    const toolTags = p.tools
+    const toolTags = p.tools.slice(0, 4)
       .map(t => `<span class="project-card__tool-tag">${t}</span>`)
       .join('');
 
+    const categoryLabel = categoryLabels[p.category] || 'Featured Project';
+    const domainText = p.discipline || p.client || categoryLabel;
+    const summaryText = p.tagline || p.description;
+
     return `
-      <div class="project-card project-card--visible" data-category="${p.category}" data-id="${p.id}" style="transition-delay: ${idx * 65}ms">
+      <div class="project-card project-card--visible project-card--revealed" data-category="${p.category}" data-id="${p.id}" style="transition-delay: ${idx * 65}ms">
         <div class="project-card__inner">
           <div class="project-card__front">
-            <img src="${p.thumbnail}" alt="${p.title} — project thumbnail" loading="lazy" decoding="async">
-            <span class="project-card__front-title">${p.title}</span>
+            <img src="${p.thumbnail}" alt="${p.title} — ${categoryLabel}" loading="lazy" decoding="async" width="400" height="300">
+            <div class="project-card__front-overlay">
+              <span class="project-card__front-badge">${categoryLabel}</span>
+              <span class="project-card__front-title">${p.title}</span>
+            </div>
           </div>
           <div class="project-card__back">
-            <span class="project-card__category">${categoryLabels[p.category] || p.category}</span>
+            <div class="project-card__badge-row">
+              <span class="project-card__category">${categoryLabel}</span>
+              <span class="project-card__domain">${domainText}</span>
+            </div>
             <h3 class="project-card__title">${p.title}</h3>
-            <p class="project-card__desc">${p.description}</p>
+            <p class="project-card__desc">${summaryText}</p>
             <div class="project-card__tools">${toolTags}</div>
-            <a href="#case-${p.id}" class="project-card__link" data-id="${p.id}" aria-label="View case study for ${p.title}">View case study <span class="arrow">&rarr;</span></a>
+            <div class="project-card__actions">
+              <a href="#case-${p.id}" class="project-card__link" data-id="${p.id}" aria-label="View case study for ${p.title}">
+                <span>View Case Study</span>
+                <span class="arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>`;
   };
 
-  const renderProjects = (category) => {
+  const renderProjects = (category = 'all') => {
     if (!projectsGrid) return;
 
-    const filtered = projects.filter(p => p.category === category);
+    const filtered = (category === 'all')
+      ? projects.filter(p => p.featured)
+      : projects.filter(p => p.category === category);
     const html = filtered.map((p, idx) => buildCardHTML(p, idx)).join('');
 
     // Skip animation if user prefers reduced motion
@@ -1246,7 +1287,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnViewGrid = document.getElementById('btn-view-grid');
   const projectsStage = document.getElementById('projects-stage');
   const projectsSection = document.getElementById('work') || document.querySelector('.projects');
-  let isDeckMode = !prefersReducedMotion; // default to stacked deck until hovered
+  let isDeckMode = false; // default to expanded grid / bento view
   let stageTransitionTimer = null;
   let justStackedCooldown = false;
 
@@ -2664,30 +2705,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const peekVal1 = document.getElementById('pg-peek-val-1');
     const peekSys1 = document.getElementById('pg-peek-sys-1');
 
-    if (peekChip1) peekChip1.textContent = (item1.category || 'EXP').toUpperCase();
-    if (peekMetric1) peekMetric1.textContent = (item1.aspect || 'TELEMETRY').toUpperCase();
-    if (peekVal1) peekVal1.textContent = item1.title ? (item1.title.length > 18 ? item1.title.slice(0, 16) + '..' : item1.title) : 'ARCHIVE_01';
-    if (peekSys1) peekSys1.textContent = `SYS_CORE // ${item1.year || '2026'}`;
+    if (peekChip1) peekChip1.textContent = 'ARCHIVE // 2026';
+    if (peekMetric1) peekMetric1.textContent = (item1.category || 'BRAND IDENTITY').toUpperCase();
+    if (peekVal1) peekVal1.textContent = item1.title ? (item1.title.length > 18 ? item1.title.slice(0, 16) + '..' : item1.title) : 'SELECTED';
+    if (peekSys1) peekSys1.textContent = 'VISUAL & UI LAB';
 
     const peekChip2 = document.getElementById('pg-peek-chip-2');
     const peekMetric2 = document.getElementById('pg-peek-metric-2');
     const peekVal2 = document.getElementById('pg-peek-val-2');
     const peekSys2 = document.getElementById('pg-peek-sys-2');
 
-    if (peekChip2) peekChip2.textContent = (item2.category || 'EXP').toUpperCase();
-    if (peekMetric2) peekMetric2.textContent = (item2.aspect || 'IDENTITY').toUpperCase();
-    if (peekVal2) peekVal2.textContent = item2.title ? (item2.title.length > 18 ? item2.title.slice(0, 16) + '..' : item2.title) : 'ARCHIVE_02';
-    if (peekSys2) peekSys2.textContent = `SYS_CORE // ${item2.year || '2026'}`;
+    if (peekChip2) peekChip2.textContent = 'VISUAL & UI LAB';
+    if (peekMetric2) peekMetric2.textContent = (item2.category || 'CREATIVE ARCHIVE').toUpperCase();
+    if (peekVal2) peekVal2.textContent = item2.title ? (item2.title.length > 18 ? item2.title.slice(0, 16) + '..' : item2.title) : '2026';
+    if (peekSys2) peekSys2.textContent = 'BRAND • MOTION • INTERFACES';
 
     const peekChip3 = document.getElementById('pg-peek-chip-3');
     const peekMetric3 = document.getElementById('pg-peek-metric-3');
     const peekVal3 = document.getElementById('pg-peek-val-3');
     const peekSys3 = document.getElementById('pg-peek-sys-3');
 
-    if (peekChip3) peekChip3.textContent = (item3.category || 'EXP').toUpperCase();
-    if (peekMetric3) peekMetric3.textContent = (item3.aspect || 'SYSTEM').toUpperCase();
-    if (peekVal3) peekVal3.textContent = item3.title ? (item3.title.length > 18 ? item3.title.slice(0, 16) + '..' : item3.title) : 'ARCHIVE_03';
-    if (peekSys3) peekSys3.textContent = `SYS_CORE // ${item3.year || '2026'}`;
+    if (peekChip3) peekChip3.textContent = 'BRAND • MOTION • INTERFACES';
+    if (peekMetric3) peekMetric3.textContent = (item3.category || 'INTERACTION LAB').toUpperCase();
+    if (peekVal3) peekVal3.textContent = item3.title ? (item3.title.length > 18 ? item3.title.slice(0, 16) + '..' : item3.title) : 'EXPERIMENTAL';
+    if (peekSys3) peekSys3.textContent = 'ARCHIVE // 2026';
   };
 
   const renderPlayground = (filter = 'all') => {
@@ -2811,6 +2852,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prefersReducedMotion && folder) {
     folder.classList.add('is-open');
+  }
+
+  // IntersectionObserver on #playground to subtly peek or auto-expand folder at 35% threshold
+  const playgroundSection = document.getElementById('playground');
+  let playgroundPeekTriggered = false;
+
+  if (playgroundSection && folder && !prefersReducedMotion) {
+    const playgroundObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !playgroundPeekTriggered && !isFolderOpen) {
+          playgroundPeekTriggered = true;
+          folder.classList.add('is-peeking');
+          setTimeout(() => {
+            if (!isFolderOpen) {
+              openFolder();
+              folder.classList.remove('is-peeking');
+            }
+          }, 600);
+        }
+      });
+    }, {
+      threshold: 0.35
+    });
+    playgroundObserver.observe(playgroundSection);
   }
 
   // Initialize tabs and grid

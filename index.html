@@ -67,8 +67,8 @@
       <nav class="navbar__nav" aria-label="Main navigation">
         <ul class="navbar__links" id="nav-list">
           <li><a href="#home" class="nav-link nav-link--active">Home</a></li>
-          <li><a href="#process" class="nav-link">Process</a></li>
           <li><a href="#work" class="nav-link">Work</a></li>
+          <li><a href="#process" class="nav-link">Process</a></li>
           <li><a href="#playground" class="nav-link">Playground</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
           <li class="nav-cv-dropdown" id="nav-cv-dropdown">
@@ -82,8 +82,8 @@
               <li role="none">
                 <a href="assets/cv/Anirban-Kumar-Sarkar-Product-Design-CV.pdf" download="Anirban-Kumar-Sarkar-Product-Design-CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv-item" role="menuitem">
                   <div class="nav-cv-item-text">
-                    <span class="nav-cv-item-title">Product Design CV</span>
-                    <span class="nav-cv-item-desc">Visual design, branding &amp; strategy</span>
+                    <span class="nav-cv-item-title">Brand &amp; Visual Design CV</span>
+                    <span class="nav-cv-item-desc">Brand identity, packaging &amp; visual strategy</span>
                   </div>
                   <span class="nav-cv-item-badge">PDF</span>
                 </a>
@@ -91,8 +91,8 @@
               <li role="none">
                 <a href="assets/cv/Anirban-Kumar-Sarkar-UI-UX-CV.pdf" download="Anirban-Kumar-Sarkar-UI-UX-CV.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv-item" role="menuitem">
                   <div class="nav-cv-item-text">
-                    <span class="nav-cv-item-title">UI/UX &amp; Frontend CV</span>
-                    <span class="nav-cv-item-desc">UX research, systems &amp; front-end</span>
+                    <span class="nav-cv-item-title">Product Design &amp; Frontend CV</span>
+                    <span class="nav-cv-item-desc">End-to-end UI/UX, design systems &amp; code</span>
                   </div>
                   <span class="nav-cv-item-badge">PDF</span>
                 </a>
@@ -143,20 +143,20 @@
     <nav aria-label="Mobile navigation">
       <ul class="mobile-menu__links">
         <li><a href="#home" class="mobile-menu__link">Home</a></li>
-        <li><a href="#process" class="mobile-menu__link">Process</a></li>
         <li><a href="#work" class="mobile-menu__link">Work</a></li>
+        <li><a href="#process" class="mobile-menu__link">Process</a></li>
         <li><a href="#playground" class="mobile-menu__link">Playground</a></li>
         <li><a href="#contact" class="mobile-menu__link">Contact</a></li>
         <li class="mobile-menu__divider" aria-hidden="true"></li>
         <li class="mobile-menu__section-title">Download Resume</li>
         <li>
           <a href="assets/cv/Anirban-Kumar-Sarkar-Product-Design-CV.pdf" download="Anirban-Kumar-Sarkar-Product-Design-CV.pdf" target="_blank" rel="noopener noreferrer" class="mobile-menu__sublink">
-            Product Design CV (PDF)
+            Brand &amp; Visual Design CV (PDF)
           </a>
         </li>
         <li>
           <a href="assets/cv/Anirban-Kumar-Sarkar-UI-UX-CV.pdf" download="Anirban-Kumar-Sarkar-UI-UX-CV.pdf" target="_blank" rel="noopener noreferrer" class="mobile-menu__sublink">
-            UI/UX &amp; Frontend CV (PDF)
+            Product Design &amp; Frontend CV (PDF)
           </a>
         </li>
         <li class="mobile-menu__divider" aria-hidden="true"></li>
@@ -199,12 +199,12 @@
           <div class="hero__image" data-reveal="scale-up" data-reveal-delay="150">
             <div class="hero__portrait-wrapper">
               <div class="hero__portrait-bg" aria-hidden="true"></div>
-              <img src="assets/portrait.jpg" alt="Portrait of Anirban Kumar Sarkar, Graphic, Brand and Product Designer" class="hero__portrait" width="420" height="420">
+              <img src="assets/portrait.jpg" alt="Portrait of Anirban Kumar Sarkar, Graphic, Brand and Product Designer" class="hero__portrait" width="420" height="420" fetchpriority="high">
             </div>
           </div>
         </div>
         <div class="hero__scroll-hint" id="hero-scroll-hint" data-reveal="fade-up" data-reveal-delay="400">
-          <a href="#process" class="hero__scroll-link" aria-label="Scroll to explore process">
+          <a href="#work" class="hero__scroll-link" aria-label="Scroll to explore selected work">
             <span class="hero__scroll-text">Scroll to explore</span>
             <span class="hero__scroll-icon" aria-hidden="true">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -217,6 +217,243 @@
     </section>
 
     <!-- ============================================
+         SECTION — SELECTED WORK
+         ============================================ -->
+    <section id="work" class="projects">
+      <div class="container projects__inner">
+        <p class="section-label" data-reveal="fade-up">SELECTED WORK</p>
+        <h2 data-reveal="fade-up" data-reveal-delay="100">Featured design &amp; branding projects</h2>
+
+        <div class="projects__controls">
+          <div class="projects__filter-tabs" id="project-filters" role="tablist" aria-label="Filter projects by category">
+            <button type="button" role="tab" class="project-filter-pill project-filter-pill--active" id="tab-all" aria-selected="true" data-category="all" tabindex="0">
+              All Featured
+            </button>
+            <button type="button" role="tab" class="project-filter-pill" id="tab-product" aria-selected="false" data-category="product-design" tabindex="-1">
+              Product &amp; UI/UX Design
+            </button>
+            <button type="button" role="tab" class="project-filter-pill" id="tab-brand" aria-selected="false" data-category="brand-identity" tabindex="-1">
+              Brand Identity &amp; Packaging
+            </button>
+            <button type="button" role="tab" class="project-filter-pill" id="tab-dev" aria-selected="false" data-category="web-dev" tabindex="-1">
+              Frontend &amp; Design Engineering
+            </button>
+          </div>
+
+          <div class="view-toggle" id="view-toggle" role="group" aria-label="Project card layout mode">
+            <button type="button" class="view-toggle__btn" id="btn-view-deck" aria-pressed="false">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="7" width="16" height="14" rx="2" ry="2"></rect>
+                <path d="M6 3h12a2 2 0 0 1 2 2v12"></path>
+              </svg>
+              <span>Deck</span>
+            </button>
+            <button type="button" class="view-toggle__btn view-toggle__btn--active" id="btn-view-grid" aria-pressed="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>Grid</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="projects__stage" id="projects-stage">
+          <div class="projects-deck-hint" id="projects-deck-hint" aria-hidden="true">
+            <span class="projects-deck-hint__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M21 3l-7 7"></path>
+                <path d="M3 21l7-7"></path>
+              </svg>
+              <span class="projects-deck-hint__text-desktop">Hover deck to deal cards</span>
+              <span class="projects-deck-hint__text-mobile">Tap deck to deal cards</span>
+            </span>
+          </div>
+          <div class="projects__grid" id="projects-grid" role="tabpanel" aria-label="Featured projects grid">
+            <!-- Static SEO Fallback Cards for Featured Projects -->
+            <div class="project-card project-card--visible project-card--revealed" data-category="product-design" data-id="nuvera-ux">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/nuvera.jpg" alt="Nuvera — Product &amp; UI/UX Design" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Product &amp; UI/UX Design</span>
+                    <span class="project-card__front-title">Nuvera</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Product &amp; UI/UX Design</span>
+                    <span class="project-card__domain">Nuvera Health Science</span>
+                  </div>
+                  <h3 class="project-card__title">Nuvera</h3>
+                  <p class="project-card__desc">Digital health biomarker tracking app and clinical landing page: personalized supplement regimens and test-kit onboarding.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">Figma</span>
+                    <span class="project-card__tool-tag">UX Research</span>
+                    <span class="project-card__tool-tag">User Flows</span>
+                    <span class="project-card__tool-tag">Design Systems</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-nuvera-ux" class="project-card__link" data-id="nuvera-ux" aria-label="View case study for Nuvera">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card project-card--visible project-card--revealed" data-category="brand-identity" data-id="triveda-brand">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/triveda-brand.jpg" alt="Triveda — Brand Identity &amp; Packaging" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Brand Identity &amp; Packaging</span>
+                    <span class="project-card__front-title">Triveda</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Brand Identity &amp; Packaging</span>
+                    <span class="project-card__domain">Triveda Wellness</span>
+                  </div>
+                  <h3 class="project-card__title">Triveda</h3>
+                  <p class="project-card__desc">Holistic Ayurvedic wellness brand: visual strategy, sacred geometry wordmark, typography system, and packaging suites.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">Illustrator</span>
+                    <span class="project-card__tool-tag">InDesign</span>
+                    <span class="project-card__tool-tag">Photoshop</span>
+                    <span class="project-card__tool-tag">Brand Strategy</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-triveda-brand" class="project-card__link" data-id="triveda-brand" aria-label="View case study for Triveda">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card project-card--visible project-card--revealed" data-category="product-design" data-id="aerobharat-ux">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/aerobharat-ux.jpg" alt="AeroBharat — Product &amp; UI/UX Design" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Product &amp; UI/UX Design</span>
+                    <span class="project-card__front-title">AeroBharat</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Product &amp; UI/UX Design</span>
+                    <span class="project-card__domain">AeroBharat Robotics</span>
+                  </div>
+                  <h3 class="project-card__title">AeroBharat</h3>
+                  <p class="project-card__desc">Industrial drone mission planner and flight path app with interactive 3D waypoint spatial orchestration.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">Figma</span>
+                    <span class="project-card__tool-tag">Interaction Design</span>
+                    <span class="project-card__tool-tag">3D Spatial UX</span>
+                    <span class="project-card__tool-tag">Prototyping</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-aerobharat-ux" class="project-card__link" data-id="aerobharat-ux" aria-label="View case study for AeroBharat">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card project-card--visible project-card--revealed" data-category="brand-identity" data-id="mittika-brand">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/mittika-brand.jpg" alt="Mittika — Brand Identity &amp; Packaging" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Brand Identity &amp; Packaging</span>
+                    <span class="project-card__front-title">Mittika</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Brand Identity &amp; Packaging</span>
+                    <span class="project-card__domain">Mittika Handlooms</span>
+                  </div>
+                  <h3 class="project-card__title">Mittika</h3>
+                  <p class="project-card__desc">Artisanal Indian fabric brand: earthen palette, loom-inspired symbol, packaging, and artisan-story stationery system.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">Illustrator</span>
+                    <span class="project-card__tool-tag">Brand Identity</span>
+                    <span class="project-card__tool-tag">Packaging</span>
+                    <span class="project-card__tool-tag">Color Systems</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-mittika-brand" class="project-card__link" data-id="mittika-brand" aria-label="View case study for Mittika">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card project-card--visible project-card--revealed" data-category="web-dev" data-id="forgeos-web">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/saas-landing-ux.jpg" alt="ForgeOS — Frontend &amp; Design Engineering" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Frontend &amp; Design Engineering</span>
+                    <span class="project-card__front-title">ForgeOS</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Frontend &amp; Design Engineering</span>
+                    <span class="project-card__domain">ForgeOS Automation Labs</span>
+                  </div>
+                  <h3 class="project-card__title">ForgeOS</h3>
+                  <p class="project-card__desc">Interactive Webflow marketing site: live telemetry simulation, dark mode UI tokens, and AI-paired custom code interactions.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">Webflow</span>
+                    <span class="project-card__tool-tag">JavaScript</span>
+                    <span class="project-card__tool-tag">CSS3</span>
+                    <span class="project-card__tool-tag">Design Engineering</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-forgeos-web" class="project-card__link" data-id="forgeos-web" aria-label="View case study for ForgeOS">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card project-card--visible project-card--revealed" data-category="web-dev" data-id="triveda-web">
+              <div class="project-card__inner">
+                <div class="project-card__front">
+                  <img src="assets/projects/triveda-web.jpg" alt="Triveda — Frontend &amp; Design Engineering" loading="lazy" decoding="async" width="400" height="300">
+                  <div class="project-card__front-overlay">
+                    <span class="project-card__front-badge">Frontend &amp; Design Engineering</span>
+                    <span class="project-card__front-title">Triveda</span>
+                  </div>
+                </div>
+                <div class="project-card__back">
+                  <div class="project-card__badge-row">
+                    <span class="project-card__category">Frontend &amp; Design Engineering</span>
+                    <span class="project-card__domain">Triveda Wellness</span>
+                  </div>
+                  <h3 class="project-card__title">Triveda</h3>
+                  <p class="project-card__desc">High-performance botanical e-commerce site with interactive ingredient apothecary and responsive cart.</p>
+                  <div class="project-card__tools">
+                    <span class="project-card__tool-tag">HTML5</span>
+                    <span class="project-card__tool-tag">CSS3 Layouts</span>
+                    <span class="project-card__tool-tag">Vanilla JS</span>
+                    <span class="project-card__tool-tag">WCAG AA</span>
+                  </div>
+                  <div class="project-card__actions">
+                    <a href="#case-triveda-web" class="project-card__link" data-id="triveda-web" aria-label="View case study for Triveda">View Case Study <span class="arrow">&rarr;</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- ============================================
          SECTION — PROCESS
          ============================================ -->
     <section id="process" class="process-section">
@@ -476,7 +713,7 @@
               <h3 class="process-card__title">Build &amp; Ship</h3>
               <p class="process-card__subtitle">Production Code &amp; Launch</p>
               <p class="process-card__desc">
-                Implementing clean semantic frontend code paired with AI development tools (Cursor, Claude Code, Antigravity), comprehensive QA, and deploying fast, responsive client products.
+                Shipping semantic, accessible frontend architecture accelerated by AI development workflows (Cursor, Claude Code, Antigravity), rigorous cross-browser QA, and production deployment.
               </p>
             </div>
             <div class="process-card__footer">
@@ -505,7 +742,7 @@
     </div>
   </section>
 
-    <!-- ============================================
+<!-- ============================================
          SECTION — SOFTWARE & AI TOOLS
          ============================================ -->
     <section id="tools" class="tools">
@@ -515,252 +752,64 @@
         <div class="tools__groups">
           <div class="tools__group" data-reveal="fade-up" data-reveal-delay="150">
             <h3 class="tools__sub-label">Graphic Design &amp; Brand Identity</h3>
-            <div class="tools__chips" id="chips-brand"></div>
+            <div class="tools__chips" id="chips-brand">
+              <span class="chip chip--brand">Visual Identity</span>
+              <span class="chip chip--brand">Typography Systems</span>
+              <span class="chip chip--brand">Editorial Layout</span>
+              <span class="chip chip--brand">Packaging Design</span>
+              <span class="chip chip--brand">Brand Strategy</span>
+              <span class="chip chip--brand">Logo Systems</span>
+              <span class="chip chip--brand">Advertising Creatives</span>
+              <span class="chip chip--brand">Art Direction</span>
+            </div>
           </div>
           <div class="tools__group" data-reveal="fade-up" data-reveal-delay="200">
             <h3 class="tools__sub-label">Product Design &amp; UI/UX</h3>
-            <div class="tools__chips" id="chips-product"></div>
+            <div class="tools__chips" id="chips-product">
+              <span class="chip chip--product">Figma</span>
+              <span class="chip chip--product">UX Research</span>
+              <span class="chip chip--product">User Flows</span>
+              <span class="chip chip--product">Wireframing</span>
+              <span class="chip chip--product">Design Systems</span>
+              <span class="chip chip--product">Interactive Prototyping</span>
+              <span class="chip chip--product">Usability Testing</span>
+              <span class="chip chip--product">Information Architecture</span>
+            </div>
           </div>
           <div class="tools__group" data-reveal="fade-up" data-reveal-delay="250">
-            <h3 class="tools__sub-label">Frontend Development &amp; Vibe Coding</h3>
-            <div class="tools__chips" id="chips-dev"></div>
+            <h3 class="tools__sub-label">Frontend Engineering &amp; AI-Augmented Workflows</h3>
+            <div class="tools__chips" id="chips-dev">
+              <span class="chip chip--dev">HTML5</span>
+              <span class="chip chip--dev">CSS3</span>
+              <span class="chip chip--dev">JavaScript</span>
+              <span class="chip chip--dev">Tailwind CSS</span>
+              <span class="chip chip--dev">Responsive Design</span>
+              <span class="chip chip--dev">DOM Manipulation</span>
+              <span class="chip chip--dev">Bootstrap</span>
+              <span class="chip chip--dev">Sass</span>
+              <span class="chip chip--dev">Browser DevTools</span>
+            </div>
           </div>
           <div class="tools__group" data-reveal="fade-up" data-reveal-delay="300">
             <h3 class="tools__sub-label">Motion, 3D &amp; AI-Assisted Workflows</h3>
-            <div class="tools__chips" id="chips-ai"></div>
+            <div class="tools__chips" id="chips-ai">
+              <span class="chip chip--ai">After Effects</span>
+              <span class="chip chip--ai">Blender</span>
+              <span class="chip chip--ai">Three.js</span>
+              <span class="chip chip--ai">Spline 3D</span>
+              <span class="chip chip--ai">Cursor</span>
+              <span class="chip chip--ai">Claude Code</span>
+              <span class="chip chip--ai">Antigravity</span>
+              <span class="chip chip--ai">Midjourney</span>
+              <span class="chip chip--ai">Firefly</span>
+              <span class="chip chip--ai">ChatGPT</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         SECTION — SELECTED WORK
-         ============================================ -->
-    <section id="work" class="projects is-deck-mode">
-      <div class="container projects__inner">
-        <p class="section-label" data-reveal="fade-up">SELECTED WORK</p>
-        <h2 data-reveal="fade-up" data-reveal-delay="100">Featured design &amp; branding projects</h2>
-        
-
-        <div class="projects__controls">
-          <div class="filter-dropdown" id="filter-dropdown">
-            <button class="filter-dropdown__toggle" id="filter-toggle" aria-haspopup="listbox" aria-expanded="false">
-              <span class="filter-dropdown__label" id="filter-label">Section 1: Branding</span>
-              <svg class="filter-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <ul class="filter-dropdown__menu" id="filter-menu" role="listbox" aria-label="Filter projects by category">
-              <li class="filter-dropdown__item filter-dropdown__item--active" role="option" aria-selected="true" data-category="brand-identity">Section 1: Branding</li>
-              <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="product-design">Section 2: UX Research &amp; UI Design</li>
-              <li class="filter-dropdown__item" role="option" aria-selected="false" data-category="web-dev">Section 3: Web Dev with Vibe Coding</li>
-            </ul>
-          </div>
-
-          <div class="view-toggle" id="view-toggle" role="group" aria-label="Project card layout mode">
-            <button type="button" class="view-toggle__btn view-toggle__btn--active" id="btn-view-deck" aria-pressed="true">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="7" width="16" height="14" rx="2" ry="2"></rect>
-                <path d="M6 3h12a2 2 0 0 1 2 2v12"></path>
-              </svg>
-              <span>Deck</span>
-            </button>
-            <button type="button" class="view-toggle__btn" id="btn-view-grid" aria-pressed="false">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-              </svg>
-              <span>Grid</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="projects__stage is-stacked" id="projects-stage">
-          <div class="projects-deck-hint" id="projects-deck-hint" aria-hidden="true">
-            <span class="projects-deck-hint__badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 3h6v6"></path>
-                <path d="M9 21H3v-6"></path>
-                <path d="M21 3l-7 7"></path>
-                <path d="M3 21l7-7"></path>
-              </svg>
-              <span class="projects-deck-hint__text-desktop">Hover deck to deal cards</span>
-              <span class="projects-deck-hint__text-mobile">Tap deck to deal cards</span>
-            </span>
-          </div>
-          <div class="projects__grid is-stacked" id="projects-grid" role="tabpanel"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================
-         SECTION — VISUAL PLAYGROUND (EDITORIAL CREATIVE ARCHIVE)
-         ============================================ -->
-    <section id="playground" class="playground-section">
-      <div class="container playground__inner">
-        <div class="playground__header">
-          <div class="playground__eyebrow-wrap" data-reveal="fade-up">
-            <span class="playground__eyebrow-line" aria-hidden="true"></span>
-            <span class="playground__eyebrow">SELECTED EXPERIMENTS / 2026</span>
-          </div>
-          <h2 class="playground__title" data-reveal="fade-up" data-reveal-delay="100">Ideas in their rawest form.</h2>
-          <p class="playground__subtitle" data-reveal="fade-up" data-reveal-delay="150">
-            An evolving archive of visual explorations, brand applications, graphic experiments, and interface concepts developed across different creative disciplines.
-          </p>
-        </div>
-
-        <!-- Archive Folder Container -->
-        <div class="playground-folder" id="playground-folder" data-reveal="fade-up" data-reveal-delay="200" style="--folder-accent: #E06A42;">
-          <!-- Category Tabs Bar (Folder Tabs along the top) -->
-          <div class="playground-folder__tabs-bar">
-            <div class="playground-folder__tabs" id="playground-tabs" role="tablist" aria-label="Archive folder categories">
-              <!-- Populated dynamically by script.js -->
-            </div>
-          </div>
-
-          <!-- Digital Frosted Folder Sleeve (Closed State) -->
-          <div class="playground-folder__sleeve" id="playground-folder-sleeve" role="button" tabindex="0" aria-expanded="false" aria-controls="playground-viewport" aria-label="Selected Experiments Folder. Tap to pop out cards.">
-            <!-- Back Folder Plate (SVG silhouette with top-left tab notch) -->
-            <div class="playground-folder__back-plate" aria-hidden="true">
-              <svg class="playground-folder__back-svg" viewBox="0 0 760 480" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="playground-folder__back-path" d="M 0 28 C 0 12.5 12.5 0 28 0 L 210 0 C 226 0 238 8 248 20 L 282 54 C 291 62 302 66 314 66 L 732 66 C 747.5 66 760 78.5 760 94 L 760 452 C 760 467.5 747.5 480 732 480 L 28 480 C 12.5 480 0 467.5 0 452 Z" fill="currentColor"/>
-              </svg>
-              <div class="playground-folder__back-glow"></div>
-            </div>
-
-            <!-- Fanned Cards Inside (Peeking Out at Top) -->
-            <div class="playground-folder__peek-cards" id="playground-peek-cards" aria-hidden="true">
-              <!-- Card 1 (Left tilted) -->
-              <div class="pg-peek-card pg-peek-card--left" id="pg-peek-1">
-                <div class="pg-peek-card__punch-hole"></div>
-                <div class="pg-peek-card__header">
-                  <span class="pg-peek-card__chip" id="pg-peek-chip-1">CLUSTER_01</span>
-                  <span class="pg-peek-card__dot-live"></span>
-                </div>
-                <div class="pg-peek-card__body">
-                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-1">NET_TUNNEL</span>
-                  <span class="pg-peek-card__metric-val" id="pg-peek-val-1">1.2ms</span>
-                  <span class="pg-peek-card__sys" id="pg-peek-sys-1">SYS_CORE // NEURAL</span>
-                </div>
-              </div>
-
-              <!-- Card 2 (Center straight, elevated) -->
-              <div class="pg-peek-card pg-peek-card--center" id="pg-peek-2">
-                <div class="pg-peek-card__punch-hole"></div>
-                <div class="pg-peek-card__header">
-                  <span class="pg-peek-card__chip" id="pg-peek-chip-2">CLUSTER_02</span>
-                  <span class="pg-peek-card__badge-live">LIVE</span>
-                </div>
-                <div class="pg-peek-card__body">
-                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-2">BRIDGE_TX</span>
-                  <span class="pg-peek-card__metric-val" id="pg-peek-val-2">0.8ms</span>
-                  <span class="pg-peek-card__sys" id="pg-peek-sys-2">SYS_CORE // ARCHIVE</span>
-                </div>
-              </div>
-
-              <!-- Card 3 (Right tilted) -->
-              <div class="pg-peek-card pg-peek-card--right" id="pg-peek-3">
-                <div class="pg-peek-card__punch-hole"></div>
-                <div class="pg-peek-card__header">
-                  <span class="pg-peek-card__chip" id="pg-peek-chip-3">PORT_03</span>
-                  <span class="pg-peek-card__dot-live"></span>
-                </div>
-                <div class="pg-peek-card__body">
-                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-3">BFT_MESH</span>
-                  <span class="pg-peek-card__metric-val" id="pg-peek-val-3">2.4ms</span>
-                  <span class="pg-peek-card__sys" id="pg-peek-sys-3">SYS_CORE // ZERO</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Frosted Glass Front Flap (Glassmorphism with heavy frost blur) -->
-            <div class="playground-folder__front-glass" id="playground-folder-front">
-              <div class="playground-folder__glass-sheen" aria-hidden="true"></div>
-
-              <!-- Center Interactive Pop-Out Trigger -->
-              <div class="playground-folder__tap-prompt">
-                <div class="playground-folder__tap-pill">
-                  <span class="playground-folder__tap-sparkle" aria-hidden="true">&#10022;</span>
-                  <span class="playground-folder__tap-label" id="playground-folder-btn-text">Tap to Pop Out Cards</span>
-                  <span class="playground-folder__tap-count" id="playground-folder-count">15 Experiments</span>
-                  <svg class="playground-folder__tap-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
-                </div>
-              </div>
-
-              <!-- Bottom Glass Metadata: Bottom-Left STATE / Link Active & Bottom-Right Wave / AUDIO ON -->
-              <div class="playground-folder__glass-footer">
-                <div class="playground-folder__state-group">
-                  <span class="playground-folder__state-title">STATE</span>
-                  <span class="playground-folder__state-status">
-                    <span class="playground-folder__pulse-dot" aria-hidden="true"></span>
-                    Link Active
-                  </span>
-                </div>
-
-                <div class="playground-folder__audio-group">
-                  <svg class="playground-folder__wave-svg" width="48" height="16" viewBox="0 0 48 16" fill="none" aria-hidden="true">
-                    <path d="M1 8 C 6 2, 10 2, 15 8 C 20 14, 24 14, 29 8 C 34 2, 38 2, 43 8 C 45 11, 47 11, 47 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                  <span class="playground-folder__audio-label">AUDIO ON</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Popped-Out Expanded Viewport (Holds the Full Grid) -->
-          <div class="playground-folder__expanded-viewport" id="playground-viewport" aria-hidden="true">
-            <!-- Top dossier header bar with Tuck button -->
-            <div class="playground-folder__expanded-header">
-              <div class="playground-folder__expanded-info">
-                <span class="playground-folder__expanded-badge">ARCHIVE UNLOCKED</span>
-                <span class="playground-folder__expanded-count" id="playground-expanded-count">15 EXPERIMENTS DISPLAYED</span>
-              </div>
-              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-top" aria-label="Tuck cards back into folder">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                  <polyline points="5 12 12 5 19 12"></polyline>
-                </svg>
-                <span>Tuck Cards Back into Folder &uarr;</span>
-              </button>
-            </div>
-
-            <!-- Responsive Experiments Grid -->
-            <div class="playground__grid" id="playground-grid" role="region" aria-label="Visual explorations gallery">
-              <!-- Rendered dynamically by script.js -->
-            </div>
-
-            <!-- Bottom dossier footer bar with Close button -->
-            <div class="playground-folder__expanded-footer">
-              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-bottom" aria-label="Tuck cards back into folder">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                  <polyline points="5 12 12 5 19 12"></polyline>
-                </svg>
-                <span>Close Archive &amp; Tuck Cards &uarr;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pinterest Creative Archive Integration -->
-        <div class="playground__pinterest-banner" data-reveal="fade-up" data-reveal-delay="200">
-          <div class="playground__pinterest-content">
-            <h3 class="playground__pinterest-heading">A little more visual inspiration.</h3>
-            <p class="playground__pinterest-desc">Explore my Pinterest boards for design references, visual research, and ideas that influence my creative process.</p>
-          </div>
-          <a href="https://pin.it/3Xb0A4dhW" target="_blank" rel="noopener noreferrer" class="playground__pinterest-btn" aria-label="Explore my Pinterest boards for visual inspiration (opens in a new tab)">
-            <span>EXPLORE MY PINTEREST &nearr;</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================
+<!-- ============================================
          SECTION — BRINGING DESIGN INTO THE BROWSER
          ============================================ -->
     <section id="dev" class="dev-section">
@@ -769,7 +818,7 @@
           <p class="section-label" data-reveal="fade-up">SUPPORTING DISCIPLINE — INTERACTIVE PROTOTYPING &amp; CODE</p>
           <h2 data-reveal="fade-up" data-reveal-delay="100">Bringing design into the browser</h2>
           <p class="dev-section__subtitle" data-reveal="fade-up" data-reveal-delay="150">
-            Coding is a supporting capability that extends my design practice. Rather than stopping at static Figma artboards, I use frontend fundamentals and AI-assisted vibe coding workflows to translate visual concepts into responsive, accessible, interactive web experiences.
+            Coding is a supporting capability that extends my design practice. Rather than stopping at static Figma artboards, I use frontend fundamentals and AI-augmented workflows to translate visual concepts into responsive, accessible, interactive web experiences.
           </p>
         </div>
 
@@ -1054,7 +1103,7 @@
           </article>
 
           <!-- ==============================================
-               CARD 4: VIBE CODING WORKFLOW (CYPHEIR PIPELINE)
+               CARD 4: AI-AUGMENTED ENGINEERING (CYPHEIR PIPELINE)
                ============================================== -->
           <article class="dev-card cypheir-card cypheir-card--pipeline" data-reveal="fade-up" data-reveal-delay="350" tabindex="0">
             <div class="cypheir-card__beam" aria-hidden="true"></div>
@@ -1080,8 +1129,8 @@
                 </svg>
               </div>
               <div class="dev-card__header-text">
-                <h3 class="dev-card__title">Vibe Coding Workflow</h3>
-                <p class="dev-card__tagline">AI acceleration paired with rigorous auditing</p>
+                <h3 class="dev-card__title">AI-Augmented Engineering</h3>
+                <p class="dev-card__tagline">AI acceleration paired with rigorous engineering audit</p>
               </div>
             </div>
 
@@ -1174,7 +1223,172 @@
       </div>
     </section>
 
-    <section id="contact" class="contact">
+<!-- ============================================
+         SECTION — VISUAL PLAYGROUND (EDITORIAL CREATIVE ARCHIVE)
+         ============================================ -->
+    <section id="playground" class="playground-section">
+      <div class="container playground__inner">
+        <div class="playground__header">
+          <div class="playground__eyebrow-wrap" data-reveal="fade-up">
+            <span class="playground__eyebrow-line" aria-hidden="true"></span>
+            <span class="playground__eyebrow">SELECTED EXPERIMENTS / 2026</span>
+          </div>
+          <h2 class="playground__title" data-reveal="fade-up" data-reveal-delay="100">Ideas in their rawest form.</h2>
+          <p class="playground__subtitle" data-reveal="fade-up" data-reveal-delay="150">
+            An evolving archive of visual explorations, brand applications, graphic experiments, and interface concepts developed across different creative disciplines.
+          </p>
+        </div>
+
+        <!-- Archive Folder Container -->
+        <div class="playground-folder" id="playground-folder" data-reveal="fade-up" data-reveal-delay="200" style="--folder-accent: #E06A42;">
+          <!-- Category Tabs Bar (Folder Tabs along the top) -->
+          <div class="playground-folder__tabs-bar">
+            <div class="playground-folder__tabs" id="playground-tabs" role="tablist" aria-label="Archive folder categories">
+              <!-- Populated dynamically by script.js -->
+            </div>
+          </div>
+
+          <!-- Digital Frosted Folder Sleeve (Closed State) -->
+          <div class="playground-folder__sleeve" id="playground-folder-sleeve" role="button" tabindex="0" aria-expanded="false" aria-controls="playground-viewport" aria-label="Selected Experiments Folder. Tap to pop out cards.">
+            <!-- Back Folder Plate (SVG silhouette with top-left tab notch) -->
+            <div class="playground-folder__back-plate" aria-hidden="true">
+              <svg class="playground-folder__back-svg" viewBox="0 0 760 480" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="playground-folder__back-path" d="M 0 28 C 0 12.5 12.5 0 28 0 L 210 0 C 226 0 238 8 248 20 L 282 54 C 291 62 302 66 314 66 L 732 66 C 747.5 66 760 78.5 760 94 L 760 452 C 760 467.5 747.5 480 732 480 L 28 480 C 12.5 480 0 467.5 0 452 Z" fill="currentColor"/>
+              </svg>
+              <div class="playground-folder__back-glow"></div>
+            </div>
+
+            <!-- Fanned Cards Inside (Peeking Out at Top) -->
+            <div class="playground-folder__peek-cards" id="playground-peek-cards" aria-hidden="true">
+              <!-- Card 1 (Left tilted) -->
+              <div class="pg-peek-card pg-peek-card--left" id="pg-peek-1">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-1">ARCHIVE // 2026</span>
+                  <span class="pg-peek-card__dot-live"></span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-1">BRAND IDENTITY</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-1">SELECTED</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-1">VISUAL &amp; UI LAB</span>
+                </div>
+              </div>
+
+              <!-- Card 2 (Center straight, elevated) -->
+              <div class="pg-peek-card pg-peek-card--center" id="pg-peek-2">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-2">VISUAL &amp; UI LAB</span>
+                  <span class="pg-peek-card__badge-live">INDEX</span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-2">CREATIVE ARCHIVE</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-2">2026</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-2">BRAND &bull; MOTION &bull; INTERFACES</span>
+                </div>
+              </div>
+
+              <!-- Card 3 (Right tilted) -->
+              <div class="pg-peek-card pg-peek-card--right" id="pg-peek-3">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-3">BRAND &bull; MOTION &bull; INTERFACES</span>
+                  <span class="pg-peek-card__dot-live"></span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-3">INTERACTION LAB</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-3">EXPERIMENTAL</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-3">ARCHIVE // 2026</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frosted Glass Front Flap (Glassmorphism with heavy frost blur) -->
+            <div class="playground-folder__front-glass" id="playground-folder-front">
+              <div class="playground-folder__glass-sheen" aria-hidden="true"></div>
+
+              <!-- Center Interactive Pop-Out Trigger -->
+              <div class="playground-folder__tap-prompt">
+                <div class="playground-folder__tap-pill">
+                  <span class="playground-folder__tap-sparkle" aria-hidden="true">&#10022;</span>
+                  <span class="playground-folder__tap-label" id="playground-folder-btn-text">Tap to Pop Out Cards</span>
+                  <span class="playground-folder__tap-count" id="playground-folder-count">15 Experiments</span>
+                  <svg class="playground-folder__tap-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Bottom Glass Metadata: Bottom-Left STATE / Link Active & Bottom-Right Wave / AUDIO ON -->
+              <div class="playground-folder__glass-footer">
+                <div class="playground-folder__state-group">
+                  <span class="playground-folder__state-title">STATE</span>
+                  <span class="playground-folder__state-status">
+                    <span class="playground-folder__pulse-dot" aria-hidden="true"></span>
+                    Link Active
+                  </span>
+                </div>
+
+                <div class="playground-folder__audio-group">
+                  <svg class="playground-folder__wave-svg" width="48" height="16" viewBox="0 0 48 16" fill="none" aria-hidden="true">
+                    <path d="M1 8 C 6 2, 10 2, 15 8 C 20 14, 24 14, 29 8 C 34 2, 38 2, 43 8 C 45 11, 47 11, 47 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <span class="playground-folder__audio-label">AUDIO ON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Popped-Out Expanded Viewport (Holds the Full Grid) -->
+          <div class="playground-folder__expanded-viewport" id="playground-viewport" aria-hidden="true">
+            <!-- Top dossier header bar with Tuck button -->
+            <div class="playground-folder__expanded-header">
+              <div class="playground-folder__expanded-info">
+                <span class="playground-folder__expanded-badge">ARCHIVE UNLOCKED</span>
+                <span class="playground-folder__expanded-count" id="playground-expanded-count">15 EXPERIMENTS DISPLAYED</span>
+              </div>
+              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-top" aria-label="Tuck cards back into folder">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5"></line>
+                  <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <span>Tuck Cards Back into Folder &uarr;</span>
+              </button>
+            </div>
+
+            <!-- Responsive Experiments Grid -->
+            <div class="playground__grid" id="playground-grid" role="region" aria-label="Visual explorations gallery">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+
+            <!-- Bottom dossier footer bar with Close button -->
+            <div class="playground-folder__expanded-footer">
+              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-bottom" aria-label="Tuck cards back into folder">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5"></line>
+                  <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <span>Close Archive &amp; Tuck Cards &uarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pinterest Creative Archive Integration -->
+        <div class="playground__pinterest-banner" data-reveal="fade-up" data-reveal-delay="200">
+          <div class="playground__pinterest-content">
+            <h3 class="playground__pinterest-heading">A little more visual inspiration.</h3>
+            <p class="playground__pinterest-desc">Explore my Pinterest boards for design references, visual research, and ideas that influence my creative process.</p>
+          </div>
+          <a href="https://pin.it/3Xb0A4dhW" target="_blank" rel="noopener noreferrer" class="playground__pinterest-btn" aria-label="Explore my Pinterest boards for visual inspiration (opens in a new tab)">
+            <span>EXPLORE MY PINTEREST &nearr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+<section id="contact" class="contact">
       <div class="container contact__grid">
         <!-- Left Column -->
         <div class="contact__info" data-reveal="fade-right">
@@ -1251,7 +1465,7 @@
                 <option value="product-design">Product Design (UI/UX)</option>
                 <option value="brand-identity">Brand Identity &amp; Visual Systems</option>
                 <option value="saas-product">SaaS Product Design &amp; Prototyping</option>
-                <option value="web-development">Web Development &amp; Vibe Coding</option>
+                <option value="web-development">Frontend &amp; Design Engineering</option>
                 <option value="interactive-website">Interactive Website / Landing Page</option>
                 <option value="something-else">Something else</option>
               </select>
