@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. SCROLL SPY (IntersectionObserver)
      ============================================ */
   const navLinks = document.querySelectorAll('#nav-list .nav-link');
-  const sectionIds = ['home', 'process', 'tools', 'work', 'playground', 'dev', 'contact'];
+  const sectionIds = ['home', 'process', 'work', 'playground', 'contact'];
   const spySections = sectionIds
     .map(id => document.getElementById(id))
     .filter(Boolean);
