@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Meta theme-color for mobile browser chrome
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', isLight ? '#fef9d7' : '#07080C');
+      metaThemeColor.setAttribute('content', isLight ? '#FEFDF8' : '#07080C');
     }
   };
 
@@ -1593,13 +1593,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (projectsStage) {
-      if (prefersReducedMotion) {
-        projectsStage.style.height = 'auto';
-        projectsStage.classList.remove('is-stacked');
-      } else {
+      const wasStacked = projectsStage.classList.contains('is-stacked') || projectsGrid.classList.contains('is-stacked');
+      projectsStage.classList.remove('is-stacked');
+
+      if (wasStacked && !prefersReducedMotion) {
         const currentH = projectsStage.offsetHeight;
-        // Temporarily remove is-stacked from stage so we can measure full natural grid height
-        projectsStage.classList.remove('is-stacked');
         const targetH = projectsGrid.scrollHeight;
 
         projectsStage.style.height = `${currentH}px`;
@@ -1611,6 +1609,8 @@ document.addEventListener('DOMContentLoaded', () => {
             projectsStage.style.height = 'auto';
           }
         }, 460);
+      } else {
+        projectsStage.style.height = 'auto';
       }
     }
 
@@ -2092,109 +2092,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  const filterDropdown = document.getElementById('filter-dropdown');
-  const filterToggle = document.getElementById('filter-toggle');
-  const filterMenu = document.getElementById('filter-menu');
-  const filterLabel = document.getElementById('filter-label');
-  const filterItems = filterMenu
-    ? filterMenu.querySelectorAll('.filter-dropdown__item')
-    : [];
+  /* ============================================
+     7. PROJECT CATEGORY FILTER PILLS
+     ============================================ */
+  const projectFiltersContainer = document.getElementById('project-filters');
+  const projectFilterPills = projectFiltersContainer
+    ? projectFiltersContainer.querySelectorAll('.project-filter-pill')
+    : document.querySelectorAll('.project-filter-pill');
 
-  // Helper to apply category to filter dropdown and re-render projects
+  let currentProjectCategory = 'all';
+
+  // Apply category selection and synchronize UI
   let applyCategory = (category) => {
+    currentProjectCategory = category;
+
+    // Update pill tabs active state & accessibility attributes
+    if (projectFilterPills.length > 0) {
+      projectFilterPills.forEach(pill => {
+        const isMatch = pill.getAttribute('data-category') === category;
+        pill.classList.toggle('project-filter-pill--active', isMatch);
+        pill.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        pill.setAttribute('tabindex', isMatch ? '0' : '-1');
+      });
+    }
+
     renderProjects(category);
   };
 
-  if (filterToggle && filterMenu && filterItems.length > 0) {
-    // Initial render — first item is active by default
-    const initialCategory = filterItems[0].getAttribute('data-category');
-    renderProjects(initialCategory);
-
-    const openDropdown = () => {
-      if (filterDropdown) filterDropdown.classList.add('filter-dropdown--open');
-      filterMenu.classList.add('filter-dropdown__menu--open');
-      filterToggle.setAttribute('aria-expanded', 'true');
-    };
-
-    const closeDropdown = () => {
-      if (filterDropdown) filterDropdown.classList.remove('filter-dropdown--open');
-      filterMenu.classList.remove('filter-dropdown__menu--open');
-      filterToggle.setAttribute('aria-expanded', 'false');
-    };
-
-    const isOpen = () => filterToggle.getAttribute('aria-expanded') === 'true';
-
-    // Apply category selection and synchronize UI
-    applyCategory = (category) => {
-      const targetItem = [...filterItems].find(i => i.getAttribute('data-category') === category);
-      if (!targetItem) return;
-
-      filterItems.forEach(i => {
-        i.classList.remove('filter-dropdown__item--active');
-        i.setAttribute('aria-selected', 'false');
+  // Wire click & keyboard events on category filter pills
+  if (projectFilterPills.length > 0) {
+    projectFilterPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const category = pill.getAttribute('data-category') || 'all';
+        applyCategory(category);
       });
-      targetItem.classList.add('filter-dropdown__item--active');
-      targetItem.setAttribute('aria-selected', 'true');
-      filterLabel.textContent = targetItem.textContent;
-      renderProjects(category);
-    };
 
-    // Toggle on click
-    filterToggle.addEventListener('click', () => {
-      isOpen() ? closeDropdown() : openDropdown();
-    });
+      // Keyboard arrow navigation (WCAG tablist pattern)
+      pill.addEventListener('keydown', (e) => {
+        const pillsArr = Array.from(projectFilterPills);
+        const idx = pillsArr.indexOf(pill);
+        let nextIdx = null;
 
-    filterItems.forEach(item => {
-      item.addEventListener('click', () => {
-        applyCategory(item.getAttribute('data-category'));
-        closeDropdown();
-        filterToggle.focus();
-      });
-    });
-
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (isOpen() && !filterDropdown.contains(e.target)) {
-        closeDropdown();
-      }
-    });
-
-    // Keyboard navigation
-    filterToggle.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openDropdown();
-        filterItems[0].focus();
-      }
-    });
-
-    filterMenu.addEventListener('keydown', (e) => {
-      const items = [...filterItems];
-      const idx = items.indexOf(document.activeElement);
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = (idx + 1) % items.length;
-        items[next].focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = (idx - 1 + items.length) % items.length;
-        items[prev].focus();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (idx >= 0) {
-          applyCategory(items[idx].getAttribute('data-category'));
-          closeDropdown();
-          filterToggle.focus();
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          nextIdx = (idx + 1) % pillsArr.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          nextIdx = (idx - 1 + pillsArr.length) % pillsArr.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          nextIdx = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          nextIdx = pillsArr.length - 1;
         }
-      } else if (e.key === 'Escape') {
-        closeDropdown();
-        filterToggle.focus();
-      }
-    });
 
-    // Make items focusable
-    filterItems.forEach(item => item.setAttribute('tabindex', '-1'));
+        if (nextIdx !== null) {
+          pillsArr[nextIdx].focus();
+          const nextCategory = pillsArr[nextIdx].getAttribute('data-category') || 'all';
+          applyCategory(nextCategory);
+        }
+      });
+    });
   }
 
   /* ============================================

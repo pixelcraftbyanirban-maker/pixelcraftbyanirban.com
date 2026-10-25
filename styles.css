@@ -218,13 +218,13 @@ p, h1, h2, h3, h4, h5, h6 {
 
 /* ========================================================
    2b. LIGHT MODE TOKENS (Pastel Gradient Frosted Glass System)
-   Canvas: linear-gradient(to top, #d299c2 0%, #fef9d7 100%)
+   Canvas: linear-gradient(175deg, #FEFDF8 0%, #FEF8EC 25%, #FDF1E6 55%, #F8EAF1 80%, #F4E6ED 100%)
    ======================================================== */
 [data-theme="light"] {
   /* --- Canvas Gradient & Surfaces --- */
-  --bg-base: #fef9d7;
-  --bg-surface: rgba(255, 255, 255, 0.82);
-  --bg-surface-elevated: rgba(255, 255, 255, 0.94);
+  --bg-base: #FEFDF8;
+  --bg-surface: rgba(255, 255, 255, 0.84);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.95);
   --navy-900: rgba(255, 255, 255, 0.65);
   --navy-700: rgba(255, 255, 255, 0.85);
   --cream-50: #12151D;
@@ -591,19 +591,48 @@ body::after {
     radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(5, 6, 9, 0.65) 100%);
 }
 
-/* Light Mode Canvas — Linear Gradient (to top, #d299c2 0%, #fef9d7 100%) */
+/* Light Mode Canvas — Soft Luminous Ambient Canvas with Delicate Pastel Warmth */
 [data-theme="light"] body {
-  background-image: linear-gradient(to top, #d299c2 0%, #fef9d7 100%) !important;
-  background-color: #fef9d7 !important;
+  background-image: linear-gradient(
+    175deg,
+    #FEFDF8 0%,
+    #FEF8EC 25%,
+    #FDF1E6 55%,
+    #F8EAF1 80%,
+    #F4E6ED 100%
+  ) !important;
+  background-color: #FEFDF8 !important;
   background-attachment: fixed !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
   color: var(--ink);
 }
 
-[data-theme="light"] body::before,
+/* Light Mode Ambient Depth Layers — Soft, micro-dosed chromatic pools */
+[data-theme="light"] body::before {
+  display: block !important;
+  opacity: 0.9;
+  background:
+    /* Top hero warmth: soft terracotta amber whisper */
+    radial-gradient(circle 950px at 50% -120px, rgba(224, 106, 66, 0.045), transparent 70%),
+    /* Upper-right champagne gold mist */
+    radial-gradient(circle 800px at 92% 16%, rgba(229, 184, 105, 0.07), transparent 65%),
+    /* Mid-left delicate sage / muted teal */
+    radial-gradient(circle 850px at 6% 45%, rgba(18, 110, 99, 0.035), transparent 65%),
+    /* Mid-right soft wisteria / rose whisper */
+    radial-gradient(circle 750px at 94% 58%, rgba(210, 153, 194, 0.08), transparent 65%) !important;
+}
+
 [data-theme="light"] body::after {
-  display: none !important;
+  display: block !important;
+  opacity: 0.8;
+  background:
+    /* Lower warm terracotta / rose-gold hint */
+    radial-gradient(circle 850px at 85% 78%, rgba(224, 106, 66, 0.04), transparent 65%),
+    /* Footer soft warm champagne / pearl pool */
+    radial-gradient(circle 1000px at 50% 100%, rgba(254, 249, 215, 0.45), transparent 70%),
+    /* Edge softness vignette */
+    radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(140, 90, 130, 0.035) 100%) !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -6561,25 +6590,38 @@ body.modal-open {
 
 /* ========================================================
    7b. LIGHT MODE COMPONENT ADAPTATIONS
-   Pastel Gradient Canvas (#d299c2 to #fef9d7), Frosted Glass Gradient Navbar,
-   Pure Frosted Milk Glass (No Wireframe Rectangles), & WCAG AA Contrast
+   Soft Luminous Pastel Gradient Canvas, Frosted Glass Gradient Navbar,
+   Subtle Ambient Surfaces, & WCAG AA Contrast
    ======================================================== */
 
-/* --- Remove Harsh Rectangular Section Dividers Across the Entire Canvas --- */
+/* --- Seamless Section Flow Across the Canvas --- */
 [data-theme="light"] section,
-[data-theme="light"] .process-section,
 [data-theme="light"] .tools,
-[data-theme="light"] .dev-section,
-[data-theme="light"] .contact,
-[data-theme="light"] .cta,
-[data-theme="light"] .footer {
+[data-theme="light"] .contact {
   border-top: none !important;
   border-bottom: none !important;
 }
 
+/* --- Alternating Frosted Surface Backgrounds for Structural Rhythm --- */
+[data-theme="light"] .process-section {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
+  border-bottom: 1px solid rgba(18, 21, 29, 0.035) !important;
+}
+
+[data-theme="light"] .dev-section {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
+  border-bottom: 1px solid rgba(18, 21, 29, 0.035) !important;
+}
+
 /* --- Page Loader --- */
 [data-theme="light"] .page-loader {
-  background: #fef9d7;
+  background: #FEFDF8;
 }
 [data-theme="light"] .page-loader__name {
   color: #12151D;
@@ -6998,9 +7040,12 @@ body.modal-open {
 
 /* --- Visual Playground Section --- */
 [data-theme="light"] .playground-section {
-  background: transparent !important;
-  border: none !important;
-  --pg-bg: transparent;
+  background: rgba(255, 255, 255, 0.40) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
+  border-bottom: 1px solid rgba(18, 21, 29, 0.035) !important;
+  --pg-bg: rgba(255, 255, 255, 0.40);
   --pg-surface: rgba(255, 255, 255, 0.85);
   --pg-surface-hover: #FFFFFF;
   --pg-text-primary: #12151D;
@@ -7597,7 +7642,7 @@ body.modal-open {
 /* --- CTA Frame & Footer --- */
 [data-theme="light"] .cta {
   background: rgba(255, 255, 255, 0.72) !important;
-  border: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.90) !important;
   box-shadow: 0 12px 36px rgba(140, 90, 130, 0.1) !important;
 }
 
@@ -7606,8 +7651,10 @@ body.modal-open {
 }
 
 [data-theme="light"] .footer {
-  background: rgba(255, 255, 255, 0.75) !important;
-  border-top: none !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
 [data-theme="light"] .footer__copy {
