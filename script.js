@@ -1803,12 +1803,14 @@ document.addEventListener('DOMContentLoaded', () => {
   updateScrollProgress();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // IntersectionObserver for elements appearing on scroll
+  // Gucci-Inspired Section & Element Scroll Reveal Observer
+  const majorSections = document.querySelectorAll('section:not(#home)');
   const revealElements = document.querySelectorAll(
     '[data-reveal]:not(#home [data-reveal]), .reveal:not(#home), #projects-grid'
   );
 
   if (prefersReducedMotion) {
+    majorSections.forEach(sec => sec.classList.add('is-revealed'));
     document.querySelectorAll('[data-reveal], .reveal').forEach(el => {
       el.classList.add('is-revealed', 'reveal--visible');
     });
@@ -1818,16 +1820,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   } else if ('IntersectionObserver' in window) {
+    // 1. Section-level observer for Gucci luxury hairline dividers & stage uncurtaining
+    const sectionObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      }
+    );
+    majorSections.forEach(sec => sectionObserver.observe(sec));
+
+    // 2. Element-level observer for Gucci typography mask & card reveals
     const revealObserver = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-revealed', 'reveal--visible');
 
-            // If projects grid scrolled into view, cascade cards
+            // If projects grid scrolled into view, cascade cards with luxury timing
             if (entry.target.id === 'projects-grid') {
               entry.target.querySelectorAll('.project-card').forEach((card, idx) => {
-                card.style.transitionDelay = `${idx * 65}ms`;
+                card.style.transitionDelay = `${idx * 80}ms`;
                 card.classList.add('project-card--revealed');
               });
             }
@@ -1837,7 +1857,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       },
       {
-        threshold: 0.15,
+        threshold: 0.12,
         rootMargin: '0px 0px -40px 0px'
       }
     );
@@ -1845,6 +1865,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => revealObserver.observe(el));
   } else {
     // Fallback for older browsers
+    majorSections.forEach(sec => sec.classList.add('is-revealed'));
     document.querySelectorAll('[data-reveal], .reveal').forEach(el => {
       el.classList.add('is-revealed', 'reveal--visible');
     });
@@ -1863,14 +1884,14 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================ */
 
   const PLAYGROUND_CATEGORIES = [
-    { key: 'all', label: 'All Work' },
-    { key: 'branding', label: 'Branding' },
-    { key: 'packaging', label: 'Packaging' },
-    { key: 'campaigns', label: 'Campaigns' },
-    { key: 'print', label: 'Print & Editorial' },
-    { key: 'image-craft', label: 'Image Craft' },
-    { key: 'ui', label: 'UI Experiments' },
-    { key: 'other', label: 'Other Explorations' }
+    { key: 'all', label: 'All Work', color: '#E06A42', rgb: '224, 106, 66', icon: '✦' },
+    { key: 'branding', label: 'Branding', color: '#8B5CF6', rgb: '139, 92, 246', icon: '◈' },
+    { key: 'packaging', label: 'Packaging', color: '#10B981', rgb: '16, 185, 129', icon: '◰' },
+    { key: 'campaigns', label: 'Campaigns', color: '#E11D48', rgb: '225, 29, 72', icon: '▲' },
+    { key: 'print', label: 'Print & Editorial', color: '#059669', rgb: '5, 150, 105', icon: '▤' },
+    { key: 'image-craft', label: 'Image Craft', color: '#EC4899', rgb: '236, 72, 153', icon: '◉' },
+    { key: 'ui', label: 'UI Experiments', color: '#3B82F6', rgb: '59, 130, 246', icon: '▣' },
+    { key: 'other', label: 'Other Explorations', color: '#6366F1', rgb: '99, 102, 241', icon: '◎' }
   ];
 
   const playgroundItems = [
@@ -2094,20 +2115,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const isActive = cat.key === currentPlaygroundFilter;
       return `
         <button type="button"
-                class="playground__tab ${isActive ? 'playground__tab--active' : ''}"
+                class="playground-folder__tab ${isActive ? 'playground-folder__tab--active' : ''}"
                 role="tab"
                 id="pg-tab-${cat.key}"
                 aria-controls="playground-grid"
                 aria-selected="${isActive ? 'true' : 'false'}"
                 data-filter="${cat.key}">
-          <span class="playground__tab-label">${cat.label}</span>
-          <span class="playground__tab-count">(${count})</span>
+          <span class="playground-folder__tab-icon" aria-hidden="true">${cat.icon || '✦'}</span>
+          <span class="playground-folder__tab-label">${cat.label}</span>
+          <span class="playground-folder__tab-count">(${count})</span>
         </button>
       `;
     }).join('');
 
     // Attach listeners
-    const tabButtons = playgroundTabsContainer.querySelectorAll('.playground__tab');
+    const tabButtons = playgroundTabsContainer.querySelectorAll('.playground-folder__tab');
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const filterKey = btn.getAttribute('data-filter') || 'all';
@@ -2146,11 +2168,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const setPlaygroundFilter = (filterKey) => {
     currentPlaygroundFilter = filterKey;
 
+    const catObj = PLAYGROUND_CATEGORIES.find(c => c.key === filterKey) || PLAYGROUND_CATEGORIES[0];
+    if (folder && catObj) {
+      folder.style.setProperty('--folder-accent', catObj.color);
+      folder.style.setProperty('--folder-accent-rgb', catObj.rgb);
+    }
+
     if (playgroundTabsContainer) {
-      const tabButtons = playgroundTabsContainer.querySelectorAll('.playground__tab');
+      const tabButtons = playgroundTabsContainer.querySelectorAll('.playground-folder__tab');
       tabButtons.forEach(btn => {
         const isMatch = btn.getAttribute('data-filter') === filterKey;
-        btn.classList.toggle('playground__tab--active', isMatch);
+        btn.classList.toggle('playground-folder__tab--active', isMatch);
         btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
       });
     }
@@ -2177,7 +2205,8 @@ document.addEventListener('DOMContentLoaded', () => {
                tabindex="0"
                role="button"
                aria-haspopup="dialog"
-               aria-label="View ${item.title} — ${item.categoryLabel}">
+               aria-label="View ${item.title} — ${item.categoryLabel}"
+               style="--card-index: ${index};">
         <div class="playground-card__inner">
           <div class="playground-card__image-wrap">
             <img src="${item.image}" alt="${item.title} — ${item.categoryLabel}" loading="lazy" decoding="async" class="playground-card__img">
@@ -2214,6 +2243,44 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   };
 
+  const updatePeekCards = () => {
+    const items = activePlaygroundItems;
+    if (!items || items.length === 0) return;
+    const item1 = items[0];
+    const item2 = items[1] || items[0];
+    const item3 = items[2] || items[0];
+
+    const peekChip1 = document.getElementById('pg-peek-chip-1');
+    const peekMetric1 = document.getElementById('pg-peek-metric-1');
+    const peekVal1 = document.getElementById('pg-peek-val-1');
+    const peekSys1 = document.getElementById('pg-peek-sys-1');
+
+    if (peekChip1) peekChip1.textContent = (item1.category || 'EXP').toUpperCase();
+    if (peekMetric1) peekMetric1.textContent = (item1.aspect || 'TELEMETRY').toUpperCase();
+    if (peekVal1) peekVal1.textContent = item1.title ? (item1.title.length > 18 ? item1.title.slice(0, 16) + '..' : item1.title) : 'ARCHIVE_01';
+    if (peekSys1) peekSys1.textContent = `SYS_CORE // ${item1.year || '2026'}`;
+
+    const peekChip2 = document.getElementById('pg-peek-chip-2');
+    const peekMetric2 = document.getElementById('pg-peek-metric-2');
+    const peekVal2 = document.getElementById('pg-peek-val-2');
+    const peekSys2 = document.getElementById('pg-peek-sys-2');
+
+    if (peekChip2) peekChip2.textContent = (item2.category || 'EXP').toUpperCase();
+    if (peekMetric2) peekMetric2.textContent = (item2.aspect || 'IDENTITY').toUpperCase();
+    if (peekVal2) peekVal2.textContent = item2.title ? (item2.title.length > 18 ? item2.title.slice(0, 16) + '..' : item2.title) : 'ARCHIVE_02';
+    if (peekSys2) peekSys2.textContent = `SYS_CORE // ${item2.year || '2026'}`;
+
+    const peekChip3 = document.getElementById('pg-peek-chip-3');
+    const peekMetric3 = document.getElementById('pg-peek-metric-3');
+    const peekVal3 = document.getElementById('pg-peek-val-3');
+    const peekSys3 = document.getElementById('pg-peek-sys-3');
+
+    if (peekChip3) peekChip3.textContent = (item3.category || 'EXP').toUpperCase();
+    if (peekMetric3) peekMetric3.textContent = (item3.aspect || 'SYSTEM').toUpperCase();
+    if (peekVal3) peekVal3.textContent = item3.title ? (item3.title.length > 18 ? item3.title.slice(0, 16) + '..' : item3.title) : 'ARCHIVE_03';
+    if (peekSys3) peekSys3.textContent = `SYS_CORE // ${item3.year || '2026'}`;
+  };
+
   const renderPlayground = (filter = 'all') => {
     if (!playgroundGrid) return;
     currentPlaygroundFilter = filter;
@@ -2224,7 +2291,118 @@ document.addEventListener('DOMContentLoaded', () => {
     playgroundGrid.innerHTML = activePlaygroundItems
       .map((item, idx) => buildPlaygroundCardHTML(item, idx, activePlaygroundItems.length))
       .join('');
+
+    updateFolderMetadata();
   };
+
+  /* ============================================
+     9b. ARCHIVE FOLDER SLEEVE TAP REVEAL SYSTEM
+     Frosted Glass Flap & Pop-Out Spring Physics
+     ============================================ */
+  const folder = document.getElementById('playground-folder');
+  const folderSleeve = document.getElementById('playground-folder-sleeve');
+  const folderViewport = document.getElementById('playground-viewport');
+  const folderCount = document.getElementById('playground-folder-count');
+  const folderBtnText = document.getElementById('playground-folder-btn-text');
+  const expandedCount = document.getElementById('playground-expanded-count');
+  const tuckTopBtn = document.getElementById('playground-tuck-top');
+  const tuckBottomBtn = document.getElementById('playground-tuck-bottom');
+  let isFolderOpen = prefersReducedMotion;
+
+  const updateFolderMetadata = () => {
+    const count = activePlaygroundItems.length;
+    if (folderCount) {
+      folderCount.textContent = `${count} Experiments`;
+    }
+    if (folderBtnText) {
+      folderBtnText.textContent = `Tap to Pop Out Cards`;
+    }
+    if (expandedCount) {
+      expandedCount.textContent = `${count} EXPERIMENTS UNLOCKED & DISPLAYED`;
+    }
+    updatePeekCards();
+  };
+
+  const openFolder = () => {
+    if (!folder) return;
+    isFolderOpen = true;
+    folder.classList.add('is-open');
+    if (folderSleeve) {
+      folderSleeve.setAttribute('aria-expanded', 'true');
+    }
+    if (folderViewport) {
+      folderViewport.setAttribute('aria-hidden', 'false');
+    }
+    // Set focus on first card for keyboard accessibility
+    setTimeout(() => {
+      const firstCard = playgroundGrid?.querySelector('.playground-card');
+      if (firstCard && (document.activeElement === folderSleeve || !document.activeElement)) {
+        firstCard.focus();
+      }
+    }, 350);
+  };
+
+  const closeFolder = () => {
+    if (!folder) return;
+    isFolderOpen = false;
+    folder.classList.remove('is-open');
+    if (folderSleeve) {
+      folderSleeve.setAttribute('aria-expanded', 'false');
+    }
+    if (folderViewport) {
+      folderViewport.setAttribute('aria-hidden', 'true');
+    }
+    const playgroundSec = document.getElementById('playground');
+    if (playgroundSec) {
+      playgroundSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (folderSleeve) {
+      folderSleeve.focus();
+    }
+  };
+
+  if (folderSleeve) {
+    folderSleeve.addEventListener('click', (e) => {
+      if (!isFolderOpen) {
+        openFolder();
+      }
+    });
+
+    folderSleeve.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && !isFolderOpen) {
+        e.preventDefault();
+        openFolder();
+      }
+    });
+  }
+
+  if (tuckTopBtn) {
+    tuckTopBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeFolder();
+    });
+  }
+
+  if (tuckBottomBtn) {
+    tuckBottomBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeFolder();
+    });
+  }
+
+  // Escape key closes open folder if lightbox is not active
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isFolderOpen) {
+      const lightboxModal = document.getElementById('lightbox-modal');
+      if (!lightboxModal || !lightboxModal.classList.contains('is-open')) {
+        closeFolder();
+      }
+    }
+  });
+
+  if (prefersReducedMotion && folder) {
+    folder.classList.add('is-open');
+  }
 
   // Initialize tabs and grid
   renderPlaygroundTabs();
@@ -2314,9 +2492,13 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLightboxContent(nextIndex);
   };
 
-  // Card click & keyboard open
+  // Card click & keyboard open (opens lightbox when folder is open)
   if (playgroundGrid) {
     playgroundGrid.addEventListener('click', (e) => {
+      if (!isFolderOpen) {
+        openFolder();
+        return;
+      }
       const card = e.target.closest('.playground-card');
       if (!card) return;
       const index = parseInt(card.getAttribute('data-index'), 10);
@@ -2327,6 +2509,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playgroundGrid.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
+        if (!isFolderOpen) {
+          e.preventDefault();
+          openFolder();
+          return;
+        }
         const card = e.target.closest('.playground-card');
         if (card) {
           e.preventDefault();

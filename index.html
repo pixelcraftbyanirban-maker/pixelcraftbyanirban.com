@@ -556,14 +556,140 @@
           </p>
         </div>
 
-        <!-- Filter tabs for playground (dynamically rendered & counts synchronized by script.js) -->
-        <div class="playground__tabs" id="playground-tabs" role="tablist" aria-label="Visual playground category filters" data-reveal="fade-up" data-reveal-delay="200">
-          <!-- Dynamically populated by script.js -->
-        </div>
+        <!-- Archive Folder Container -->
+        <div class="playground-folder" id="playground-folder" data-reveal="fade-up" data-reveal-delay="200" style="--folder-accent: #E06A42;">
+          <!-- Category Tabs Bar (Folder Tabs along the top) -->
+          <div class="playground-folder__tabs-bar">
+            <div class="playground-folder__tabs" id="playground-tabs" role="tablist" aria-label="Archive folder categories">
+              <!-- Populated dynamically by script.js -->
+            </div>
+          </div>
 
-        <!-- Playground Grid -->
-        <div class="playground__grid" id="playground-grid" role="region" aria-label="Visual explorations gallery">
-          <!-- Rendered dynamically by script.js -->
+          <!-- Digital Frosted Folder Sleeve (Closed State) -->
+          <div class="playground-folder__sleeve" id="playground-folder-sleeve" role="button" tabindex="0" aria-expanded="false" aria-controls="playground-viewport" aria-label="Selected Experiments Folder. Tap to pop out cards.">
+            <!-- Back Folder Plate (SVG silhouette with top-left tab notch) -->
+            <div class="playground-folder__back-plate" aria-hidden="true">
+              <svg class="playground-folder__back-svg" viewBox="0 0 760 480" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="playground-folder__back-path" d="M 0 28 C 0 12.5 12.5 0 28 0 L 210 0 C 226 0 238 8 248 20 L 282 54 C 291 62 302 66 314 66 L 732 66 C 747.5 66 760 78.5 760 94 L 760 452 C 760 467.5 747.5 480 732 480 L 28 480 C 12.5 480 0 467.5 0 452 Z" fill="currentColor"/>
+              </svg>
+              <div class="playground-folder__back-glow"></div>
+            </div>
+
+            <!-- Fanned Cards Inside (Peeking Out at Top) -->
+            <div class="playground-folder__peek-cards" id="playground-peek-cards" aria-hidden="true">
+              <!-- Card 1 (Left tilted) -->
+              <div class="pg-peek-card pg-peek-card--left" id="pg-peek-1">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-1">CLUSTER_01</span>
+                  <span class="pg-peek-card__dot-live"></span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-1">NET_TUNNEL</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-1">1.2ms</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-1">SYS_CORE // NEURAL</span>
+                </div>
+              </div>
+
+              <!-- Card 2 (Center straight, elevated) -->
+              <div class="pg-peek-card pg-peek-card--center" id="pg-peek-2">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-2">CLUSTER_02</span>
+                  <span class="pg-peek-card__badge-live">LIVE</span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-2">BRIDGE_TX</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-2">0.8ms</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-2">SYS_CORE // ARCHIVE</span>
+                </div>
+              </div>
+
+              <!-- Card 3 (Right tilted) -->
+              <div class="pg-peek-card pg-peek-card--right" id="pg-peek-3">
+                <div class="pg-peek-card__punch-hole"></div>
+                <div class="pg-peek-card__header">
+                  <span class="pg-peek-card__chip" id="pg-peek-chip-3">PORT_03</span>
+                  <span class="pg-peek-card__dot-live"></span>
+                </div>
+                <div class="pg-peek-card__body">
+                  <span class="pg-peek-card__metric-label" id="pg-peek-metric-3">BFT_MESH</span>
+                  <span class="pg-peek-card__metric-val" id="pg-peek-val-3">2.4ms</span>
+                  <span class="pg-peek-card__sys" id="pg-peek-sys-3">SYS_CORE // ZERO</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frosted Glass Front Flap (Glassmorphism with heavy frost blur) -->
+            <div class="playground-folder__front-glass" id="playground-folder-front">
+              <div class="playground-folder__glass-sheen" aria-hidden="true"></div>
+
+              <!-- Center Interactive Pop-Out Trigger -->
+              <div class="playground-folder__tap-prompt">
+                <div class="playground-folder__tap-pill">
+                  <span class="playground-folder__tap-sparkle" aria-hidden="true">&#10022;</span>
+                  <span class="playground-folder__tap-label" id="playground-folder-btn-text">Tap to Pop Out Cards</span>
+                  <span class="playground-folder__tap-count" id="playground-folder-count">15 Experiments</span>
+                  <svg class="playground-folder__tap-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Bottom Glass Metadata: Bottom-Left STATE / Link Active & Bottom-Right Wave / AUDIO ON -->
+              <div class="playground-folder__glass-footer">
+                <div class="playground-folder__state-group">
+                  <span class="playground-folder__state-title">STATE</span>
+                  <span class="playground-folder__state-status">
+                    <span class="playground-folder__pulse-dot" aria-hidden="true"></span>
+                    Link Active
+                  </span>
+                </div>
+
+                <div class="playground-folder__audio-group">
+                  <svg class="playground-folder__wave-svg" width="48" height="16" viewBox="0 0 48 16" fill="none" aria-hidden="true">
+                    <path d="M1 8 C 6 2, 10 2, 15 8 C 20 14, 24 14, 29 8 C 34 2, 38 2, 43 8 C 45 11, 47 11, 47 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  <span class="playground-folder__audio-label">AUDIO ON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Popped-Out Expanded Viewport (Holds the Full Grid) -->
+          <div class="playground-folder__expanded-viewport" id="playground-viewport" aria-hidden="true">
+            <!-- Top dossier header bar with Tuck button -->
+            <div class="playground-folder__expanded-header">
+              <div class="playground-folder__expanded-info">
+                <span class="playground-folder__expanded-badge">ARCHIVE UNLOCKED</span>
+                <span class="playground-folder__expanded-count" id="playground-expanded-count">15 EXPERIMENTS DISPLAYED</span>
+              </div>
+              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-top" aria-label="Tuck cards back into folder">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5"></line>
+                  <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <span>Tuck Cards Back into Folder &uarr;</span>
+              </button>
+            </div>
+
+            <!-- Responsive Experiments Grid -->
+            <div class="playground__grid" id="playground-grid" role="region" aria-label="Visual explorations gallery">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+
+            <!-- Bottom dossier footer bar with Close button -->
+            <div class="playground-folder__expanded-footer">
+              <button type="button" class="playground-folder__tuck-btn" id="playground-tuck-bottom" aria-label="Tuck cards back into folder">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5"></line>
+                  <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <span>Close Archive &amp; Tuck Cards &uarr;</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Pinterest Creative Archive Integration -->
