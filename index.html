@@ -19,6 +19,21 @@
 
   <!-- Favicon -->
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <meta name="theme-color" content="#fef9d7" id="meta-theme-color">
+
+  <!-- Anti-FOUC Theme Initialization -->
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('portfolio-theme');
+        if (savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,11 +100,40 @@
             </ul>
           </li>
           <li><a href="#contact" class="nav-link nav-link--cta">Hire Me</a></li>
+          <li class="nav-theme-item">
+            <button type="button" class="theme-switch" id="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle dark and light mode" title="Switch theme">
+              <span class="theme-switch__track">
+                <span class="theme-switch__icon theme-switch__icon--moon" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                </span>
+                <span class="theme-switch__icon theme-switch__icon--sun" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"/>
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                  </svg>
+                </span>
+                <span class="theme-switch__thumb"></span>
+              </span>
+            </button>
+          </li>
         </ul>
       </nav>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="navbar__actions">
+        <button type="button" class="theme-toggle-btn theme-toggle-btn--mobile" id="theme-toggle-mobile" aria-label="Toggle dark and light mode" title="Switch theme">
+          <svg class="theme-icon-dark" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="theme-icon-light" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
     <div class="scroll-progress-bar" id="scroll-progress-bar" aria-hidden="true"></div>
   </header>
@@ -114,6 +158,21 @@
           <a href="assets/cv/Anirban-Kumar-Sarkar-UI-UX-CV.pdf" download="Anirban-Kumar-Sarkar-UI-UX-CV.pdf" target="_blank" rel="noopener noreferrer" class="mobile-menu__sublink">
             UI/UX &amp; Frontend CV (PDF)
           </a>
+        </li>
+        <li class="mobile-menu__divider" aria-hidden="true"></li>
+        <li class="mobile-menu__theme-wrap">
+          <button type="button" class="mobile-theme-switch" id="mobile-theme-btn" aria-label="Toggle dark and light mode">
+            <span class="mobile-theme-switch__icon" aria-hidden="true">
+              <svg class="theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+              <svg class="theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+              </svg>
+            </span>
+            <span class="mobile-theme-switch__text">Switch to Light Mode</span>
+          </button>
         </li>
         <li class="mobile-menu__divider" aria-hidden="true"></li>
         <li><a href="#contact" class="mobile-menu__link mobile-menu__link--cta">Hire Me</a></li>
@@ -714,24 +773,88 @@
           </p>
         </div>
 
-        <div class="dev-section__grid">
-          <!-- Card 1: Frontend Fundamentals -->
-          <article class="dev-card" data-reveal="fade-up" data-reveal-delay="200">
-            <div class="dev-card__icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-              </svg>
+        <div class="dev-section__grid" role="region" aria-label="Interactive Prototyping and Code Capabilities">
+          <!-- ==============================================
+               CARD 1: FRONTEND FUNDAMENTALS (CYPHEIR CORE KEY)
+               ============================================== -->
+          <article class="dev-card cypheir-card cypheir-card--key" data-reveal="fade-up" data-reveal-delay="200" tabindex="0">
+            <div class="cypheir-card__beam" aria-hidden="true"></div>
+            
+            <!-- Hardware Top Bar -->
+            <div class="cypheir-card__topbar">
+              <div class="cypheir-card__id">
+                <span class="cypheir-card__id-tag">SYS-01 // ARCHITECTURE</span>
+              </div>
+              <div class="cypheir-status-badge">
+                <span class="cypheir-status-dot cypheir-status-dot--pulse" aria-hidden="true"></span>
+                <span class="cypheir-status-text" id="cypheir-status-1">KERNEL ACTIVE</span>
+              </div>
             </div>
-            <h3 class="dev-card__title">Frontend Fundamentals</h3>
+
+            <!-- Card Header & Description -->
+            <div class="dev-card__header-row">
+              <div class="dev-card__icon-wrap" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <div class="dev-card__header-text">
+                <h3 class="dev-card__title">Frontend Fundamentals</h3>
+                <p class="dev-card__tagline">Semantic architecture &amp; resilient layouts</p>
+              </div>
+            </div>
+
             <p class="dev-card__desc">Practical understanding of semantic HTML structure, CSS layouts, responsive design, browser debugging, accessibility, and web performance — the solid foundation beneath every implementation.</p>
-            <div class="dev-card__code">
-              <pre><span class="code-comment">&lt;!-- Semantic, accessible layout structure --&gt;</span>
+
+            <!-- Cypheir Interactive Code Scanner -->
+            <div class="cypheir-terminal" id="cypheir-term-1">
+              <div class="cypheir-terminal__bar">
+                <div class="cypheir-terminal__tabs" role="tablist" aria-label="Code Inspector Tabs">
+                  <button type="button" class="cypheir-tab is-active" role="tab" aria-selected="true" data-tab="html" id="tab-html">HTML5 Semantic</button>
+                  <button type="button" class="cypheir-tab" role="tab" aria-selected="false" data-tab="css" id="tab-css">CSS3 Layouts</button>
+                </div>
+                <button type="button" class="cypheir-action-btn" id="cypheir-scan-btn" aria-label="Scan and validate code syntax">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  <span>Scan Syntax</span>
+                </button>
+              </div>
+
+              <!-- Code Viewport with Scanline -->
+              <div class="cypheir-code-viewport">
+                <div class="cypheir-scanline" id="cypheir-scanline-1" aria-hidden="true"></div>
+                
+                <!-- Tab Panel 1: HTML -->
+                <div class="cypheir-code-panel is-active" data-panel="html" role="tabpanel" aria-labelledby="tab-html">
+                  <pre><code><span class="code-comment">&lt;!-- Accessible, semantic container --&gt;</span>
 <span class="code-tag">&lt;section</span> <span class="code-attr">aria-labelledby</span>=<span class="code-value">"dev-heading"</span><span class="code-tag">&gt;</span>
   <span class="code-tag">&lt;h2</span> <span class="code-attr">id</span>=<span class="code-value">"dev-heading"</span><span class="code-tag">&gt;</span>Production Code<span class="code-tag">&lt;/h2&gt;</span>
   <span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"grid"</span> <span class="code-attr">role</span>=<span class="code-value">"region"</span><span class="code-tag">&gt;</span>…<span class="code-tag">&lt;/div&gt;</span>
-<span class="code-tag">&lt;/section&gt;</span></pre>
+<span class="code-tag">&lt;/section&gt;</span></code></pre>
+                </div>
+
+                <!-- Tab Panel 2: CSS -->
+                <div class="cypheir-code-panel" data-panel="css" role="tabpanel" aria-labelledby="tab-css" hidden>
+                  <pre><code><span class="code-comment">/* Container queries &amp; zero layout shift */</span>
+<span class="code-tag">.grid-layout</span> {
+  <span class="code-attr">display</span>: <span class="code-value">grid</span>;
+  <span class="code-attr">grid-template-columns</span>: <span class="code-value">repeat(auto-fit, minmax(260px, 1fr))</span>;
+  <span class="code-attr">contain</span>: <span class="code-value">layout inline-size</span>;
+}</code></pre>
+                </div>
+              </div>
+
+              <!-- Live Verification Audit Bar -->
+              <div class="cypheir-audit-bar" id="cypheir-audit-bar-1">
+                <span class="cypheir-audit-icon">✓</span>
+                <span class="cypheir-audit-text">100% Semantic • WCAG AA Pass • Zero Layout Shift</span>
+              </div>
             </div>
+
+            <!-- Skills List -->
             <div class="dev-card__skills">
               <span class="dev-card__skill">HTML5 Semantic</span>
               <span class="dev-card__skill">CSS3 Layouts</span>
@@ -741,23 +864,92 @@
             </div>
           </article>
 
-          <!-- Card 2: Tailwind CSS & Component Systems -->
-          <article class="dev-card" data-reveal="fade-up" data-reveal-delay="250">
-            <div class="dev-card__icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-              </svg>
+          <!-- ==============================================
+               CARD 2: TAILWIND CSS & SYSTEMS (CYPHEIR 3D STACK)
+               ============================================== -->
+          <article class="dev-card cypheir-card cypheir-card--stack" data-reveal="fade-up" data-reveal-delay="250" tabindex="0">
+            <div class="cypheir-card__beam" aria-hidden="true"></div>
+
+            <!-- Hardware Top Bar -->
+            <div class="cypheir-card__topbar">
+              <div class="cypheir-card__id">
+                <span class="cypheir-card__id-tag">SYS-02 // COMPONENT DECK</span>
+              </div>
+              <div class="cypheir-status-badge">
+                <span class="cypheir-status-dot cypheir-status-dot--teal" aria-hidden="true"></span>
+                <span class="cypheir-status-text">3 LAYERS STACKED</span>
+              </div>
             </div>
-            <h3 class="dev-card__title">Tailwind CSS &amp; Systems</h3>
+
+            <!-- Card Header & Description -->
+            <div class="dev-card__header-row">
+              <div class="dev-card__icon-wrap" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+              </div>
+              <div class="dev-card__header-text">
+                <h3 class="dev-card__title">Tailwind CSS &amp; Systems</h3>
+                <p class="dev-card__tagline">Atomic tokens &amp; layered composition</p>
+              </div>
+            </div>
+
             <p class="dev-card__desc">Using utility-first styling, design token systems, responsive variants, and component composition to create cohesive, consistent interfaces rapidly without sacrificing clean CSS architecture.</p>
-            <div class="dev-card__code">
-              <pre><span class="code-comment">&lt;!-- Utility-first tokens &amp; responsive variants --&gt;</span>
-<span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"flex flex-col md:flex-row items-center</span>
-            <span class="code-value">gap-6 p-6 rounded-xl hover:shadow-lg</span>
-            <span class="code-value">transition-all duration-200"</span><span class="code-tag">&gt;</span>…<span class="code-tag">&lt;/div&gt;</span></pre>
+
+            <!-- Cypheir 3D Layer Stack Component -->
+            <div class="cypheir-stack-container" id="cypheir-stack-deck">
+              <div class="cypheir-stack-nav">
+                <span class="cypheir-stack-hint">3D Layer Depth:</span>
+                <div class="cypheir-stack-tabs" role="tablist" aria-label="Component Stack Layers">
+                  <button type="button" class="cypheir-stack-tab is-active" data-layer-idx="0">01 Variant</button>
+                  <button type="button" class="cypheir-stack-tab" data-layer-idx="1">02 Responsive</button>
+                  <button type="button" class="cypheir-stack-tab" data-layer-idx="2">03 Tokens</button>
+                </div>
+              </div>
+
+              <!-- Physical 3D Floating Plates -->
+              <div class="cypheir-stack-stage">
+                <!-- Plate 1: State Variant (Front) -->
+                <div class="cypheir-plate cypheir-plate--0 is-active" data-index="0">
+                  <div class="cypheir-plate__header">
+                    <span class="cypheir-plate__label">LAYER 01 // INTERACTIVE STATE VARIANT</span>
+                    <span class="cypheir-plate__chip">:hover:glow</span>
+                  </div>
+                  <div class="cypheir-plate__content">
+                    <div class="cypheir-plate__preview">
+                      <span class="cypheir-demo-pill">Hover Me // Preview</span>
+                    </div>
+                    <code class="cypheir-plate__code"><span class="code-attr">hover</span>:<span class="code-value">shadow-teal-glow</span> <span class="code-attr">transition-all</span> <span class="code-value">duration-200</span></code>
+                  </div>
+                </div>
+
+                <!-- Plate 2: Responsive Grid (Middle) -->
+                <div class="cypheir-plate cypheir-plate--1" data-index="1">
+                  <div class="cypheir-plate__header">
+                    <span class="cypheir-plate__label">LAYER 02 // RESPONSIVE CONTAINER</span>
+                    <span class="cypheir-plate__chip">md:flex</span>
+                  </div>
+                  <div class="cypheir-plate__content">
+                    <code class="cypheir-plate__code"><span class="code-tag">&lt;div</span> <span class="code-attr">class</span>=<span class="code-value">"flex flex-col md:flex-row items-center gap-6"</span><span class="code-tag">&gt;</span></code>
+                  </div>
+                </div>
+
+                <!-- Plate 3: Design Tokens (Base) -->
+                <div class="cypheir-plate cypheir-plate--2" data-index="2">
+                  <div class="cypheir-plate__header">
+                    <span class="cypheir-plate__label">LAYER 03 // TOKEN EXTENSIONS</span>
+                    <span class="cypheir-plate__chip">theme.js</span>
+                  </div>
+                  <div class="cypheir-plate__content">
+                    <code class="cypheir-plate__code"><span class="code-keyword">colors</span>: { <span class="code-attr">teal</span>: <span class="code-value">'#36A496'</span>, <span class="code-attr">blur</span>: <span class="code-value">'24px'</span> }</code>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Skills List -->
             <div class="dev-card__skills">
               <span class="dev-card__skill">Tailwind CSS</span>
               <span class="dev-card__skill">Utility-First</span>
@@ -767,24 +959,91 @@
             </div>
           </article>
 
-          <!-- Card 3: JavaScript Interactions & State -->
-          <article class="dev-card" data-reveal="fade-up" data-reveal-delay="300">
-            <div class="dev-card__icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-              </svg>
+          <!-- ==============================================
+               CARD 3: JAVASCRIPT INTERACTIONS (CYPHEIR TELEMETRY)
+               ============================================== -->
+          <article class="dev-card cypheir-card cypheir-card--telemetry" data-reveal="fade-up" data-reveal-delay="300" tabindex="0">
+            <div class="cypheir-card__beam" aria-hidden="true"></div>
+
+            <!-- Hardware Top Bar -->
+            <div class="cypheir-card__topbar">
+              <div class="cypheir-card__id">
+                <span class="cypheir-card__id-tag">SYS-03 // REACTIVE ENGINE</span>
+              </div>
+              <div class="cypheir-status-badge">
+                <span class="cypheir-status-dot cypheir-status-dot--gold" aria-hidden="true"></span>
+                <span class="cypheir-status-text">0 RUNTIME LIBS</span>
+              </div>
             </div>
-            <h3 class="dev-card__title">JavaScript Interactions</h3>
+
+            <!-- Card Header & Description -->
+            <div class="dev-card__header-row">
+              <div class="dev-card__icon-wrap" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <div class="dev-card__header-text">
+                <h3 class="dev-card__title">JavaScript Interactions</h3>
+                <p class="dev-card__tagline">Micro-interactions, state machines &amp; 3D</p>
+              </div>
+            </div>
+
             <p class="dev-card__desc">Creating dynamic, state-driven interfaces with vanilla JavaScript: category filtering, 3D card flips, stacked deck deals, accessible modals, and real-time form validation without bloat.</p>
-            <div class="dev-card__code">
-              <pre><span class="code-comment">// Filter state &amp; smooth DOM update</span>
-<span class="code-keyword">const</span> applyFilter = (category) =&gt; {
-  activeCategory = category;
-  renderProjects(category);
-};</pre>
+
+            <!-- Cypheir Live Telemetry & Interactive Console -->
+            <div class="cypheir-telemetry-engine" id="cypheir-telemetry-box">
+              <!-- Micro Interactive Triggers -->
+              <div class="cypheir-telemetry-triggers">
+                <button type="button" class="cypheir-ctrl-btn" id="ctrl-deal-btn" title="Deal card deck">
+                  <span class="ctrl-icon">⚡</span>
+                  <span>Deal Card</span>
+                </button>
+                <button type="button" class="cypheir-ctrl-btn" id="ctrl-flip-btn" title="Flip 3D token">
+                  <span class="ctrl-icon">↺</span>
+                  <span>Flip 3D</span>
+                </button>
+                <button type="button" class="cypheir-ctrl-btn" id="ctrl-filter-btn" title="Cycle state filter">
+                  <span class="ctrl-icon">🎛️</span>
+                  <span>Filter: <b id="ctrl-filter-label">All</b></span>
+                </button>
+              </div>
+
+              <!-- Live Reactive Monitor + Mini 3D Token -->
+              <div class="cypheir-monitor-wrap">
+                <div class="cypheir-live-terminal">
+                  <div class="cypheir-live-terminal__header">
+                    <span class="cypheir-live-terminal__title">STATE MONITOR // REACTIVE ES6</span>
+                    <!-- Equalizer Waveform -->
+                    <div class="cypheir-waveform" aria-hidden="true">
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                      <span class="wave-bar"></span>
+                    </div>
+                  </div>
+                  <pre class="cypheir-json-output"><code id="cypheir-state-json">{
+  <span class="json-key">"filter"</span>: <span class="json-val" id="json-filter">"ALL"</span>,
+  <span class="json-key">"deckDeals"</span>: <span class="json-val" id="json-deals">0</span>,
+  <span class="json-key">"flip3D"</span>: <span class="json-val" id="json-flipped">false</span>,
+  <span class="json-key">"latency"</span>: <span class="json-val">"0.12ms"</span>
+}</code></pre>
+                </div>
+
+                <!-- Mini 3D Flipping Token -->
+                <div class="cypheir-mini-coin-stage" aria-hidden="true" title="Live 3D Coin Flip preview">
+                  <div class="cypheir-mini-coin" id="cypheir-mini-coin">
+                    <div class="coin-face coin-front">UI/UX</div>
+                    <div class="coin-face coin-back">&lt;CODE&gt;</div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Skills List -->
             <div class="dev-card__skills">
               <span class="dev-card__skill">Vanilla JS</span>
               <span class="dev-card__skill">DOM Manipulation</span>
@@ -794,24 +1053,90 @@
             </div>
           </article>
 
-          <!-- Card 4: AI-Assisted Vibe Coding Workflow -->
-          <article class="dev-card" data-reveal="fade-up" data-reveal-delay="350">
-            <div class="dev-card__icon-wrap">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.25 4.7 3 6v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1c1.75-1.3 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
-                <path d="M9 18h6"></path>
-                <path d="M10 22h4"></path>
-              </svg>
+          <!-- ==============================================
+               CARD 4: VIBE CODING WORKFLOW (CYPHEIR PIPELINE)
+               ============================================== -->
+          <article class="dev-card cypheir-card cypheir-card--pipeline" data-reveal="fade-up" data-reveal-delay="350" tabindex="0">
+            <div class="cypheir-card__beam" aria-hidden="true"></div>
+
+            <!-- Hardware Top Bar -->
+            <div class="cypheir-card__topbar">
+              <div class="cypheir-card__id">
+                <span class="cypheir-card__id-tag">SYS-04 // AUDIT PIPELINE</span>
+              </div>
+              <div class="cypheir-status-badge">
+                <span class="cypheir-status-dot cypheir-status-dot--indigo" aria-hidden="true"></span>
+                <span class="cypheir-status-text">HUMAN AUDITED</span>
+              </div>
             </div>
-            <h3 class="dev-card__title">Vibe Coding Workflow</h3>
+
+            <!-- Card Header & Description -->
+            <div class="dev-card__header-row">
+              <div class="dev-card__icon-wrap" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.25 4.7 3 6v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-1c1.75-1.3 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+                  <path d="M9 18h6"></path>
+                  <path d="M10 22h4"></path>
+                </svg>
+              </div>
+              <div class="dev-card__header-text">
+                <h3 class="dev-card__title">Vibe Coding Workflow</h3>
+                <p class="dev-card__tagline">AI acceleration paired with rigorous auditing</p>
+              </div>
+            </div>
+
             <p class="dev-card__desc">AI-assisted development is not blind prompting — it is translating business problems into UX, guiding AI to generate structured code, rigorously auditing logic, and debugging to production quality.</p>
-            <div class="dev-card__workflow">
-              <div class="dev-card__step"><span class="dev-card__step-num">1</span> Define problem, requirements &amp; Figma interface</div>
-              <div class="dev-card__step"><span class="dev-card__step-num">2</span> Pair with AI tools (Cursor, Claude Code, Antigravity)</div>
-              <div class="dev-card__step"><span class="dev-card__step-num">3</span> Manually inspect, understand &amp; audit generated code</div>
-              <div class="dev-card__step"><span class="dev-card__step-num">4</span> Debug in browser DevTools &amp; stress-test edge cases</div>
-              <div class="dev-card__step"><span class="dev-card__step-num">5</span> Refine accessibility, performance &amp; deploy</div>
+
+            <!-- Cypheir Sequential Radar & Pipeline Track -->
+            <div class="cypheir-pipeline-container" id="cypheir-pipeline-box">
+              <div class="cypheir-pipeline-header">
+                <span class="cypheir-pipeline-title">EXECUTION VERIFICATION SEQUENCE</span>
+                <button type="button" class="cypheir-action-btn" id="pipeline-simulate-btn" aria-label="Simulate audit pipeline">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <span>Simulate Audit</span>
+                </button>
+              </div>
+
+              <!-- Interactive Step Nodes with Laser Wire -->
+              <div class="cypheir-track-stage">
+                <div class="cypheir-track-line" aria-hidden="true">
+                  <div class="cypheir-track-glow" id="pipeline-track-glow"></div>
+                </div>
+
+                <div class="cypheir-nodes-grid" role="list">
+                  <button type="button" class="cypheir-node is-active" data-step="0" role="listitem" aria-label="Step 1: Define Requirements and UI">
+                    <span class="cypheir-node__num">01</span>
+                    <span class="cypheir-node__tag">SPEC</span>
+                  </button>
+                  <button type="button" class="cypheir-node" data-step="1" role="listitem" aria-label="Step 2: AI Tool Pairing">
+                    <span class="cypheir-node__num">02</span>
+                    <span class="cypheir-node__tag">AI PAIR</span>
+                  </button>
+                  <button type="button" class="cypheir-node" data-step="2" role="listitem" aria-label="Step 3: Rigorous Code Inspection">
+                    <span class="cypheir-node__num">03</span>
+                    <span class="cypheir-node__tag">AUDIT</span>
+                  </button>
+                  <button type="button" class="cypheir-node" data-step="3" role="listitem" aria-label="Step 4: Browser DevTools Profiling">
+                    <span class="cypheir-node__num">04</span>
+                    <span class="cypheir-node__tag">DEVTOOLS</span>
+                  </button>
+                  <button type="button" class="cypheir-node" data-step="4" role="listitem" aria-label="Step 5: Production Deployment">
+                    <span class="cypheir-node__num">05</span>
+                    <span class="cypheir-node__tag">DEPLOY</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dynamic Node Detail Readout -->
+              <div class="cypheir-node-detail" id="pipeline-node-detail">
+                <div class="cypheir-node-detail__badge" id="pipeline-detail-badge">PHASE 01 // SPECIFICATION</div>
+                <div class="cypheir-node-detail__text" id="pipeline-detail-text">Define problem requirements, accessibility constraints &amp; Figma interface tokens before writing prompts.</div>
+              </div>
             </div>
+
+            <!-- Skills List -->
             <div class="dev-card__skills">
               <span class="dev-card__skill">Cursor</span>
               <span class="dev-card__skill">Claude Code</span>

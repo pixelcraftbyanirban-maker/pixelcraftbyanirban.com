@@ -168,6 +168,118 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================================
+     1c. THEME SWITCHER (Dark & Pearlescent Light Mode)
+     ============================================ */
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+  const mobileThemeBtn = document.getElementById('mobile-theme-btn');
+  const metaThemeColor = document.getElementById('meta-theme-color');
+
+  const getStoredTheme = () => {
+    try {
+      return localStorage.getItem('portfolio-theme');
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const getCurrentTheme = () => {
+    return document.documentElement.getAttribute('data-theme') || 'dark';
+  };
+
+  const updateThemeUI = (theme) => {
+    const isLight = theme === 'light';
+    const nextThemeLabel = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+
+    // 1. Desktop Switch Button (Pill toggle with sliding thumb)
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-checked', isLight ? 'true' : 'false');
+      themeToggle.setAttribute('aria-label', nextThemeLabel);
+      themeToggle.setAttribute('title', nextThemeLabel);
+    }
+
+    // 2. Mobile Navbar Action Button
+    if (themeToggleMobile) {
+      themeToggleMobile.setAttribute('aria-label', nextThemeLabel);
+      themeToggleMobile.setAttribute('title', nextThemeLabel);
+    }
+
+    // 3. Mobile Menu Button
+    if (mobileThemeBtn) {
+      mobileThemeBtn.setAttribute('aria-label', nextThemeLabel);
+      const textNode = mobileThemeBtn.querySelector('.mobile-theme-switch__text');
+      if (textNode) {
+        textNode.textContent = nextThemeLabel;
+      }
+    }
+
+    // 4. Meta theme-color for mobile browser chrome
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', isLight ? '#fef9d7' : '#07080C');
+    }
+  };
+
+  const setTheme = (theme, save = true) => {
+    const normalized = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', normalized);
+
+    if (save) {
+      try {
+        localStorage.setItem('portfolio-theme', normalized);
+      } catch (e) {}
+    }
+
+    updateThemeUI(normalized);
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: normalized } }));
+  };
+
+  const toggleTheme = () => {
+    // Add temporary transition class for smooth visual cross-fade
+    document.documentElement.classList.add('theme-transitioning');
+    const newTheme = getCurrentTheme() === 'light' ? 'dark' : 'light';
+    setTheme(newTheme, true);
+
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    }, 380);
+  };
+
+  // Sync initial state from DOM attribute or storage (defaults to light mode with pastel gradient)
+  const activeTheme = document.documentElement.getAttribute('data-theme') || (getStoredTheme() === 'dark' ? 'dark' : 'light');
+  setTheme(activeTheme, false);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+
+  if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+
+  if (mobileThemeBtn) {
+    mobileThemeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleTheme();
+    });
+  }
+
+  // Respond to OS system theme changes if user hasn't set an explicit preference
+  try {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+    mediaQuery.addEventListener('change', (e) => {
+      if (!getStoredTheme()) {
+        setTheme(e.matches ? 'light' : 'dark', false);
+      }
+    });
+  } catch (e) {}
+
+  /* ============================================
      4. MOBILE MENU
      ============================================ */
   const hamburger = document.getElementById('hamburger');
@@ -1153,9 +1265,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Position deck compactly near the top of the stage just below the hint badge
     const isSmallScreen = window.innerWidth < 640;
-    const deckTop = isSmallScreen ? 42 : 48;
+    const deckTop = isSmallScreen ? 24 : 28;
     const centerY = deckTop + cardH / 2;
-    const deckStageH = Math.ceil(deckTop + cardH + (isSmallScreen ? 24 : 32));
+    const deckStageH = Math.ceil(deckTop + cardH + (isSmallScreen ? 14 : 18));
 
     const rotations = [-4.5, 3.8, -2.6, 4.2, -3.2, 2.5, -4.0, 3.0, -1.8];
 
@@ -1344,16 +1456,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 120);
   }, { passive: true });
 
-  /* ============================================
-     3D INTERACTIVE TILT FOR CODE CRAFT (DEV CARDS)
-     ============================================ */
-  const devCards = document.querySelectorAll('.dev-card');
-  devCards.forEach(card => {
+  /* =========================================================
+     CYPHEIR CARD UI MOTION & INTERACTION ENGINE
+     (Inspired by Abron Studio's Cypheir Card UI Animation)
+     ========================================================= */
+  const cypheirCards = document.querySelectorAll('.dev-card.cypheir-card');
+  
+  // 1. Lerped 3D Perspective Tilt Physics Engine
+  cypheirCards.forEach(card => {
     let bounds = null;
+    let animId = null;
+    let isHovered = false;
+
+    let currentRotX = 0, currentRotY = 0;
+    let targetRotX = 0, targetRotY = 0;
+    let currentGlareX = 50, currentGlareY = 50;
+    let targetGlareX = 50, targetGlareY = 50;
+
+    const updatePhysics = () => {
+      if (prefersReducedMotion) return;
+
+      // Smooth linear interpolation (lerp factor 0.12 for luxury weighted feel)
+      currentRotX += (targetRotX - currentRotX) * 0.12;
+      currentRotY += (targetRotY - currentRotY) * 0.12;
+      currentGlareX += (targetGlareX - currentGlareX) * 0.15;
+      currentGlareY += (targetGlareY - currentGlareY) * 0.15;
+
+      card.style.setProperty('--tilt-x', `${currentRotX.toFixed(2)}deg`);
+      card.style.setProperty('--tilt-y', `${currentRotY.toFixed(2)}deg`);
+      card.style.setProperty('--mouse-x', `${currentGlareX.toFixed(1)}%`);
+      card.style.setProperty('--mouse-y', `${currentGlareY.toFixed(1)}%`);
+
+      // Continue animating while hovered or until settled near 0
+      const isSettled = Math.abs(targetRotX - currentRotX) < 0.05 && Math.abs(targetRotY - currentRotY) < 0.05;
+      if (isHovered || !isSettled) {
+        animId = requestAnimationFrame(updatePhysics);
+      } else {
+        animId = null;
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      }
+    };
 
     const onMouseEnter = () => {
       bounds = card.getBoundingClientRect();
-      card.style.transition = 'transform 100ms ease-out, box-shadow 250ms ease';
+      isHovered = true;
+      if (!animId && !prefersReducedMotion) {
+        animId = requestAnimationFrame(updatePhysics);
+      }
     };
 
     const onMouseMove = (e) => {
@@ -1362,29 +1512,288 @@ document.addEventListener('DOMContentLoaded', () => {
       const mouseX = e.clientX - bounds.left;
       const mouseY = e.clientY - bounds.top;
 
-      // Normalize between -1 and 1 relative to card center
+      // Normalize between -1 and 1
       const xPct = (mouseX / bounds.width - 0.5) * 2;
       const yPct = (mouseY / bounds.height - 0.5) * 2;
 
-      // Dynamic tilt angles: max ±8.5 degrees
-      const rotX = -yPct * 8.5;
-      const rotY = xPct * 8.5;
+      // Cypheir signature subtle, high-end 3D tilt (max ±7.5deg)
+      targetRotX = -yPct * 7.5;
+      targetRotY = xPct * 7.5;
 
-      card.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(8px)`;
-      card.style.setProperty('--mouse-x', `${mouseX.toFixed(1)}px`);
-      card.style.setProperty('--mouse-y', `${mouseY.toFixed(1)}px`);
+      targetGlareX = (mouseX / bounds.width) * 100;
+      targetGlareY = (mouseY / bounds.height) * 100;
+
+      if (!animId) {
+        animId = requestAnimationFrame(updatePhysics);
+      }
     };
 
     const onMouseLeave = () => {
-      card.style.transition = 'transform 360ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 360ms ease';
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+      isHovered = false;
+      targetRotX = 0;
+      targetRotY = 0;
+      targetGlareX = 50;
+      targetGlareY = 50;
       bounds = null;
     };
 
-    card.addEventListener('mouseenter', onMouseEnter);
-    card.addEventListener('mousemove', onMouseMove);
-    card.addEventListener('mouseleave', onMouseLeave);
+    card.addEventListener('mouseenter', onMouseEnter, { passive: true });
+    card.addEventListener('mousemove', onMouseMove, { passive: true });
+    card.addEventListener('mouseleave', onMouseLeave, { passive: true });
   });
+
+  // 2. CARD 1: Interactive Syntax Scanner & Tabs
+  const termTabs = document.querySelectorAll('#cypheir-term-1 .cypheir-tab');
+  const termPanels = document.querySelectorAll('#cypheir-term-1 .cypheir-code-panel');
+  const scanBtn = document.getElementById('cypheir-scan-btn');
+  const scanline = document.getElementById('cypheir-scanline-1');
+  const status1 = document.getElementById('cypheir-status-1');
+  const auditBar1 = document.getElementById('cypheir-audit-bar-1');
+
+  termTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetPanel = tab.getAttribute('data-tab');
+
+      termTabs.forEach(t => {
+        t.classList.toggle('is-active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+
+      termPanels.forEach(panel => {
+        const isMatch = panel.getAttribute('data-panel') === targetPanel;
+        panel.classList.toggle('is-active', isMatch);
+        if (isMatch) {
+          panel.removeAttribute('hidden');
+        } else {
+          panel.setAttribute('hidden', 'true');
+        }
+      });
+    });
+  });
+
+  if (scanBtn && scanline) {
+    let isScanning = false;
+    scanBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isScanning) return;
+      isScanning = true;
+
+      scanline.classList.remove('is-scanning');
+      // Trigger DOM reflow to restart CSS animation
+      void scanline.offsetWidth;
+      scanline.classList.add('is-scanning');
+
+      if (status1) {
+        status1.textContent = 'SCANNING AST...';
+        status1.style.color = 'var(--terracotta)';
+      }
+      if (auditBar1) {
+        auditBar1.classList.remove('is-verified');
+      }
+
+      setTimeout(() => {
+        scanline.classList.remove('is-scanning');
+        isScanning = false;
+        if (status1) {
+          status1.textContent = 'KERNEL VERIFIED';
+          status1.style.color = '#FAF4EA';
+        }
+        if (auditBar1) {
+          auditBar1.classList.add('is-verified');
+        }
+      }, 1250);
+    });
+  }
+
+  // 3. CARD 2: Cypheir 3D Layered Component Stack
+  const stackTabs = document.querySelectorAll('.cypheir-stack-tab');
+  const stackPlates = document.querySelectorAll('.cypheir-plate');
+
+  const reorderStack = (activeIdx) => {
+    stackTabs.forEach((tab, i) => {
+      tab.classList.toggle('is-active', i === activeIdx);
+    });
+
+    stackPlates.forEach((plate, i) => {
+      // Clear classes
+      plate.classList.remove('cypheir-plate--0', 'cypheir-plate--1', 'cypheir-plate--2', 'is-active');
+
+      // Relative cyclic depth
+      const relIdx = (i - activeIdx + 3) % 3;
+      plate.classList.add(`cypheir-plate--${relIdx}`);
+      if (relIdx === 0) {
+        plate.classList.add('is-active');
+      }
+    });
+  };
+
+  stackTabs.forEach((tab, idx) => {
+    tab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      reorderStack(idx);
+    });
+  });
+
+  stackPlates.forEach((plate) => {
+    plate.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(plate.getAttribute('data-index'), 10);
+      reorderStack(idx);
+    });
+  });
+
+  // 4. CARD 3: Cypheir Reactive Telemetry & State Engine
+  const dealBtn = document.getElementById('ctrl-deal-btn');
+  const flipBtn = document.getElementById('ctrl-flip-btn');
+  const filterBtn = document.getElementById('ctrl-filter-btn');
+  const filterLabelEl = document.getElementById('ctrl-filter-label');
+  const miniCoin = document.getElementById('cypheir-mini-coin');
+
+  const jsonFilter = document.getElementById('json-filter');
+  const jsonDeals = document.getElementById('json-deals');
+  const jsonFlipped = document.getElementById('json-flipped');
+  const waveBars = document.querySelectorAll('.cypheir-waveform .wave-bar');
+
+  const filtersList = ['ALL', 'INTERACTIVE', 'UX/UI', 'SYSTEMS'];
+  let currentFilterIdx = 0;
+  let dealsCount = 0;
+  let isCoinFlipped = false;
+
+  const pulseWaveform = () => {
+    waveBars.forEach((bar, i) => {
+      bar.style.transform = `scaleY(${1 + Math.random() * 1.6})`;
+      setTimeout(() => {
+        bar.style.transform = '';
+      }, 300 + i * 40);
+    });
+  };
+
+  const flashJsonVal = (el) => {
+    if (!el) return;
+    el.classList.add('is-updated');
+    setTimeout(() => el.classList.remove('is-updated'), 350);
+  };
+
+  if (dealBtn) {
+    dealBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dealsCount += 1;
+      if (jsonDeals) {
+        jsonDeals.textContent = dealsCount;
+        flashJsonVal(jsonDeals);
+      }
+      pulseWaveform();
+    });
+  }
+
+  if (flipBtn && miniCoin) {
+    flipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isCoinFlipped = !isCoinFlipped;
+      miniCoin.classList.toggle('is-flipped', isCoinFlipped);
+      if (jsonFlipped) {
+        jsonFlipped.textContent = isCoinFlipped ? 'true' : 'false';
+        flashJsonVal(jsonFlipped);
+      }
+      pulseWaveform();
+    });
+
+    miniCoin.addEventListener('click', (e) => {
+      e.stopPropagation();
+      flipBtn.click();
+    });
+  }
+
+  if (filterBtn && filterLabelEl) {
+    filterBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentFilterIdx = (currentFilterIdx + 1) % filtersList.length;
+      const nextFilter = filtersList[currentFilterIdx];
+      filterLabelEl.textContent = nextFilter;
+      if (jsonFilter) {
+        jsonFilter.textContent = `"${nextFilter}"`;
+        flashJsonVal(jsonFilter);
+      }
+      pulseWaveform();
+    });
+  }
+
+  // 5. CARD 4: Cypheir Sequential Verification Pipeline
+  const pipelineNodes = document.querySelectorAll('.cypheir-node');
+  const pipelineGlow = document.getElementById('pipeline-track-glow');
+  const detailBadge = document.getElementById('pipeline-detail-badge');
+  const detailText = document.getElementById('pipeline-detail-text');
+  const simulateBtn = document.getElementById('pipeline-simulate-btn');
+
+  const pipelinePhases = [
+    {
+      badge: 'PHASE 01 // SPECIFICATION',
+      text: 'Define problem requirements, accessibility constraints & Figma interface tokens before writing code.'
+    },
+    {
+      badge: 'PHASE 02 // AI CO-PILOT PAIRING',
+      text: 'Pair with Claude Code, Cursor & Antigravity for structured architecture and component scaffolding.'
+    },
+    {
+      badge: 'PHASE 03 // RIGOROUS CODE AUDIT',
+      text: 'Human-in-the-loop inspection: verifying AST, zero hallucinations, clean DOM semantics & WCAG AA standards.'
+    },
+    {
+      badge: 'PHASE 04 // DEVTOOLS PROFILING',
+      text: 'Browser DevTools profiling: 60fps paint cycles, memory stability, zero regressions & 0 Cumulative Layout Shift.'
+    },
+    {
+      badge: 'PHASE 05 // PRODUCTION DEPLOY',
+      text: 'Deploy lean, production-verified frontend code with zero external dependencies and instant responsiveness.'
+    }
+  ];
+
+  const setPipelineStep = (stepIdx) => {
+    pipelineNodes.forEach((node, i) => {
+      node.classList.toggle('is-active', i === stepIdx);
+    });
+
+    if (pipelineGlow) {
+      const pct = (stepIdx / (pipelineNodes.length - 1)) * 80;
+      pipelineGlow.style.left = `${pct}%`;
+    }
+
+    if (detailBadge && detailText && pipelinePhases[stepIdx]) {
+      detailBadge.textContent = pipelinePhases[stepIdx].badge;
+      detailText.textContent = pipelinePhases[stepIdx].text;
+    }
+  };
+
+  pipelineNodes.forEach((node, idx) => {
+    node.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setPipelineStep(idx);
+    });
+  });
+
+  if (simulateBtn) {
+    let isSimulating = false;
+    simulateBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isSimulating) return;
+      isSimulating = true;
+      simulateBtn.disabled = true;
+
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        setPipelineStep(currentStep);
+        currentStep++;
+        if (currentStep >= pipelinePhases.length) {
+          clearInterval(interval);
+          setTimeout(() => {
+            isSimulating = false;
+            simulateBtn.disabled = false;
+          }, 400);
+        }
+      }, 340);
+    });
+  }
 
   // Ensure coordinates are calculated accurately once loader finishes / page is fully loaded
   window.addEventListener('page-ready', () => {
