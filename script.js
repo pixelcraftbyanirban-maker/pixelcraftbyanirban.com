@@ -345,6 +345,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Close mobile menu when resized to desktop viewport
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 992 && hamburger && hamburger.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+    }
+  });
+
   // Focus trap inside mobile menu
   if (mobileMenu && mobileLinks.length > 0) {
     const firstLink = mobileLinks[0];
