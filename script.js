@@ -2750,6 +2750,10 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('');
 
     updateFolderMetadata();
+
+    if (isFolderOpen && folderViewport) {
+      folderViewport.style.maxHeight = 'none';
+    }
   };
 
   /* ============================================
@@ -2781,7 +2785,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const openFolder = () => {
-    if (!folder) return;
+    if (!folder || isFolderOpen) return;
     isFolderOpen = true;
     folder.classList.add('is-open');
     if (folderSleeve) {
@@ -2789,6 +2793,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (folderViewport) {
       folderViewport.setAttribute('aria-hidden', 'false');
+      folderViewport.style.overflow = 'hidden';
+
+      // Measure exact content height and animate cleanly without overflowing
+      const targetHeight = folderViewport.scrollHeight;
+      folderViewport.style.maxHeight = `${targetHeight + 40}px`;
+
+      const onOpenTransitionEnd = (e) => {
+        if (e.target === folderViewport && e.propertyName === 'max-height') {
+          folderViewport.removeEventListener('transitionend', onOpenTransitionEnd);
+          if (isFolderOpen) {
+            folderViewport.style.maxHeight = 'none';
+          }
+        }
+      };
+      folderViewport.addEventListener('transitionend', onOpenTransitionEnd);
+
+      setTimeout(() => {
+        if (isFolderOpen && folderViewport.style.maxHeight !== 'none') {
+          folderViewport.style.maxHeight = 'none';
+        }
+      }, 850);
     }
     // Set focus on first card for keyboard accessibility
     setTimeout(() => {
@@ -2800,14 +2825,36 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const closeFolder = () => {
-    if (!folder) return;
+    if (!folder || !isFolderOpen) return;
     isFolderOpen = false;
+    if (folderViewport) {
+      folderViewport.style.overflow = 'hidden';
+      // Set to current height explicitly first so it can animate down smoothly
+      folderViewport.style.maxHeight = `${folderViewport.scrollHeight}px`;
+      // Force reflow
+      void folderViewport.offsetHeight;
+      folderViewport.style.maxHeight = '0px';
+      folderViewport.setAttribute('aria-hidden', 'true');
+
+      const onCloseTransitionEnd = (e) => {
+        if (e.target === folderViewport && e.propertyName === 'max-height') {
+          folderViewport.removeEventListener('transitionend', onCloseTransitionEnd);
+          if (!isFolderOpen) {
+            folderViewport.style.maxHeight = '';
+          }
+        }
+      };
+      folderViewport.addEventListener('transitionend', onCloseTransitionEnd);
+
+      setTimeout(() => {
+        if (!isFolderOpen && folderViewport.style.maxHeight === '0px') {
+          folderViewport.style.maxHeight = '';
+        }
+      }, 850);
+    }
     folder.classList.remove('is-open');
     if (folderSleeve) {
       folderSleeve.setAttribute('aria-expanded', 'false');
-    }
-    if (folderViewport) {
-      folderViewport.setAttribute('aria-hidden', 'true');
     }
     const playgroundSec = document.getElementById('playground');
     if (playgroundSec) {
@@ -2859,7 +2906,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prefersReducedMotion && folder) {
     folder.classList.add('is-open');
+    if (folderViewport) {
+      folderViewport.style.maxHeight = 'none';
+      folderViewport.style.overflow = 'hidden';
+    }
   }
+
+  // Handle screen resize dynamically when folder is open
+  let pgResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(pgResizeTimer);
+    pgResizeTimer = setTimeout(() => {
+      if (isFolderOpen && folderViewport) {
+        folderViewport.style.maxHeight = 'none';
+      }
+    }, 150);
+  });
 
   // IntersectionObserver on #playground to subtly peek or auto-expand folder at 35% threshold
   const playgroundSection = document.getElementById('playground');
